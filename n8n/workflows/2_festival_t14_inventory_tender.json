@@ -1,0 +1,90 @@
+{
+  "name": "Netra Festival T-14 Autonomous Supplier Tender & WhatsApp Dispatch",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "node_weekly_festival_scan",
+      "name": "Weekly Monday 9 AM Festival Scan",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/api/v1/insights/festival",
+        "options": {}
+      },
+      "id": "node_get_festivals",
+      "name": "Fetch Upcoming Indian Festivals",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.upcoming[0].days_remaining }}",
+              "operation": "smallerEqual",
+              "value2": 14
+            }
+          ]
+        }
+      },
+      "id": "node_check_t14",
+      "name": "Check If Within T-14 Days",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare WhatsApp RFQ template for Wholesale Distributors\nconst fest = $input.first().json.upcoming[0];\nreturn [{\n  json: {\n    channel: 'whatsapp_kirana',\n    merchant: 'Ramesh Kirana Store',\n    phone: '+919876543210',\n    message: `🪔 *Netrā Festival Prep: ${fest.festival_name} (${fest.date})*\\n\\nअनुशंसित आवश्यक स्टॉक:\\n• ${fest.recommended_stock.join('\\n• ')}\\n\\nऑफर विचार: ${fest.suggested_offer}\\n\\nथोक वितरक को आर्डर भेजने के लिए बटन दबाएं:`,\n    action_buttons: ['वितरक कोटेशन मांगें', 'बाद में याद दिलाएं']\n  }\n}];"
+      },
+      "id": "node_format_whatsapp",
+      "name": "Generate WhatsApp Tender Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 240]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/recommendations",
+        "options": {}
+      },
+      "id": "node_dispatch_whatsapp",
+      "name": "Dispatch to Merchant WhatsApp & Soundbox",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 240]
+    }
+  ],
+  "connections": {
+    "Weekly Monday 9 AM Festival Scan": {
+      "main": [[{ "node": "Fetch Upcoming Indian Festivals", "type": "main", "index": 0 }]]
+    },
+    "Fetch Upcoming Indian Festivals": {
+      "main": [[{ "node": "Check If Within T-14 Days", "type": "main", "index": 0 }]]
+    },
+    "Check If Within T-14 Days": {
+      "main": [
+        [{ "node": "Generate WhatsApp Tender Message", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Generate WhatsApp Tender Message": {
+      "main": [[{ "node": "Dispatch to Merchant WhatsApp & Soundbox", "type": "main", "index": 0 }]]
+    }
+  }
+}

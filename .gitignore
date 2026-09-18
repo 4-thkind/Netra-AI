@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+.venv/
+env/
+venv/
+ENV/
+*.db
+*.sqlite
+netra.db
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+frontend/out/
+frontend/build/
+.npm
+*.log
+
+# Pytest & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store

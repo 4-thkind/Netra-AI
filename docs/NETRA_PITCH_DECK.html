@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NETRĀ — The AI Growth Copilot for Every Paytm Merchant (Pitch Deck)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: 11in 6.1875in; /* Exact 16:9 presentation slide */
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #2D2D2D;
+      color: #2D2D2D;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px 0;
+    }
+    @media print {
+      body {
+        background: none;
+        gap: 0;
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+      }
+    }
+    .slide {
+      width: 11in;
+      height: 6.1875in;
+      position: relative;
+      overflow: hidden;
+      background: #FFF8F0;
+      padding: 0.5in 0.65in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      border-radius: 4px;
+    }
+    
+    /* Top Header Bar */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(201, 169, 110, 0.4);
+      padding-bottom: 0.12in;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-tag {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      color: #722F37;
+      letter-spacing: 1.5px;
+    }
+    .track-badge {
+      background: #722F37;
+      color: #FFF8F0;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .slide-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      color: #8B4049;
+      font-weight: 600;
+    }
+
+    /* Titles */
+    .slide-title-left {
+      font-family: 'Poppins', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #722F37;
+      line-height: 1.25;
+      margin-top: 0.08in;
+    }
+    .slide-title-center {
+      font-family: 'Poppins', sans-serif;
+      font-size: 23px;
+      font-weight: 700;
+      color: #722F37;
+      text-align: center;
+      line-height: 1.25;
+      margin-top: 0.05in;
+    }
+
+    /* Cards & Components */
+    .soft-sand-card {
+      background: #F5EDE3;
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 6px rgba(114, 47, 55, 0.04);
+      border: 1px solid rgba(201, 169, 110, 0.25);
+    }
+    .icon-gold-circle {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 50%;
+      background: rgba(201, 169, 110, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #722F37;
+    }
+
+    /* Footer */
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(201, 169, 110, 0.35);
+      padding-top: 0.08in;
+      font-size: 10px;
+      color: #8B4049;
+    }
+
+    /* Wine Background Slides (1, 8, 10) */
+    .wine-slide {
+      background: #722F37;
+      color: #FFF8F0;
+    }
+    .wine-mesh-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(201, 169, 110, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(201, 169, 110, 0.08) 0%, transparent 45%),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+      pointer-events: none;
+    }
+
+    /* Print action bar */
+    .action-bar {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+      background: #1A1A1A;
+      padding: 10px 18px;
+      border-radius: 30px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid #C9A96E;
+    }
+    .action-btn {
+      background: #722F37;
+      color: #FFF8F0;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      background: #8B4049;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Controls -->
+  <div class="action-bar no-print">
+    <span style="color: #FFF8F0; font-size: 12px; display: flex; align-items: center; gap: 6px; font-weight: 500;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 16 14"/></svg>
+      HackBriven Selection Deck (10 Slides)
+    </span>
+    <button class="action-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Export PDF for Submission
+    </button>
+  </div>
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide wine-slide" id="slide-1" style="justify-content: center; align-items: center; text-align: center; padding: 0.8in 1in;">
+    <div class="wine-mesh-bg"></div>
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;">
+      <h1 style="font-family: 'Poppins', sans-serif; font-size: 78px; font-weight: 800; color: #FFF8F0; letter-spacing: 3px; line-height: 1;">NETRĀ</h1>
+      <p style="font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 400; color: #C9A96E; margin-top: 18px; letter-spacing: 0.5px;">The AI Growth Copilot for Every Paytm Merchant</p>
+      <div style="margin-top: 36px; display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 248, 240, 0.08); border: 1px solid rgba(201, 169, 110, 0.4); padding: 6px 18px; border-radius: 30px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #C9A96E;"></span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 300; color: rgba(255, 248, 240, 0.9); letter-spacing: 1px;">Track 1 — Merchant Growth AI</span>
+      </div>
+    </div>
+    <div style="position: absolute; bottom: 0.4in; left: 0; right: 0; text-align: center; z-index: 2;">
+      <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255, 248, 240, 0.55); letter-spacing: 0.5px;">
+        <strong style="color: rgba(255, 248, 240, 0.8); font-weight: 600;">Team KERNEL</strong> &nbsp;·&nbsp; Utkarsh Singh (Team Leader) &amp; Pranav Pant
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: THE PROBLEM -->
+  <div class="slide" id="slide-2">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">Track 1: Merchant Growth AI</span>
+      </div>
+      <span class="slide-num">02 / 10</span>
+    </div>
+
+    <h2 class="slide-title-left">India's Merchants Are Flying Blind</h2>
+
+    <div class="soft-sand-card" style="margin-top: 0.08in; padding: 13px 18px;">
+      <p style="font-size: 13px; line-height: 1.5; color: #2D2D2D;">
+        <strong>Ramesh runs a kirana store in Lajpat Nagar, Delhi.</strong> He has been a Paytm merchant for 4 years. He processes 80+ UPI transactions every day through his Soundbox. His monthly revenue is around ₹3.5 lakh. By every standard, he is a successful small merchant. But Ramesh has a problem he does not even know he has: <em>he cannot see past his own counter</em>. He does not know what products are trending two streets away. He does not know his snack prices are 14% above every other kirana around him. He does not know that last Navratri, he ran out of his top 3 items by day 4 because he ordered based on memory, not data. Ramesh is not failing. He is leaving growth on the table because he is running his business in the dark. And there are <strong>4.9 crore merchants just like him on Paytm</strong>.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.08in;">
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: #722F37;">No Market Visibility</h3>
+        </div>
+        <p style="font-size: 11px; line-height: 1.4; color: #333;">
+          A new chai brand is selling well everywhere around him. A competitor started selling namkeen cheaper. Ramesh finds out only when customers stop showing up. Zero outside window.
+        </p>
+      </div>
+
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="1.5"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: #722F37;">No Demand Signals</h3>
+        </div>
+        <p style="font-size: 11px; line-height: 1.4; color: #333;">
+          Navratri is in 3 weeks. Ramesh stocks based on gut feeling and last year's memories. He overstocks some items and runs out of others as every seasonal festival catches him off guard.
+        </p>
+      </div>
+
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: #722F37;">No Growth Playbook</h3>
+        </div>
+        <p style="font-size: 11px; line-height: 1.4; color: #333;">
+          Nobody tells Ramesh that peer kiranas adding weekend UPI offers saw 18% higher footfall. He learns by trial and error alone, while guidance data already exists inside Paytm.
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 0.05in; padding: 4px 10px;">
+      <p style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #722F37;">
+        Paytm processes the data of 4.9 crore merchants. The intelligence to solve all of this already exists. It just has not reached Ramesh yet.
+      </p>
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: THE INSIGHT -->
+  <div class="slide" id="slide-3">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">The Core Breakthrough</span>
+      </div>
+      <span class="slide-num">03 / 10</span>
+    </div>
+
+    <h2 class="slide-title-center">What If Every Merchant Could See What the Network Sees?</h2>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin: 0.1in 0; padding: 16px 20px; background: #F5EDE3; border-radius: 16px; border: 1px solid rgba(201, 169, 110, 0.35);">
+      
+      <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 11px; font-weight: 700; color: #8B4049; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Today</span>
+        <div style="width: 64px; height: 64px; border-radius: 50%; border: 2px dashed #888; background: #E5DCD0; display: flex; align-items: center; justify-content: center;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <p style="font-size: 11.5px; color: #444; margin-top: 6px; font-weight: 600;">Sees only his own transactions</p>
+        <span style="font-size: 9.5px; color: #888;">(Isolated bubble · Zero market context)</span>
+      </div>
+
+      <div style="flex: 1.4; display: flex; flex-direction: column; align-items: center; padding: 0 15px;">
+        <span style="font-size: 10px; color: #8B4049; font-weight: 600; text-align: center; margin-bottom: 6px;">
+          Aggregated, anonymized transaction intelligence from 4.9 crore merchants
+        </span>
+        <div style="position: relative; width: 100%; display: flex; align-items: center; justify-content: center;">
+          <div style="height: 4px; width: 100%; background: linear-gradient(90deg, #C9A96E, #722F37); border-radius: 2px;"></div>
+          <svg style="position: absolute; right: -6px;" width="16" height="16" viewBox="0 0 24 24" fill="#722F37"><polygon points="0,0 24,12 0,24"/></svg>
+          <div style="position: absolute; background: #722F37; color: #FFF8F0; padding: 3px 14px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700; border: 1.5px solid #C9A96E; box-shadow: 0 3px 10px rgba(114, 47, 55, 0.25);">
+            NETRĀ
+          </div>
+        </div>
+      </div>
+
+      <div style="flex: 1.6; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 11px; font-weight: 700; color: #722F37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">With Netrā</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; border: 2.5px solid #722F37; background: #FFF8F0; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 16px rgba(201, 169, 110, 0.5);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#722F37" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 3px; text-align: left;">
+            <span style="font-size: 9.5px; background: rgba(114, 47, 55, 0.08); padding: 2px 7px; border-radius: 4px; color: #722F37; font-weight: 600;">• Demand Trends (Nearby surges)</span>
+            <span style="font-size: 9.5px; background: rgba(114, 47, 55, 0.08); padding: 2px 7px; border-radius: 4px; color: #722F37; font-weight: 600;">• Pricing Context (P25 / Median / P75)</span>
+            <span style="font-size: 9.5px; background: rgba(114, 47, 55, 0.08); padding: 2px 7px; border-radius: 4px; color: #722F37; font-weight: 600;">• Seasonal Signals (Navratri / Diwali)</span>
+            <span style="font-size: 9.5px; background: rgba(114, 47, 55, 0.08); padding: 2px 7px; border-radius: 4px; color: #722F37; font-weight: 600;">• Cash Flow Forecast (7-day Prophet)</span>
+            <span style="font-size: 9.5px; background: rgba(114, 47, 55, 0.08); padding: 2px 7px; border-radius: 4px; color: #722F37; font-weight: 600;">• Growth Moves (Cohort Playbooks)</span>
+          </div>
+        </div>
+        <p style="font-size: 11.5px; color: #722F37; margin-top: 6px; font-weight: 600;">Sees the entire market around him</p>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; max-width: 9.5in; margin: 0 auto;">
+      <p style="font-size: 12.5px; line-height: 1.45; color: #333;">
+        Paytm already has the largest real-time commerce dataset in India. Every transaction, every merchant, every pin code, every season. <strong>Netrā does not create new data.</strong> It unlocks the intelligence that is already trapped inside Paytm's ecosystem and delivers it to each merchant as personalized, actionable growth moves. No merchant's individual data is ever exposed. <em>The network's patterns are the power.</em>
+      </p>
+      <h3 style="font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: #722F37; margin-top: 8px;">
+        "Solo merchant. Network intelligence."
+      </h3>
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHAT NETRĀ DOES (INTELLIGENCE LAYER) -->
+  <div class="slide" id="slide-4">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">The Intelligence Layer</span>
+      </div>
+      <span class="slide-num">04 / 10</span>
+    </div>
+
+    <h2 class="slide-title-left">The Intelligence Layer — Reading the Market</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 0.08in;">
+      
+      <!-- Trade Radar -->
+      <div class="soft-sand-card" style="display: flex; gap: 16px; align-items: flex-start; padding: 13px 18px;">
+        <div class="icon-gold-circle" style="width: 44px; height: 44px; min-width: 44px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/></svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: #722F37;">Trade Radar</h3>
+            <span style="font-size: 10.5px; color: #8B4049; font-weight: 600;">Hyperlocal Demand Heatmap</span>
+          </div>
+          <p style="font-size: 12px; font-weight: 600; color: #2D2D2D; margin: 1px 0 4px;">
+            "See what nearby consumers are buying that you do not stock."
+          </p>
+          <p style="font-size: 11px; line-height: 1.45; color: #333;">
+            Netrā clusters every merchant into a hyperlocal micro-market — roughly a 1 to 2 km radius zone aligned with a real neighborhood (Lajpat Nagar, not "Delhi"). Within that zone, it aggregates transaction volumes by product category across all merchants. Beverages up 40% this week. Snacks steady. Personal care down 10%. Then it compares this market-level demand heatmap against YOUR transaction categories. If iced beverages are surging in Lajpat Nagar and Ramesh has zero transactions in that category, that is a gap. That gap becomes a Trade Radar alert: <em>"Iced tea is up 40% in your pin code. You stock none. Top 3 items to try based on what similar stores sell: [X, Y, Z]."</em> The ML underneath is collaborative filtering on a merchant-category matrix, localized by micro-market. Lightweight. Interpretable. Runs as a daily batch job on Paytm's existing transaction data.
+          </p>
+        </div>
+      </div>
+
+      <!-- Price Pulse -->
+      <div class="soft-sand-card" style="display: flex; gap: 16px; align-items: flex-start; padding: 13px 18px;">
+        <div class="icon-gold-circle" style="width: 44px; height: 44px; min-width: 44px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: #722F37;">Price Pulse</h3>
+            <span style="font-size: 10.5px; color: #8B4049; font-weight: 600;">Statistical ATV Analysis</span>
+          </div>
+          <p style="font-size: 12px; font-weight: 600; color: #2D2D2D; margin: 1px 0 4px;">
+            "Know where your pricing stands in the local market."
+          </p>
+          <p style="font-size: 11px; line-height: 1.45; color: #333;">
+            Netrā computes the average transaction value per product category per micro-market. Across all kiranas in Lajpat Nagar, the median snack transaction is ₹35. Ramesh's average is ₹40 — he is pricing 14% above the median. Netrā tracks this gap over time: is it widening? Are nearby merchants lowering prices? Is his volume dropping as a result? When it detects a risk, it does not just say "you are expensive" — that is demoralizing and useless. It frames it as an opportunity: <em>"Your snack pricing is 14% above the area average and your volume dipped 8% this week. A weekend combo — namkeen + cold drink at ₹30 — could pull price-sensitive customers back without a permanent price cut."</em> No merchant ever sees another merchant's prices. Only aggregate market averages. Privacy is absolute. The model is statistical outlier detection on average-transaction-value distributions, tracked over a rolling 30-day window.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: WHAT NETRĀ DOES (ACTION LAYER) -->
+  <div class="slide" id="slide-5">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">The Action Layer</span>
+      </div>
+      <span class="slide-num">05 / 10</span>
+    </div>
+
+    <h2 class="slide-title-left">The Action Layer — Moving Before the Market Does</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 0.06in;">
+      
+      <!-- Feature 1: Festival Engine -->
+      <div class="soft-sand-card" style="display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px;">
+        <div class="icon-gold-circle" style="width: 38px; height: 38px; min-width: 38px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 14.5px; font-weight: 700; color: #722F37;">Festival Engine</h3>
+            <span style="font-size: 10.5px; font-weight: 600; color: #8B4049;">Auto-generates localized offers. One tap to send.</span>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333; margin-top: 2px;">
+            Netrā maintains a master calendar of Indian festivals — Diwali, Holi, Chhath Puja, Onam, Pongal, Baisakhi, and local melas. For each merchant, it pulls sales data from the same festival last year: what spiked, what sold out, what sat on shelves. Sarvam's LLM generates a complete, ready-to-send offer package: WhatsApp message in the merchant's language, inventory prep list (<em>"you ran out of X last time — order 20% more"</em>), and discount structures. One tap sends it via n8n's WhatsApp automation.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Cash Flow Prophet -->
+      <div class="soft-sand-card" style="display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px;">
+        <div class="icon-gold-circle" style="width: 38px; height: 38px; min-width: 38px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 14.5px; font-weight: 700; color: #722F37;">Cash Flow Prophet</h3>
+            <span style="font-size: 10.5px; font-weight: 600; color: #8B4049;">Predicts next 7 days. Alerts before shortfalls hit.</span>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333; margin-top: 2px;">
+            Every merchant has a rhythm. Ramesh does ₹15,000 on Saturdays, ₹8,000 on Tuesdays, dips on Wednesdays. Netrā builds a daily revenue model from 90 days of transactions, capturing day-of-week rhythms, payday spending cycles (1st/15th), and seasonal baselines. If a shortfall looms, it recommends action: <em>"Thursday looks ₹4,000 short. Run a flash offer Tuesday to pull demand forward."</em> For Paytm, this doubles as a stealth underwriting signal for merchant credit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 3: Growth Missions -->
+      <div class="soft-sand-card" style="display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px;">
+        <div class="icon-gold-circle" style="width: 38px; height: 38px; min-width: 38px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 14.5px; font-weight: 700; color: #722F37;">Growth Missions</h3>
+            <span style="font-size: 10.5px; font-weight: 600; color: #8B4049;">Weekly micro-tasks learned from peer merchants.</span>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333; margin-top: 2px;">
+            Netrā groups merchants into cohorts by location tier, category, and revenue. Within each cohort, it tracks which merchants GREW in the last 90 days and what preceded that growth. Netrā assigns a weekly mission: <em>"This week, add 3 items from the trending list. Stores like yours that did this saw 11% higher weekly revenue."</em> Outcome feedback loops back into Cognee to continuously strengthen peer signals. This is the flywheel. This is the moat.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: HOW IT REACHES THE MERCHANT -->
+  <div class="slide" id="slide-6">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">Frictionless Distribution</span>
+      </div>
+      <span class="slide-num">06 / 10</span>
+    </div>
+
+    <h2 class="slide-title-center">Zero New Behavior. The Intelligence Comes to Them.</h2>
+
+    <div style="text-align: center; margin-top: 0.04in;">
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: #722F37; color: #FFF8F0; padding: 5px 20px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 700; border: 1.5px solid #C9A96E; box-shadow: 0 4px 10px rgba(114, 47, 55, 0.2);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Netrā AI Engine Orchestration
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.08in;">
+      
+      <!-- Channel 1: Soundbox -->
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 12px 14px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </div>
+            <div>
+              <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">Paytm Soundbox</h3>
+              <span style="font-size: 9.5px; color: #8B4049; font-weight: 600;">Voice Briefing (Sarvam AI)</span>
+            </div>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+            Every morning, the Soundbox speaks to the merchant in their language. A 30-second briefing: yesterday's numbers, nearby trends, offer results, and today's priority. Powered by Sarvam AI TTS in 11+ languages. No screens. They just listen while sweeping the store.
+          </p>
+        </div>
+        <div style="background: rgba(114, 47, 55, 0.06); border-left: 3px solid #722F37; padding: 5px 8px; border-radius: 4px; margin-top: 6px;">
+          <p style="font-size: 9.5px; font-style: italic; color: #722F37; line-height: 1.35;">
+            "Good morning Ramesh. Yesterday: 84 transactions, ₹12,400. Iced beverages are trending nearby. Today's focus: festival stock check."
+          </p>
+        </div>
+      </div>
+
+      <!-- Channel 2: Paytm App -->
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 12px 14px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <div>
+              <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">Paytm for Business</h3>
+              <span style="font-size: 9.5px; color: #8B4049; font-weight: 600;">App Intelligence Cards</span>
+            </div>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+            A dedicated "Netrā" tab inside the Paytm for Business app. Zero new downloads. Interactive heatmaps for Trade Radar, 7-day cash flow forecast bars, and pre-packaged festival campaigns with 1-tap dispatch buttons for deeper exploration.
+          </p>
+        </div>
+        <div style="background: rgba(201, 169, 110, 0.15); padding: 5px 8px; border-radius: 4px; text-align: center; margin-top: 6px;">
+          <span style="font-size: 9.5px; font-weight: 600; color: #722F37;">✓ Live inside the app they use daily</span>
+        </div>
+      </div>
+
+      <!-- Channel 3: WhatsApp / SMS -->
+      <div class="soft-sand-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 12px 14px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div class="icon-gold-circle" style="width: 36px; height: 36px; min-width: 36px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </div>
+            <div>
+              <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">WhatsApp / SMS</h3>
+              <span style="font-size: 9.5px; color: #8B4049; font-weight: 600;">Time-Sensitive Nudges (n8n)</span>
+            </div>
+          </div>
+          <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+            For urgent signals — a festival 5 days away, a liquidity shortfall, or a sudden weekend heatwave spike — Netrā dispatches an automated WhatsApp nudge via n8n. The merchant simply replies "YES" to execute. Delivered right where they chat 50x daily.
+          </p>
+        </div>
+        <div style="background: rgba(37, 211, 102, 0.12); padding: 5px 8px; border-radius: 4px; text-align: center; margin-top: 6px;">
+          <span style="font-size: 9.5px; font-weight: 600; color: #1E7E34;">✓ Reply 'YES' to launch offers</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 0.05in;">
+      <p style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 600; color: #722F37;">
+        "Netrā does not ask merchants to adopt a new tool. It embeds intelligence into the tools they already trust."
+      </p>
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: SYSTEM ARCHITECTURE -->
+  <div class="slide" id="slide-7">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">Technical Architecture</span>
+      </div>
+      <span class="slide-num">07 / 10</span>
+    </div>
+
+    <h2 class="slide-title-left">System Architecture — Powered by Hackathon Partners</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 7px; margin: 0.05in 0;">
+      
+      <!-- Layer 1: Data Source -->
+      <div style="background: #2D2D2D; color: #FFF8F0; border-radius: 8px; padding: 7px 16px; text-align: center; max-width: 80%; margin: 0 auto; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+        <div style="font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 700; color: #C9A96E; letter-spacing: 0.5px;">Paytm Transaction Data Stream</div>
+        <div style="font-size: 10px; color: #CCC;">4.9 crore merchants · Billions of transactions · Location + Category + Amount + Timestamp</div>
+      </div>
+
+      <div style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span style="font-size: 9px; color: #8B4049; font-weight: 600; text-transform: uppercase;">↓ Anonymization &amp; Differential Privacy Aggregation Pipeline ↓</span>
+      </div>
+
+      <!-- Layer 2: Intelligence Core -->
+      <div style="display: grid; grid-template-columns: 1fr 1.35fr 1fr; gap: 10px;">
+        
+        <!-- Left: Cognee -->
+        <div style="background: #F5EDE3; border: 1.5px solid #00A896; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 700; color: #007F70;">Merchant Knowledge Graph</span>
+            <span style="background: #00A896; color: white; font-size: 8.5px; font-weight: 700; padding: 2px 6px; border-radius: 10px;">Cognee</span>
+          </div>
+          <p style="font-size: 9.5px; line-height: 1.3; color: #444;">
+            Persistent memory per merchant: historical trends, seasonal sales records, accepted suggestion feedback, native language preference, and cohort group assignments.
+          </p>
+        </div>
+
+        <!-- Center: Netrā AI Engine -->
+        <div style="background: #F5EDE3; border: 2px solid #722F37; border-radius: 10px; padding: 8px 12px; box-shadow: 0 4px 12px rgba(114, 47, 55, 0.1);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+            <span style="font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 800; color: #722F37;">Netrā AI Engine</span>
+            <span style="background: #722F37; color: white; font-size: 8.5px; font-weight: 700; padding: 2px 6px; border-radius: 10px;">Core ML</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px 8px; font-size: 9px; color: #333; line-height: 1.25;">
+            <div>• Geospatial Micro-clustering</div>
+            <div>• Category Heatmaps (Trade Radar)</div>
+            <div>• ATV Analysis (Price Pulse)</div>
+            <div>• 7-Day Prophet Forecasting</div>
+            <div>• Festival Decomposition</div>
+            <div>• Collaborative Growth Missions</div>
+          </div>
+          <div style="margin-top: 5px; padding-top: 3px; border-top: 1px dashed rgba(114,47,55,0.3); font-size: 8.5px; color: #722F37; font-weight: 600; text-align: center;">
+            Sarvam AI Indic LLM for contextual prompts in 11+ regional languages
+          </div>
+        </div>
+
+        <!-- Right: n8n -->
+        <div style="background: #F5EDE3; border: 1.5px solid #FF6D5A; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 700; color: #C43D2A;">Workflow Orchestration</span>
+            <span style="background: #FF6D5A; color: white; font-size: 8.5px; font-weight: 700; padding: 2px 6px; border-radius: 10px;">n8n</span>
+          </div>
+          <p style="font-size: 9.5px; line-height: 1.3; color: #444;">
+            Asynchronous event triggers: 6 AM Soundbox briefing scheduler, T-14 festival tender dispatch, nightly cash shortfall alarms, WhatsApp action callbacks, and ingestion pipelines.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Layer 3: Delivery Nodes -->
+      <div style="display: flex; justify-content: center; gap: 14px; margin-top: 2px;">
+        <div style="background: #722F37; color: #FFF8F0; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+          <span style="color: #C9A96E;">●</span> Soundbox Voice (Sarvam TTS)
+        </div>
+        <div style="background: #722F37; color: #FFF8F0; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+          <span style="color: #C9A96E;">●</span> Paytm for Business App Cards
+        </div>
+        <div style="background: #722F37; color: #FFF8F0; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+          <span style="color: #C9A96E;">●</span> WhatsApp / SMS Nudges (n8n)
+        </div>
+      </div>
+
+      <!-- Layer 4: Feedback Loop -->
+      <div style="background: rgba(201, 169, 110, 0.22); border: 1px dashed #C9A96E; border-radius: 8px; padding: 4px 10px; text-align: center;">
+        <span style="font-size: 9.5px; color: #722F37; font-weight: 600;">
+          ↺ Continuous Feedback Loop: Merchant Actions &amp; Conversions → Update Cognee Knowledge Graph → Auto-Fine-Tune Next Week's Missions
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Tech Stack Bar -->
+    <div style="background: #2D2D2D; color: #FFF8F0; padding: 5px 14px; border-radius: 6px; font-size: 9.5px; display: flex; justify-content: space-between; align-items: center;">
+      <span style="color: #C9A96E; font-weight: 600;">TECHNICAL STACK</span>
+      <span>Python 3.11 · FastAPI · Sarvam AI (LLM + Indic TTS) · Cognee (Graph Memory) · n8n (Automation) · PostgreSQL · React</span>
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: REAL IMPACT (RAMESH'S FIRST WEEK) -->
+  <div class="slide wine-slide" id="slide-8" style="justify-content: space-between; padding: 0.45in 0.65in;">
+    <div class="wine-mesh-bg"></div>
+    <div style="position: relative; z-index: 2;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201, 169, 110, 0.3); padding-bottom: 5px;">
+        <span style="font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 800; color: #C9A96E; letter-spacing: 1.5px;">NETRĀ</span>
+        <span style="font-size: 11px; color: rgba(255,248,240,0.7); font-weight: 600;">08 / 10</span>
+      </div>
+      <h2 style="font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; color: #FFF8F0; text-align: center; margin-top: 8px;">
+        Ramesh's First Week with Netrā
+      </h2>
+      <p style="text-align: center; font-size: 11.5px; color: #C9A96E; margin-top: 2px;">
+        Four Proactive Moves. Seven Days. Measurable Compounding Growth.
+      </p>
+
+      <!-- 4-Stage Timeline -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px;">
+        
+        <!-- Monday -->
+        <div style="background: #FFF8F0; border-radius: 12px; padding: 10px 12px; color: #2D2D2D; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <span style="background: #722F37; color: #FFF8F0; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;">MON MORNING</span>
+              <span style="font-size: 8.5px; color: #888;">Soundbox</span>
+            </div>
+            <p style="font-size: 10px; font-style: italic; color: #722F37; line-height: 1.35; margin-bottom: 5px;">
+              "Organic snacks are surging in your area. You stock none. Want 3 items from your wholesaler?"
+            </p>
+          </div>
+          <div style="background: #F5EDE3; padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 600; color: #2D2D2D;">
+            → Ramesh adds 2 items to next order
+          </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div style="background: #FFF8F0; border-radius: 12px; padding: 10px 12px; color: #2D2D2D; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <span style="background: #722F37; color: #FFF8F0; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;">WED AFTERNOON</span>
+              <span style="font-size: 8.5px; color: #888;">App Alert</span>
+            </div>
+            <p style="font-size: 10px; font-style: italic; color: #722F37; line-height: 1.35; margin-bottom: 5px;">
+              "Your namkeen pricing is 14% above local average. A weekend combo at ₹30 could recover volume."
+            </p>
+          </div>
+          <div style="background: #F5EDE3; padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 600; color: #2D2D2D;">
+            → Ramesh enables combo in 1 tap
+          </div>
+        </div>
+
+        <!-- Friday -->
+        <div style="background: #FFF8F0; border-radius: 12px; padding: 10px 12px; color: #2D2D2D; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <span style="background: #722F37; color: #FFF8F0; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;">FRI EVENING</span>
+              <span style="font-size: 8.5px; color: #888;">Soundbox</span>
+            </div>
+            <p style="font-size: 10px; font-style: italic; color: #722F37; line-height: 1.35; margin-bottom: 5px;">
+              "Your combo brought 12 new customers today. Weekly revenue up ₹2,800. Cash flow looks healthy."
+            </p>
+          </div>
+          <div style="background: #F5EDE3; padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 600; color: #2D2D2D;">
+            → Ramesh trusts the next move
+          </div>
+        </div>
+
+        <!-- Sunday -->
+        <div style="background: #FFF8F0; border-radius: 12px; padding: 10px 12px; color: #2D2D2D; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <span style="background: #722F37; color: #FFF8F0; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;">SUN NIGHT</span>
+              <span style="font-size: 8.5px; color: #888;">Growth Mission</span>
+            </div>
+            <p style="font-size: 10px; font-style: italic; color: #722F37; line-height: 1.35; margin-bottom: 5px;">
+              "Try buy-2-get-1 on your slowest namkeen. Peer stores saw 22% faster clearance with zero losses."
+            </p>
+          </div>
+          <div style="background: #F5EDE3; padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 600; color: #2D2D2D;">
+            → Ramesh queues offer for Monday
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Stat Bar -->
+      <div style="background: rgba(20, 5, 8, 0.55); border: 1px solid rgba(201, 169, 110, 0.35); border-radius: 12px; padding: 10px 20px; margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center;">
+        <div>
+          <div style="font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 800; color: #C9A96E; line-height: 1;">15 – 25%</div>
+          <div style="font-size: 10.5px; font-weight: 600; color: #FFF8F0; margin-top: 3px;">Revenue Growth</div>
+          <div style="font-size: 9px; color: rgba(255,248,240,0.6);">Projected Q1 uplift per active merchant</div>
+        </div>
+        <div style="border-left: 1px solid rgba(201,169,110,0.2); border-right: 1px solid rgba(201,169,110,0.2);">
+          <div style="font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 800; color: #C9A96E; line-height: 1;">4.9 Crore</div>
+          <div style="font-size: 10.5px; font-weight: 600; color: #FFF8F0; margin-top: 3px;">Addressable Market</div>
+          <div style="font-size: 9px; color: rgba(255,248,240,0.6);">Paytm registered SME ecosystem base</div>
+        </div>
+        <div>
+          <div style="font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 800; color: #C9A96E; line-height: 1;">30%+</div>
+          <div style="font-size: 10.5px; font-weight: 600; color: #FFF8F0; margin-top: 3px;">Churn Reduction</div>
+          <div style="font-size: 9px; color: rgba(255,248,240,0.6);">Soundbox transformed into vital copilot</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: rgba(255,248,240,0.5); z-index: 2; position: relative;">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: BUSINESS CASE AND ROADMAP -->
+  <div class="slide" id="slide-9">
+    <div class="header-bar">
+      <div class="header-left">
+        <span class="brand-tag">NETRĀ</span>
+        <span class="track-badge">Strategic Value &amp; Horizon</span>
+      </div>
+      <span class="slide-num">09 / 10</span>
+    </div>
+
+    <h2 class="slide-title-left">Why This Matters for Paytm</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.06in;">
+      
+      <div class="soft-sand-card" style="padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+          <div class="icon-gold-circle" style="width: 34px; height: 34px; min-width: 34px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">Subscription Stickiness</h3>
+        </div>
+        <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+          At ₹100–300/month, Soundbox is kept only while useful. Netrā elevates it from a passive payment chime into a vital daily intelligence asset. Merchants will never cancel, protecting Paytm's <strong>₹1,500+ Cr</strong> recurring subscription revenue.
+        </p>
+      </div>
+
+      <div class="soft-sand-card" style="padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+          <div class="icon-gold-circle" style="width: 34px; height: 34px; min-width: 34px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">Compounding Data Moat</h3>
+        </div>
+        <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+          Every active store enriches local demand heatmaps and cohort mission quality. No competitor (PhonePe, Google Pay, BharatPe) can duplicate this without Paytm's vast network of 4.9 crore merchants. A network moat that deepens daily.
+        </p>
+      </div>
+
+      <div class="soft-sand-card" style="padding: 12px 14px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+          <div class="icon-gold-circle" style="width: 34px; height: 34px; min-width: 34px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #722F37;">Merchant Lending Funnel</h3>
+        </div>
+        <p style="font-size: 10.5px; line-height: 1.4; color: #333;">
+          Cash Flow Prophet acts as real-time predictive underwriting. Stores with stable liquidity and growing cohort ranks become pre-qualified borrowers, feeding Paytm's highest-margin lending division at near-zero customer acquisition cost.
+        </p>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 0.1in; background: #F5EDE3; border-radius: 12px; padding: 12px 18px; border: 1px solid rgba(201, 169, 110, 0.35);">
+      <div style="font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 700; color: #722F37; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">
+        Implementation Roadmap
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+            <span style="background: #722F37; color: #C9A96E; font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">1</span>
+            <strong style="font-size: 11.5px; color: #722F37;">Phase 1: Prove It (Sept 2026)</strong>
+          </div>
+          <p style="font-size: 10px; line-height: 1.35; color: #444;">
+            Working prototype with simulated data. Trade Radar + Festival Engine + Cash Flow Prophet. Sarvam voice briefings, Cognee memory graph, and n8n orchestration.
+          </p>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+            <span style="background: #722F37; color: #C9A96E; font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">2</span>
+            <strong style="font-size: 11.5px; color: #722F37;">Phase 2: Pilot (3–6 Months)</strong>
+          </div>
+          <p style="font-size: 10px; line-height: 1.35; color: #444;">
+            Deploy to 500 merchants across Delhi NCR, Bengaluru, and Jaipur. Live Paytm transaction API hooks. Benchmark adoption, basket size uplift, and merchant engagement.
+          </p>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+            <span style="background: #722F37; color: #C9A96E; font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</span>
+            <strong style="font-size: 11.5px; color: #722F37;">Phase 3: Scale (6–12 Months)</strong>
+          </div>
+          <p style="font-size: 10px; line-height: 1.35; color: #444;">
+            Roll out across 1.5 crore Soundbox subscribers. Add Price Pulse &amp; collaborative Growth Missions. Expand to 11 Sarvam languages and sync with Paytm Lending.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Team KERNEL · Utkarsh Singh &amp; Pranav Pant</span>
+      <span>Paytm Build for India AI Hackathon 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: CLOSING -->
+  <div class="slide wine-slide" id="slide-10" style="justify-content: center; align-items: center; text-align: center; padding: 0.8in 1in;">
+    <div class="wine-mesh-bg"></div>
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;">
+      <h1 style="font-family: 'Poppins', sans-serif; font-size: 44px; font-weight: 800; color: #FFF8F0; line-height: 1.2;">
+        Every Dukaan Deserves a Netrā
+      </h1>
+      <p style="font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 400; color: #C9A96E; margin-top: 16px; max-width: 7.5in; line-height: 1.5;">
+        "Because the smartest businesses are not the biggest ones. They are the ones that can see the farthest."
+      </p>
+
+      <div style="margin-top: 26px; position: relative; display: flex; align-items: center; justify-content: center;">
+        <div style="position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(201, 169, 110, 0.25) 0%, transparent 70%);"></div>
+        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#FFF8F0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="position: relative; z-index: 2;">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+          <line x1="3" y1="9" x2="21" y2="9" stroke="#C9A96E" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div style="margin-top: 28px;">
+        <p style="font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: #FFF8F0; letter-spacing: 1px;">
+          TEAM KERNEL
+        </p>
+        <p style="font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255, 248, 240, 0.75); margin-top: 2px;">
+          Utkarsh Singh (Team Leader) &amp; Pranav Pant
+        </p>
+        <p style="font-family: 'Inter', sans-serif; font-size: 11px; color: rgba(201, 169, 110, 0.85); margin-top: 4px; letter-spacing: 0.5px;">
+          Track 1 — Merchant Growth AI &nbsp;·&nbsp; Paytm Build for India AI Hackathon (Delhi Edition)
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

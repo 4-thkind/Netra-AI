@@ -1,0 +1,36 @@
+{
+  "name": "Netra Daily EOD Cash Flow & Soundbox Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 22 * * *" }]
+        }
+      },
+      "name": "Daily 10 PM EOD Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/v1/insights/cashflow",
+        "options": {}
+      },
+      "name": "Fetch 7-Day Projected Cash Flow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/v1/merchant/voice-signal",
+        "options": {}
+      },
+      "name": "Trigger Sarvam Indic Voice Recap",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [650, 300]
+    }
+  ]
+}

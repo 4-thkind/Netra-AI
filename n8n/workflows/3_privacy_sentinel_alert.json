@@ -1,0 +1,73 @@
+{
+  "name": "Netra Anomaly & Small-Cohort Privacy Sentinel",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "netra-privacy-webhook",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "node_privacy_webhook",
+      "name": "Privacy Ingestion Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.cohort_size < 10 }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node_cohort_check",
+      "name": "Cohort Size < 10 Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [340, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/security/audit-events",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"event_type\": \"PRIVACY_SUPPRESSED_BY_N8N\", \"status\": \"SUPPRESSED\", \"details\": { \"reason\": \"Small cohort shielded (N < 10)\" }}",
+        "options": {}
+      },
+      "id": "node_log_suppression",
+      "name": "Log Privacy Suppression Audit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [580, 240]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/insights/trade-radar",
+        "options": {}
+      },
+      "id": "node_allow_safe_aggregate",
+      "name": "Proceed with Safe Differential Aggregate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [580, 420]
+    }
+  ],
+  "connections": {
+    "Privacy Ingestion Webhook": {
+      "main": [[{ "node": "Cohort Size < 10 Check", "type": "main", "index": 0 }]]
+    },
+    "Cohort Size < 10 Check": {
+      "main": [
+        [{ "node": "Log Privacy Suppression Audit", "type": "main", "index": 0 }],
+        [{ "node": "Proceed with Safe Differential Aggregate", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

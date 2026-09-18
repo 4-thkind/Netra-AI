@@ -1,0 +1,88 @@
+{
+  "name": "Netra Daily EOD Cash Flow & Soundbox Voice Dispatch",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 22 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node_cron_eod",
+      "name": "Daily 10:00 PM EOD Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/api/v1/insights/cashflow",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "node_fetch_cashflow",
+      "name": "Fetch Netrā 7-Day Cash Flow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transform cashflow metrics into Sarvam Indic Voice Prompt\nconst cashflow = $input.first().json;\nconst total7d = Math.round(cashflow.total_projected_7d);\nconst recAction = cashflow.recommended_action;\n\nreturn [{\n  json: {\n    merchant_id: 'merchant_ramesh',\n    language: 'hi',\n    headline: `आज की कुल बिक्री पूर्ण। अगले 7 दिनों का अनुमानित कैश फ्लो ₹${total7d} है।`,\n    recommended_action: recAction,\n    dispatch_target: 'paytm_soundbox_01'\n  }\n}];"
+      },
+      "id": "node_transform_prompt",
+      "name": "Format Indic Speech Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/merchant/voice-signal",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "node_sarvam_tts",
+      "name": "Sarvam AI Voice Synthesis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/merchant/simulate-payment",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"status\": \"DISPATCHED_TO_SOUNDBOX\"}",
+        "options": {}
+      },
+      "id": "node_soundbox_hardware",
+      "name": "Emit to Paytm Soundbox Speaker",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 300]
+    }
+  ],
+  "connections": {
+    "Daily 10:00 PM EOD Cron": {
+      "main": [[{ "node": "Fetch Netrā 7-Day Cash Flow", "type": "main", "index": 0 }]]
+    },
+    "Fetch Netrā 7-Day Cash Flow": {
+      "main": [[{ "node": "Format Indic Speech Payload", "type": "main", "index": 0 }]]
+    },
+    "Format Indic Speech Payload": {
+      "main": [[{ "node": "Sarvam AI Voice Synthesis", "type": "main", "index": 0 }]]
+    },
+    "Sarvam AI Voice Synthesis": {
+      "main": [[{ "node": "Emit to Paytm Soundbox Speaker", "type": "main", "index": 0 }]]
+    }
+  }
+}
