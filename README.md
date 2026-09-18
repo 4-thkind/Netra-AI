@@ -1,10 +1,5 @@
 # 👁️ NETRĀ ("नेत्र") — AI Growth Copilot for Indian Kirana Merchants
 
-[![Paytm Hackathon 2026](https://img.shields.io/badge/Paytm_Hackathon-Track_1:_Merchant_Growth_AI-00BAF2?style=for-the-badge&logo=paytm&logoColor=white)](https://paytm.com)
-[![Tests Passing](https://img.shields.io/badge/Tests-19%2F19%20Passing-emerald?style=for-the-badge&logo=pytest&logoColor=white)](backend/tests/)
-[![Dataset](https://img.shields.io/badge/Kaggle-Supermart_Retail_Analytics-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/datasets/mohamedharris/supermart-grocery-sales-retail-analytics-dataset)
-[![Languages](https://img.shields.io/badge/Languages-7_Indic_Languages-gold?style=for-the-badge)](frontend/src/i18n/)
-
 > ### 🛡️ **Primary Architectural Invariant:**
 > *"Network intelligence without merchant exposure."*
 
