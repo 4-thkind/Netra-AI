@@ -61,6 +61,25 @@ def die(msg: str) -> "None":
 
 
 # --- helpers ---------------------------------------------------------------
+def load_dotenv() -> None:
+    """
+    Read .env into os.environ so the launcher itself can see tunnel settings.
+
+    The backend reads .env through pydantic-settings, but run.py needs
+    CLOUDFLARE_TUNNEL_* before it starts anything. Existing environment
+    variables win, so a shell override still takes precedence.
+    """
+    path = ROOT / ".env"
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
 def env() -> dict[str, str]:
     e = os.environ.copy()
     e["PYTHONPATH"] = str(ROOT)
@@ -254,6 +273,28 @@ def start_tunnel() -> tuple[str | None, bool]:
 
     log = ROOT / "tunnel.log"
     log.unlink(missing_ok=True)
+
+    # A NAMED tunnel keeps the same hostname on every run, so a printed QR code
+    # stays valid. Set both in .env (needs a Cloudflare account + a domain):
+    #   CLOUDFLARE_TUNNEL_NAME=netra
+    #   CLOUDFLARE_TUNNEL_HOSTNAME=netra.yourdomain.com
+    # Without them we fall back to a quick tunnel, whose URL is random per run.
+    named = os.environ.get("CLOUDFLARE_TUNNEL_NAME", "").strip()
+    hostname = os.environ.get("CLOUDFLARE_TUNNEL_HOSTNAME", "").strip()
+
+    if named and hostname:
+        step(f"      using named tunnel '{named}' -> https://{hostname}")
+        spawn(["cloudflared", "tunnel", "run",
+               "--url", f"http://127.0.0.1:{FRONTEND_PORT}", named],
+              ROOT / "tunnel_stdout.log")
+        url = f"https://{hostname}"
+        # Give it a moment to register before we advertise the link.
+        for _ in range(20):
+            time.sleep(1)
+            if http_ok(url, timeout=6):
+                return url, True
+        return url, False
+
     spawn(["cloudflared", "tunnel", "--url",
            f"http://127.0.0.1:{FRONTEND_PORT}", "--logfile", str(log)],
           ROOT / "tunnel_stdout.log")
@@ -311,8 +352,12 @@ def main() -> None:
     ap = argparse.ArgumentParser(add_help=True)
     ap.add_argument("--no-tunnel", action="store_true", help="local only")
     ap.add_argument("--reseed", action="store_true", help="rebuild netra.db")
+    ap.add_argument("--url", metavar="URL",
+                    help="show the QR for this URL instead of a tunnel "
+                         "(use your deployed site, e.g. https://netra.vercel.app)")
     args = ap.parse_args()
 
+    load_dotenv()
     signal.signal(signal.SIGINT, lambda *a: (shutdown(), sys.exit(0)))
 
     print("=" * 56)
@@ -326,7 +371,14 @@ def main() -> None:
     start_backend()
     start_frontend()
 
-    url, reachable = (None, False) if args.no_tunnel else start_tunnel()
+    if args.url:
+        # Deployed build: skip the tunnel entirely and point the QR at the
+        # public site. Scanning gives the phone the exact same app - the mobile
+        # layout comes from CSS breakpoints, not a separate build.
+        url, reachable = args.url.rstrip("/"), http_ok(args.url, timeout=8)
+        step(f"[5/5] Using deployed URL: {url}")
+    else:
+        url, reachable = (None, False) if args.no_tunnel else start_tunnel()
 
     print()
     ok("=" * 56)

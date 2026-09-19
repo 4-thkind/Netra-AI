@@ -91,7 +91,10 @@ class MetaLlamaProvider:
         # Per-attempt cap, not a total budget: a throttled free pool can take
         # 30s+ to answer, which is dead air in a live demo. Better to abandon a
         # slow model and let the next one answer.
-        per_try_timeout = httpx.Timeout(connect=4.0, read=9.0, write=8.0, pool=4.0)
+        # Live demo budget: 4 models x ~6s read caps the whole chain near 12s
+        # once connect time is shared. Dead air loses a judge faster than a
+        # slightly shorter answer does.
+        per_try_timeout = httpx.Timeout(connect=3.0, read=6.0, write=5.0, pool=3.0)
 
         last_error = None
         async with httpx.AsyncClient(timeout=per_try_timeout) as client:
@@ -102,7 +105,7 @@ class MetaLlamaProvider:
                     "temperature": temperature,
                     # Devanagari and other Indic scripts cost many tokens per
                     # word; 800 truncated mid-JSON during testing.
-                    "max_tokens": 1200,
+                    "max_tokens": 700,
                 }
                 if json_mode:
                     payload["response_format"] = {"type": "json_object"}

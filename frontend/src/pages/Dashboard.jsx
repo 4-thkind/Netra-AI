@@ -137,7 +137,7 @@ export default function Dashboard({
 
       {/* Hero signal */}
       <section className="bg-wine text-cream rounded-2xl p-5 sm:p-6 lg:p-8 border border-gold/30
-                          shadow-card relative overflow-hidden">
+                          shadow-card relative overflow-hidden isolate">
         <div className="relative z-10 max-w-3xl">
           <div className="flex items-center gap-2 text-gold text-[10px] sm:text-xs font-bold
                           uppercase tracking-widest">

@@ -33,7 +33,8 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
     try {
       const res = await api.updateContact(phone);
       setPhone(res.whatsapp_number);
-      setMode(res.delivery_mode === 'live n8n' ? 'live' : 'simulated');
+      // Re-read the real mode rather than inferring it from one string.
+      api.getDeliveries().then((d) => setMode(d.mode)).catch(() => {});
       setEditing(false);
       onRefreshMerchant?.();
     } catch (e) {
@@ -62,10 +63,11 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
         Icon={MessageSquare}
         tone="emerald"
         title="WhatsApp Connect"
-        subtitle="Delivered through n8n to your own number"
+        subtitle="n8n orchestration, WhatsApp Cloud API delivery"
         badge={
-          <Pill tone={mode === 'live' ? 'emerald' : 'gold'}>
-            {mode === 'live' ? 'n8n live' : 'n8n simulated'}
+          <Pill tone={mode === 'live' || mode === 'cloud_api' ? 'emerald' : 'gold'}>
+            {mode === 'cloud_api' ? 'WhatsApp live'
+              : mode === 'live' ? 'n8n live' : 'not configured'}
           </Pill>
         }
       />
@@ -138,20 +140,28 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
               : 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700'
           }`}
         >
-          {state === 'sending' && (<><Loader2 className="w-4 h-4 animate-spin" />Dispatching via n8n…</>)}
+          {state === 'sending' && (<><Loader2 className="w-4 h-4 animate-spin" />Sending…</>)}
           {/* Never claim delivery the backend did not confirm: SIMULATED means
               the envelope was built but no n8n/provider actually sent it. */}
           {state === 'sent' && result?.status === 'SENT' && (
             <><CheckCircle2 className="w-4 h-4" />Delivered to {result.to}</>
           )}
           {state === 'sent' && result?.status !== 'SENT' && (
-            <><AlertTriangle className="w-4 h-4" />Built, not delivered</>
+            <><AlertTriangle className="w-4 h-4" />Queued — tap below to deliver</>
           )}
           {state !== 'sending' && state !== 'sent' && (<><Send className="w-4 h-4" />Send me a growth alert</>)}
         </button>
 
         {/* When nothing can actually deliver, hand the merchant a link that
             opens WhatsApp with the message pre-filled. Same text, real chat. */}
+        {/* Meta returns numeric codes; the backend attaches a human hint. */}
+        {result?.hint && (
+          <p className="text-[11px] font-semibold text-amber-900 bg-amber-50 border
+                        border-amber-300 rounded-xl px-3 py-2 leading-snug">
+            {result.hint}
+          </p>
+        )}
+
         {result && result.status !== 'SENT' && (
           <a
             href={`https://wa.me/${String(result.to || '').replace(/\D/g, '')}?text=${encodeURIComponent(result.body || '')}`}
@@ -161,7 +171,7 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
                        flex items-center justify-center gap-2 border border-gold/30 transition-colors"
           >
             <ExternalLink className="w-4 h-4 text-gold" />
-            Open this message in WhatsApp
+            Send it on WhatsApp now
           </a>
         )}
 
@@ -170,7 +180,9 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
                           overflow-x-auto animate-riseIn">
             <div className="flex items-center gap-2 mb-1.5 font-sans font-bold text-gold">
               <Workflow className="w-3.5 h-3.5" />
-              <span>{result.status === 'SENT' ? 'Delivered via n8n' : 'Envelope built (not delivered)'}</span>
+              <span>{result.status === 'SENT'
+                ? `Delivered via ${result.delivery === 'whatsapp_cloud_api' ? 'WhatsApp Cloud API' : 'n8n'}`
+                : 'Envelope built (not delivered)'}</span>
             </div>
             <div>to: {result.to}</div>
             <div>template: {result.template}</div>

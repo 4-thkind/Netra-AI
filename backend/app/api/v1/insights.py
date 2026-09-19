@@ -44,7 +44,10 @@ async def get_festivals():
 
 @router.get("/growth-missions")
 async def get_growth_missions(
-    merchant: Merchant = Depends(get_current_merchant)
+    merchant: Merchant = Depends(get_current_merchant),
+    db: AsyncSession = Depends(get_db),
 ):
-    missions = growth_mission_engine.get_active_missions(merchant.id)
+    missions = await growth_mission_engine.get_active_missions(
+        db, merchant.id, merchant.cluster_id
+    )
     return {"missions": missions}

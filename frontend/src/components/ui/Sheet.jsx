@@ -38,7 +38,7 @@ export default function Sheet({
 
   if (!isOpen) return null;
 
-  const widths = { sm: 'sm:max-w-md', md: 'sm:max-w-xl', lg: 'sm:max-w-3xl' };
+  const widths = { sm: 'sm:max-w-md', md: 'sm:max-w-xl', lg: 'sm:max-w-3xl', xl: 'sm:max-w-5xl' };
 
   return (
     <div

@@ -66,7 +66,7 @@ async def update_merchant_contact(
         status="SUCCESS", details={"channel": "whatsapp"},
     )
     return {"status": "updated", "whatsapp_number": normalised,
-            "delivery_mode": "live n8n" if whatsapp_delivery.is_live else "simulated"}
+            "delivery_mode": whatsapp_delivery.delivery_mode}
 
 
 class SendWhatsAppRequest(BaseModel):

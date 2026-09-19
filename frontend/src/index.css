@@ -45,3 +45,9 @@ h1, h2, h3, h4, h5, h6 {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* Belt and braces: no decorative element may widen the page on a phone. */
+html, body {
+  overflow-x: clip;
+  max-width: 100%;
+}

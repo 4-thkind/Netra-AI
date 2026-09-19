@@ -32,6 +32,14 @@ class Settings(BaseSettings):
     SARVAM_BASE_URL: str = "https://api.sarvam.ai"
     COGNEE_API_KEY: str = "mock-cognee-key"
     N8N_WEBHOOK_URL: str = "http://localhost:5678/webhook/netra"
+
+    # WhatsApp Cloud API (Meta). When both are set Netrā can deliver directly,
+    # which keeps the demo working without an n8n instance running. If
+    # N8N_WEBHOOK_URL points at a live n8n, that path is preferred so the
+    # orchestration layer stays in the picture.
+    WHATSAPP_PHONE_ID: Optional[str] = None
+    WHATSAPP_TOKEN: Optional[str] = None
+    WHATSAPP_API_VERSION: str = "v21.0"
     PAYTM_MERCHANT_KEY: str = "mock-paytm-key"
 
     # LLM Providers (OpenRouter free tier or NVIDIA NIM)

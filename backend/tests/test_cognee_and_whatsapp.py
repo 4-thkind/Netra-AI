@@ -95,11 +95,16 @@ def test_unusable_numbers_return_empty(raw):
 
 
 @pytest.mark.asyncio
-async def test_send_simulates_without_webhook():
+async def test_send_simulates_without_any_provider(monkeypatch):
+    """With no n8n webhook AND no Cloud API credentials, delivery is simulated."""
+    from backend.app.core import config as cfg
+    monkeypatch.setattr(cfg.settings, "WHATSAPP_PHONE_ID", None, raising=False)
+    monkeypatch.setattr(cfg.settings, "WHATSAPP_TOKEN", None, raising=False)
+
     svc = WhatsAppDeliveryService()
     res = await svc.send(to_number="9876543210", merchant_name="Ramesh",
                          message="Beverages up 18%")
-    # No n8n configured -> the envelope is still real and inspectable.
+    # The envelope is still real and inspectable; only the last mile is absent.
     assert res["status"] == "SIMULATED"
     assert res["to"] == "+919876543210"
     assert res["body"] == "Beverages up 18%"

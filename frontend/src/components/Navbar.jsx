@@ -47,7 +47,7 @@ function LanguageMenu({ lang, setLang, compact = false }) {
         onClick={() => setOpen((v) => !v)}
         aria-label="Change language"
         aria-expanded={open}
-        className="h-10 px-3 rounded-xl bg-wine-dark/70 text-gold text-[13px] font-bold border border-gold/40
+        className="h-9 lg:h-10 px-2 lg:px-3 rounded-xl bg-wine-dark/70 text-gold text-xs lg:text-[13px] font-bold border border-gold/40
                    hover:border-gold hover:bg-wine-dark flex items-center gap-1.5 transition-colors"
       >
         <Globe className="w-3.5 h-3.5 text-gold-light shrink-0" />
@@ -148,10 +148,10 @@ export default function Navbar({
               onClick={onClick}
               title={label}
               aria-label={label}
-              className="w-10 h-10 rounded-xl bg-wine-light/70 hover:bg-cream hover:text-wine
+              className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-wine-light/70 hover:bg-cream hover:text-wine
                          border border-gold/30 flex items-center justify-center transition-colors"
             >
-              <Icon className={`w-[18px] h-[18px] ${tint}`} />
+              <Icon className={`w-4 h-4 lg:w-[18px] lg:h-[18px] ${tint}`} />
             </button>
           ))}
           <LanguageMenu lang={lang} setLang={setLang} />
