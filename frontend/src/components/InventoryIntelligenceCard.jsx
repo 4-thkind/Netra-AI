@@ -12,6 +12,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { api } from '../services/api';
+import { soundboxAudio } from '../utils/soundboxAudio';
 
 export default function InventoryIntelligenceCard({ onOpenHub, lang = 'hi' }) {
   const [overview, setOverview] = useState(null);
@@ -50,6 +51,13 @@ export default function InventoryIntelligenceCard({ onOpenHub, lang = 'hi' }) {
       const barcodeToScan = reorderAlerts[0]?.barcode || "8901719101015";
       const res = await api.simulatePosSale(barcodeToScan, 1);
       setLastScan(res);
+      // Play authentic soundbox checkout audio!
+      soundboxAudio.playPosBarcodeCheckout({
+        skuName: res.sku_name,
+        amount: res.total_sale_amount,
+        remainingStock: res.remaining_stock,
+        lang: lang
+      });
       // Refresh metrics after scan
       await fetchInventoryData();
     } catch (err) {

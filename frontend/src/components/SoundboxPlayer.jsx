@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Volume2, Sparkles } from 'lucide-react';
 import { translations } from '../i18n/translations';
+import { soundboxAudio } from '../utils/soundboxAudio';
 
 export default function SoundboxPlayer({ lang = 'hi' }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -8,30 +9,19 @@ export default function SoundboxPlayer({ lang = 'hi' }) {
 
   const t = translations[lang]?.dashboard || translations.en.dashboard;
   const voiceMap = translations.en.voiceTranscript;
-  const langCodeMap = translations.en.langCodeMap;
-
   const currentSpeechText = voiceMap[lang] || voiceMap.hi;
-  const currentLangCode = langCodeMap[lang] || 'hi-IN';
 
   const handlePlayVoice = () => {
     setIsPlaying(true);
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(currentSpeechText);
-      utterance.lang = currentLangCode;
-      utterance.rate = 0.95;
-      utterance.onend = () => {
+    soundboxAudio.playVoiceBriefing({
+      text: currentSpeechText,
+      lang: lang,
+      onStart: () => setIsPlaying(true),
+      onEnd: () => {
         setIsPlaying(false);
         setSpoken(true);
-      };
-      utterance.onerror = () => setIsPlaying(false);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => {
-        setIsPlaying(false);
-        setSpoken(true);
-      }, 3000);
-    }
+      }
+    });
   };
 
   return (

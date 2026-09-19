@@ -20,6 +20,7 @@ import {
   ShoppingBag
 } from 'lucide-react';
 import { api } from '../services/api';
+import { soundboxAudio } from '../utils/soundboxAudio';
 
 export default function InventoryHubModal({ isOpen, onClose, lang = 'hi' }) {
   const [activeTab, setActiveTab] = useState('catalog'); // catalog, dead_stock, reorder, cluster_pool
@@ -73,6 +74,12 @@ export default function InventoryHubModal({ isOpen, onClose, lang = 'hi' }) {
       setScanning(true);
       const res = await api.simulatePosSale(codeToScan, 1);
       setScanMessage(res);
+      soundboxAudio.playPosBarcodeCheckout({
+        skuName: res.sku_name,
+        amount: res.total_sale_amount,
+        remainingStock: res.remaining_stock,
+        lang: lang
+      });
       await loadAllData();
     } catch (err) {
       console.error('POS Scan error:', err);

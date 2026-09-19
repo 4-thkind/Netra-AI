@@ -1,85 +1,73 @@
 import React, { useState } from 'react';
-import { X, Volume2, Wifi, BatteryCharging, Radio, Sparkles } from 'lucide-react';
+import { X, Volume2, Wifi, BatteryCharging, Radio, Sparkles, Barcode, Bell } from 'lucide-react';
 import { translations, languages } from '../i18n/translations';
 import { useDismissable } from '../hooks/useDismissable';
+import { soundboxAudio } from '../utils/soundboxAudio';
 
 export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
   const [chimePlaying, setChimePlaying] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState(40);
   const [displayText, setDisplayText] = useState("₹ 40.00");
 
   useDismissable(isOpen, onClose);
-
 
   if (!isOpen) return null;
 
   const currentLangObj = languages.find(l => l.code === lang) || languages[1];
   const voiceMap = translations.en.voiceTranscript;
-  const langCodeMap = translations.en.langCodeMap;
   const speechText = voiceMap[lang] || voiceMap.hi;
-  const langCode = langCodeMap[lang] || 'hi-IN';
 
-  const paymentPhrases = {
-    hi: "Paytm par chalis rupaye prapt hue",
-    en: "Forty rupees received on Paytm",
-    ta: "Paytm இல் நாற்பது ரூபாய் பெறப்பட்டது",
-    te: "Paytm లో నలభై రూపాయలు అందాయి",
-    kn: "Paytm ನಲ್ಲಿ ನಲವತ್ತು ರೂಪಾಯಿ ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
-    mr: "Paytm वर चाळीस रुपये मिळाले",
-    bn: "Paytm এ চল্লিশ টাকা প্রাপ্ত হয়েছে"
+  const playPaymentAnnouncement = (amount = selectedAmount) => {
+    setChimePlaying(true);
+    setDisplayText(`₹ ${amount}.00`);
+
+    soundboxAudio.playPaymentAnnouncement({
+      amount: amount,
+      lang: lang,
+      onStart: () => setChimePlaying(true),
+      onEnd: () => {
+        setChimePlaying(false);
+      }
+    });
   };
 
-  const playPaymentChime = () => {
+  const playChimeOnly = () => {
     setChimePlaying(true);
-    setDisplayText("₹ 40.00");
-    
-    // Web Audio chime simulation
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-      osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.15); // A5
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.5);
-    } catch (e) {}
-
-    // Regional voice announcement
-    if ('speechSynthesis' in window) {
-      setTimeout(() => {
-        const u = new SpeechSynthesisUtterance(paymentPhrases[lang] || paymentPhrases.hi);
-        u.lang = langCode;
-        u.onend = () => setChimePlaying(false);
-        window.speechSynthesis.speak(u);
-      }, 500);
-    } else {
-      setTimeout(() => setChimePlaying(false), 2500);
-    }
+    setDisplayText("CHIME");
+    soundboxAudio.playPaytmChime(() => {
+      setChimePlaying(false);
+      setDisplayText(`₹ ${selectedAmount}.00`);
+    });
   };
 
   const playMorningBriefing = () => {
     setVoicePlaying(true);
     setDisplayText("SIGNAL");
-    if ('speechSynthesis' in window) {
-      const u = new SpeechSynthesisUtterance(speechText);
-      u.lang = langCode;
-      u.rate = 0.95;
-      u.onend = () => {
+    soundboxAudio.playVoiceBriefing({
+      text: speechText,
+      lang: lang,
+      onStart: () => setVoicePlaying(true),
+      onEnd: () => {
         setVoicePlaying(false);
         setDisplayText("₹ 0.00");
-      };
-      window.speechSynthesis.speak(u);
-    } else {
-      setTimeout(() => {
-        setVoicePlaying(false);
-        setDisplayText("₹ 0.00");
-      }, 3500);
-    }
+      }
+    });
+  };
+
+  const playBarcodeCheckoutDemo = () => {
+    setChimePlaying(true);
+    setDisplayText("SCAN");
+    soundboxAudio.playPosBarcodeCheckout({
+      skuName: 'Frooti 200ml',
+      amount: 20,
+      remainingStock: 3,
+      lang: lang,
+      onEnd: () => {
+        setChimePlaying(false);
+        setDisplayText("₹ 20.00");
+      }
+    });
   };
 
   return (
@@ -146,24 +134,74 @@ export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="w-full grid grid-cols-2 gap-3 mt-6">
+          {/* Quick Amount Selector */}
+          <div className="w-full mt-5">
+            <span className="text-[11px] font-semibold text-charcoal-muted uppercase tracking-wider block mb-1.5 text-center">
+              Test Payment Value
+            </span>
+            <div className="grid grid-cols-4 gap-2">
+              {[20, 40, 150, 500].map((amt) => (
+                <button
+                  key={amt}
+                  onClick={() => {
+                    setSelectedAmount(amt);
+                    setDisplayText(`₹ ${amt}.00`);
+                  }}
+                  className={`h-8 rounded-lg text-xs font-mono font-bold transition-all ${
+                    selectedAmount === amt
+                      ? 'bg-wine text-cream shadow-xs border border-gold/40'
+                      : 'bg-sand hover:bg-sand/80 text-charcoal border border-gold/20'
+                  }`}
+                >
+                  ₹{amt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Primary Action Buttons */}
+          <div className="w-full grid grid-cols-2 gap-2.5 mt-3">
             <button
-              onClick={playPaymentChime}
-              disabled={chimePlaying}
-              className="h-11 px-4 rounded-xl bg-wine hover:bg-wine-dark text-cream text-sm font-semibold shadow-subtle flex items-center justify-center gap-2 transition-colors"
+              onClick={() => playPaymentAnnouncement(selectedAmount)}
+              disabled={chimePlaying || voicePlaying}
+              className="h-11 px-3 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs font-semibold shadow-subtle
+                         flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
             >
-              <Volume2 className="w-4 h-4 text-gold" />
-              <span>Chime ({currentLangObj.label})</span>
+              <Volume2 className="w-4 h-4 text-gold shrink-0" />
+              <span>Paytm Payment Sound</span>
             </button>
 
             <button
               onClick={playMorningBriefing}
-              disabled={voicePlaying}
-              className="h-11 px-4 rounded-xl bg-gold hover:bg-gold-light text-charcoal text-sm font-semibold shadow-subtle flex items-center justify-center gap-2 transition-colors"
+              disabled={voicePlaying || chimePlaying}
+              className="h-11 px-3 rounded-xl bg-gold hover:bg-gold-light text-charcoal text-xs font-semibold shadow-subtle
+                         flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Briefing ({currentLangObj.label})</span>
+              <Sparkles className="w-4 h-4 shrink-0 text-charcoal" />
+              <span>Daily AI Briefing</span>
+            </button>
+          </div>
+
+          {/* Secondary Utility Controls */}
+          <div className="w-full grid grid-cols-2 gap-2.5 mt-2">
+            <button
+              onClick={playChimeOnly}
+              disabled={chimePlaying || voicePlaying}
+              className="h-9 px-3 rounded-xl bg-sand/70 hover:bg-sand text-charcoal text-[11px] font-semibold
+                         border border-gold/30 flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
+            >
+              <Bell className="w-3.5 h-3.5 text-amber-700" />
+              <span>Chime Only</span>
+            </button>
+
+            <button
+              onClick={playBarcodeCheckoutDemo}
+              disabled={chimePlaying || voicePlaying}
+              className="h-9 px-3 rounded-xl bg-[#002E6E]/10 hover:bg-[#002E6E]/20 text-[#002E6E] text-[11px] font-semibold
+                         border border-[#002E6E]/30 flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
+            >
+              <Barcode className="w-3.5 h-3.5 text-[#002E6E]" />
+              <span>POS Barcode Audio</span>
             </button>
           </div>
 
