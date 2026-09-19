@@ -2,8 +2,11 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from sqlalchemy.orm import declarative_base
 from backend.app.core.config import settings
 
+connect_args = {"check_same_thread": False} if "sqlite" in settings.DATABASE_URL else {}
+
 engine = create_async_engine(
     settings.DATABASE_URL,
+    connect_args=connect_args,
     echo=False,
     future=True
 )
