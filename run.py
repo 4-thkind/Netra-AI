@@ -326,15 +326,18 @@ def show_qr(url: str) -> None:
         import qr
 
         code = qr.render(url)
+        qr.save_image(url, "phone-qr.png")
     except Exception as exc:
         warn(f"  (could not render QR: {exc} - type the URL above on your phone)")
         return
 
     try:
         print(code)
+        print("  (QR image also saved to phone-qr.png)")
     except UnicodeEncodeError:
         # Legacy consoles (cp1252) cannot print block characters.
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
         print(code)
 
 
@@ -350,11 +353,11 @@ def lan_ip() -> str | None:
 # --- main ------------------------------------------------------------------
 def main() -> None:
     ap = argparse.ArgumentParser(add_help=True)
+    ap.add_argument("--tunnel", action="store_true", help="open ad-hoc cloudflared tunnel instead of deployed URL")
     ap.add_argument("--no-tunnel", action="store_true", help="local only")
     ap.add_argument("--reseed", action="store_true", help="rebuild netra.db")
     ap.add_argument("--url", metavar="URL",
-                    help="show the QR for this URL instead of a tunnel "
-                         "(use your deployed site, e.g. https://netra.vercel.app)")
+                    help="show the QR for this URL (defaults to https://netra-ai-live.pages.dev)")
     args = ap.parse_args()
 
     load_dotenv()
@@ -371,14 +374,15 @@ def main() -> None:
     start_backend()
     start_frontend()
 
-    if args.url:
-        # Deployed build: skip the tunnel entirely and point the QR at the
-        # public site. Scanning gives the phone the exact same app - the mobile
-        # layout comes from CSS breakpoints, not a separate build.
-        url, reachable = args.url.rstrip("/"), http_ok(args.url, timeout=8)
-        step(f"[5/5] Using deployed URL: {url}")
+    target_site = args.url or os.environ.get("DEPLOYED_URL") or "https://netra-ai-live.pages.dev"
+
+    if not args.tunnel and not args.no_tunnel:
+        url, reachable = target_site.rstrip("/"), True
+        step(f"[5/5] Using deployed site: {url}")
+    elif args.tunnel:
+        url, reachable = start_tunnel()
     else:
-        url, reachable = (None, False) if args.no_tunnel else start_tunnel()
+        url, reachable = (None, False)
 
     print()
     ok("=" * 56)

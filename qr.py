@@ -226,8 +226,8 @@ def _matrix(version: int, codewords: list[int]) -> list[list[int]]:
     return [[int(v or 0) for v in row] for row in m]
 
 
-def render(text: str, quiet: int = 2) -> str:
-    """Return the QR for `text` as text using half-block characters."""
+def get_grid(text: str, quiet: int = 4) -> list[list[int]]:
+    """Return 2D grid of modules (0=white, 1=black) with quiet zone."""
     data = text.encode("utf-8")
     version = next((v for v in sorted(_SPECS) if _capacity(v) >= len(data) + 3), None)
     if version is None:
@@ -239,7 +239,56 @@ def render(text: str, quiet: int = 2) -> str:
     grid = [pad[:] for _ in range(quiet)]
     grid += [[0] * quiet + row + [0] * quiet for row in m]
     grid += [pad[:] for _ in range(quiet)]
+    return grid
 
+
+def save_image(text: str, filename: str = "phone-qr.png", scale: int = 12, quiet: int = 4) -> str:
+    """Save QR code as a high-resolution image (PNG or BMP)."""
+    grid = get_grid(text, quiet=quiet)
+    dim = len(grid) * scale
+
+    try:
+        from PIL import Image, ImageDraw
+        img = Image.new("RGB", (dim, dim), "white")
+        draw = ImageDraw.Draw(img)
+        for r, row in enumerate(grid):
+            for c, val in enumerate(row):
+                if val == 1:
+                    draw.rectangle(
+                        [c * scale, r * scale, (c + 1) * scale - 1, (r + 1) * scale - 1],
+                        fill="#722F37"  # Netra wine brand color
+                    )
+        img.save(filename)
+        return filename
+    except Exception:
+        # Fallback pure-Python BMP writer if PIL is missing
+        bmp_file = filename if filename.endswith(".bmp") else filename.replace(".png", ".bmp")
+        w, h = dim, dim
+        row_bytes = w * 3
+        padding = (4 - (row_bytes % 4)) % 4
+        file_size = 54 + (row_bytes + padding) * h
+        with open(bmp_file, "wb") as f:
+            # BMP Header
+            f.write(b"BM" + file_size.to_bytes(4, "little") + b"\x00\x00\x00\x00\x36\x00\x00\x00")
+            # DIB Header (BITMAPINFOHEADER)
+            f.write((40).to_bytes(4, "little") + w.to_bytes(4, "little") + (-h).to_bytes(4, "little", signed=True))
+            f.write((1).to_bytes(2, "little") + (24).to_bytes(2, "little") + (0).to_bytes(4, "little"))
+            f.write(((row_bytes + padding) * h).to_bytes(4, "little") + (2835).to_bytes(4, "little") * 2 + (0).to_bytes(8, "little"))
+            # Pixel Data (BGR)
+            wine_bgr = bytes([0x37, 0x2F, 0x72])
+            white_bgr = bytes([0xFF, 0xF8, 0xF0])
+            for r in range(h):
+                grid_r = r // scale
+                for c in range(w):
+                    grid_c = c // scale
+                    f.write(wine_bgr if grid[grid_r][grid_c] == 1 else white_bgr)
+                f.write(b"\x00" * padding)
+        return bmp_file
+
+
+def render(text: str, quiet: int = 2) -> str:
+    """Return the QR for `text` as text using half-block characters."""
+    grid = get_grid(text, quiet=quiet)
     # Two module rows per text row: dark module -> light glyph on dark bg.
     lines = []
     for y in range(0, len(grid), 2):
@@ -255,4 +304,17 @@ def render(text: str, quiet: int = 2) -> str:
 
 if __name__ == "__main__":
     import sys
-    print(render(sys.argv[1] if len(sys.argv) > 1 else "https://example.com"))
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    default_url = "https://netra-ai-live.pages.dev/"
+    target_url = sys.argv[1] if len(sys.argv) > 1 else default_url
+
+    print(f"\n========================================================")
+    print(f"  NETRĀ Live Mobile PWA QR Code")
+    print(f"  Target URL: {target_url}")
+    print(f"========================================================\n")
+    print(render(target_url))
+    
+    saved = save_image(target_url, "phone-qr.png")
+    print(f"\nSaved image QR code to: {saved}\n")
