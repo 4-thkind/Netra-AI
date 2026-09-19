@@ -40,3 +40,49 @@ htmlcov/
 *.swp
 *.swo
 .DS_Store
+
+# ---------------------------------------------------------------------------
+# Netra: local artefacts that should not ship in the repo
+# ---------------------------------------------------------------------------
+
+# Seeded database. Rebuilt on demand by `python run.py` (or --reseed), so
+# committing a 4.7MB binary that changes on every run only creates noise.
+netra.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Runtime logs written next to the launcher
+backend.log
+frontend.log
+tunnel.log
+tunnel_stdout.log
+
+# QR image generated per tunnel run
+phone-qr.png
+
+# One-time scaffolding generators. These wrote the original source files and
+# are not part of the runtime - running them again would overwrite real code.
+scripts/setup_*.py
+scripts/fix_privacy_and_seeding.py
+scripts/update_llm_guard.py
+
+# Source pitch deck (the exported PDF in docs/ is the shareable version)
+*.pptx
+
+# Hackathon platform export, contains event/registration metadata
+hackbriven_event.json
+
+# Python bytecode / build output
+__pycache__/
+*.py[cod]
+dist/
+build/
+
+# Internal working documents — written for us, not for the repo.
+# These describe how the project was built, what is staged vs real, and how to
+# present it. Useful to the team, noise (or oversharing) in a public repo.
+NETRA_ANTIGRAVITY_BUILD_SPEC.md
+PROJECT_OVERVIEW.md
+netra-ppt-blueprint.md
+docs/SUBMISSION_KIT.md

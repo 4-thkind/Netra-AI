@@ -20,18 +20,26 @@ create catastrophic real-world hazards: **predatory competitor snooping**, **mar
 
 Launch the entire ecosystem with a single command:
 
+**Windows (PowerShell):**
+```powershell
+.\scripts\run_demo.ps1            # local
+.\scripts\run_demo.ps1 -Tunnel    # + public HTTPS URL + QR code for phones
+.\scripts\run_demo.ps1 -Reseed    # rebuild netra.db from the Kaggle CSV
+```
+
+**macOS / Linux:**
 ```bash
-# Clone the repository and run the demo launcher
-git clone https://github.com/your-team/netra.git
-cd netra
 ./scripts/run_demo.sh
 ```
 
 - **🖥️ Web Application**: [http://localhost:3000](http://localhost:3000)
+- **📱 On a phone**: run with `-Tunnel` and open the printed
+  `https://<name>.trycloudflare.com` link (or scan `phone-qr.png`). Works on
+  mobile data — the phone does **not** need to be on the same wifi.
 - **📖 Interactive OpenAPI Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **🧪 Run Full Automated Test Suite (19 Tests)**:
+- **🧪 Run Full Automated Test Suite (45 Tests)**:
   ```bash
-  PYTHONPATH=. ./backend/venv/bin/pytest backend/tests/ -v
+  PYTHONPATH=. python -m pytest backend/tests/ -v
   ```
 
 ---
@@ -167,7 +175,8 @@ Netra/
 │   └── vite.config.js
 ├── n8n/                     # Production n8n workflows (EOD soundbox, festival tender, privacy sentinel)
 ├── scripts/
-│   ├── run_demo.sh          # 1-click executable demo launcher
+│   ├── run_demo.ps1         # 1-click Windows launcher (+ -Tunnel for phones)
+│   ├── run_demo.sh          # 1-click macOS/Linux launcher
 │   └── run_dev.sh           # Local development launcher
 ├── SECURITY.md              # Security invariant guarantees & threat defense
 └── README.md
@@ -179,10 +188,10 @@ Netra/
 
 Run the complete test suite:
 ```bash
-PYTHONPATH=. ./backend/venv/bin/pytest backend/tests/ -v
+PYTHONPATH=. python -m pytest backend/tests/ -v
 ```
 
-All 19 tests verify:
+All 45 tests verify:
 - ✅ Small-cohort suppression ($N < 10$)
 - ✅ Competitor probe blocking
 - ✅ Price-fixing and coordination prompt injection defense
