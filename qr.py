@@ -316,8 +316,7 @@ if __name__ == "__main__":
         except Exception:
             return None
 
-    ip = get_lan_ip()
-    default_url = f"http://{ip}:3000" if ip else "http://localhost:3000"
+    default_url = "http://localhost:3000"
     target_url = sys.argv[1] if len(sys.argv) > 1 else default_url
 
     print(f"\n========================================================")

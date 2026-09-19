@@ -375,7 +375,7 @@ def main() -> None:
     start_frontend()
 
     ip = lan_ip()
-    local_phone_url = f"http://{ip}:{FRONTEND_PORT}" if ip else f"http://localhost:{FRONTEND_PORT}"
+    local_host_url = f"http://localhost:{FRONTEND_PORT}"
 
     if args.url:
         url, reachable = args.url.rstrip("/"), True
@@ -383,22 +383,21 @@ def main() -> None:
     elif args.tunnel:
         url, reachable = start_tunnel()
     else:
-        url, reachable = local_phone_url, True
-        step(f"[5/5] Using local network host: {url}")
+        url, reachable = local_host_url, True
+        step(f"[5/5] Using localhost: {url}")
 
     print()
     ok("=" * 56)
     ok("  NETRA IS LIVE (LOCAL HOST)")
     ok("=" * 56)
-    print(f"  This laptop : http://localhost:{FRONTEND_PORT}")
+    print(f"  Localhost   : http://localhost:{FRONTEND_PORT}")
     if ip:
-        print(f"  Phone/Wi-Fi : http://{ip}:{FRONTEND_PORT}")
+        print(f"  LAN IP      : http://{ip}:{FRONTEND_PORT}")
     print(f"  API docs    : http://localhost:{BACKEND_PORT}/docs")
 
     if url:
         print()
-        print(_c("1;33", f"  SCAN QR FOR LOCAL ACCESS: {url}"))
-        print("  Connect your phone to the same Wi-Fi network and scan:")
+        print(_c("1;33", f"  QR CODE LINK: {url}"))
         print()
         show_qr(url)
 
