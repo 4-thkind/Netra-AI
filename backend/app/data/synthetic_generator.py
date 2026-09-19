@@ -33,9 +33,9 @@ async def seed_synthetic_data():
             print("Database already contains merchants. Skipping duplicate seeding.")
             return
 
-        print("Seeding synthetic data: Ramesh & 200+ Kirana Merchants...")
+        print("Seeding synthetic data: Sanjeev & 200+ Kirana Merchants...")
 
-        # 1. Seed Ramesh Kumar (Hero Merchant)
+        # 1. Seed Sanjeev Kumar (Hero Merchant)
         ramesh = Merchant(
             id="merchant_ramesh",
             external_id_hash="hash_ramesh_paytm_01",
@@ -148,7 +148,7 @@ async def seed_synthetic_data():
             )
             db.add(agg)
 
-        # 6. Seed Ramesh Initial Recommendations
+        # 6. Seed Sanjeev Initial Recommendations
         recs = [
             Recommendation(
                 id="rec_trade_radar_beverages",
@@ -206,9 +206,9 @@ async def seed_synthetic_data():
         for r in recs:
             db.add(r)
 
-        # 7. Seed 90 days of transactions for Ramesh
+        # 7. Seed 90 days of transactions for Sanjeev
         now = datetime.now(timezone.utc)
-        print("Generating 90 days of transactions for Ramesh...")
+        print("Generating 90 days of transactions for Sanjeev...")
         tx_count = 0
         for day_offset in range(90, 0, -1):
             day_time = now - timedelta(days=day_offset)

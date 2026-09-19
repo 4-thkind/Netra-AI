@@ -56,11 +56,11 @@ async def import_kaggle_supermart(csv_path="data/supermart_raw.csv", max_rows=50
             print("❌ No merchants found in database.")
             return
 
-        # Segregate Ramesh and cluster merchants
+        # Segregate Sanjeev and cluster merchants
         ramesh = next((m for m in merchants if m.id == "merchant_ramesh"), merchants[0])
         lajpat_merchants = [m for m in merchants if m.cluster_id == "delhi_lajpat_nagar"]
 
-        print(f"Processing transactions across {len(merchants)} merchants ({len(lajpat_merchants)} in Ramesh's cluster)...")
+        print(f"Processing transactions across {len(merchants)} merchants ({len(lajpat_merchants)} in Sanjeev's cluster)...")
 
         now = datetime.now(timezone.utc)
         new_txns = []
@@ -77,7 +77,7 @@ async def import_kaggle_supermart(csv_path="data/supermart_raw.csv", max_rows=50
             
             scaled_amount = round(max(15.0, min(250.0, (raw_sales / 15.0) + random.uniform(-5, 10))), 2)
 
-            # Assign 8% of transactions directly to Ramesh, and the rest to local cluster merchants
+            # Assign 8% of transactions directly to Sanjeev, and the rest to local cluster merchants
             if idx % 12 == 0:
                 m = ramesh
             else:

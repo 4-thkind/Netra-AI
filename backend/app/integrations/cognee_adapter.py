@@ -279,7 +279,7 @@ cognee_adapter = CogneeMemoryAdapter()
 def _demo() -> None:
     """Self-check: the loop must change what a merchant is recommended."""
     a = CogneeMemoryAdapter()
-    a.register_merchant("m1", "Ramesh", "delhi_lajpat_nagar", "kirana", "hi")
+    a.register_merchant("m1", "Sanjeev", "delhi_lajpat_nagar", "kirana", "hi")
     for i in range(3):
         a.register_merchant(f"p{i}", f"Peer {i}", "delhi_lajpat_nagar", "kirana", "hi")
 

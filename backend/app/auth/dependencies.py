@@ -13,7 +13,7 @@ async def get_current_merchant(
     db: AsyncSession = Depends(get_db)
 ) -> Merchant:
     if not credentials:
-        # For Hackathon convenience, if no bearer token is present, fall back to Ramesh demo merchant
+        # For Hackathon convenience, if no bearer token is present, fall back to Sanjeev demo merchant
         stmt = select(Merchant).where(Merchant.id == "merchant_ramesh")
         result = await db.execute(stmt)
         demo_merchant = result.scalar_one_or_none()

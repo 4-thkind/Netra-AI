@@ -45,7 +45,7 @@ async def login(req: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 @router.get("/demo-token")
 async def get_demo_token(db: AsyncSession = Depends(get_db)):
-    """Convenience endpoint for hackathon evaluation: returns demo token for Ramesh"""
+    """Convenience endpoint for hackathon evaluation: returns demo token for Sanjeev"""
     stmt = select(Merchant).where(Merchant.id == "merchant_ramesh")
     result = await db.execute(stmt)
     ramesh = result.scalar_one_or_none()

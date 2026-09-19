@@ -49,7 +49,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Prepare WhatsApp RFQ template for Wholesale Distributors\nconst fest = $input.first().json.upcoming[0];\nreturn [{\n  json: {\n    channel: 'whatsapp_kirana',\n    merchant: 'Ramesh Kirana Store',\n    phone: '+919876543210',\n    message: `🪔 *Netrā Festival Prep: ${fest.festival_name} (${fest.date})*\\n\\nअनुशंसित आवश्यक स्टॉक:\\n• ${fest.recommended_stock.join('\\n• ')}\\n\\nऑफर विचार: ${fest.suggested_offer}\\n\\nथोक वितरक को आर्डर भेजने के लिए बटन दबाएं:`,\n    action_buttons: ['वितरक कोटेशन मांगें', 'बाद में याद दिलाएं']\n  }\n}];"
+        "jsCode": "// Prepare WhatsApp RFQ template for Wholesale Distributors\nconst fest = $input.first().json.upcoming[0];\nreturn [{\n  json: {\n    channel: 'whatsapp_kirana',\n    merchant: 'Sanjeev Kirana Store',\n    phone: '+919876543210',\n    message: `🪔 *Netrā Festival Prep: ${fest.festival_name} (${fest.date})*\\n\\nअनुशंसित आवश्यक स्टॉक:\\n• ${fest.recommended_stock.join('\\n• ')}\\n\\nऑफर विचार: ${fest.suggested_offer}\\n\\nथोक वितरक को आर्डर भेजने के लिए बटन दबाएं:`,\n    action_buttons: ['वितरक कोटेशन मांगें', 'बाद में याद दिलाएं']\n  }\n}];"
       },
       "id": "node_format_whatsapp",
       "name": "Generate WhatsApp Tender Message",

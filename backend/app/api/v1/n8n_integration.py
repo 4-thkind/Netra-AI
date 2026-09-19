@@ -119,7 +119,7 @@ async def trigger_eod_workflow(merchant_id: str = "merchant_ramesh"):
     cashflow = cashflow_engine.generate_7day_projection(merchant_id)
     
     # Step 2: Format Speech
-    speech_text = f"नमस्ते रमेश जी। आज की बिक्री पूर्ण। अगले 7 दिनों का अनुमानित कैश फ्लो ₹{int(cashflow['total_projected_7d'])} है। शनिवार दोपहर वितरक भुगतान शेड्यूल करें।"
+    speech_text = f"नमस्ते संजीव जी। आज की बिक्री पूर्ण। अगले 7 दिनों का अनुमानित कैश फ्लो ₹{int(cashflow['total_projected_7d'])} है। शनिवार दोपहर वितरक भुगतान शेड्यूल करें।"
     
     # Step 3: Call Sarvam AI
     speech = await sarvam_adapter.generate_soundbox_speech(speech_text, language="hi")

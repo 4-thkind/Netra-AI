@@ -10,7 +10,7 @@ from backend.app.integrations.whatsapp_delivery import WhatsAppDeliveryService
 
 def _graph_with_peers(peers=3):
     a = CogneeMemoryAdapter()
-    a.register_merchant("m1", "Ramesh", "delhi_lajpat_nagar", "kirana", "hi")
+    a.register_merchant("m1", "Sanjeev", "delhi_lajpat_nagar", "kirana", "hi")
     for i in range(peers):
         a.register_merchant(f"p{i}", f"Peer {i}", "delhi_lajpat_nagar", "kirana", "hi")
     return a
@@ -102,7 +102,7 @@ async def test_send_simulates_without_any_provider(monkeypatch):
     monkeypatch.setattr(cfg.settings, "WHATSAPP_TOKEN", None, raising=False)
 
     svc = WhatsAppDeliveryService()
-    res = await svc.send(to_number="9876543210", merchant_name="Ramesh",
+    res = await svc.send(to_number="9876543210", merchant_name="Sanjeev",
                          message="Beverages up 18%")
     # The envelope is still real and inspectable; only the last mile is absent.
     assert res["status"] == "SIMULATED"
