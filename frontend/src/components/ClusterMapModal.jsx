@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { X, ShieldAlert, ShieldCheck, MapPin, Store, EyeOff, CheckCircle2 } from 'lucide-react';
 import { translations } from '../i18n/translations';
+import { useDismissable } from '../hooks/useDismissable';
 
 export default function ClusterMapModal({ isOpen, onClose, lang = 'en' }) {
   const [storeCount, setStoreCount] = useState(4); // Start with 4-merchant dilemma
   const [selectedStore, setSelectedStore] = useState(null);
 
   const t = translations[lang]?.clusterMapModal || translations.en.clusterMapModal;
+
+  useDismissable(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -26,8 +29,15 @@ export default function ClusterMapModal({ isOpen, onClose, lang = 'en' }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-4">
-      <div className="bg-cream rounded-3xl max-w-2xl w-full border border-gold/40 shadow-2xl overflow-hidden animate-fadeIn">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center
+                 bg-charcoal/70 backdrop-blur-sm sm:p-4"
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
+    >
+      <div className="bg-cream w-full sm:max-w-2xl border border-gold/40 shadow-lift overflow-y-auto
+                      rounded-t-3xl sm:rounded-3xl max-h-[92vh] sm:max-h-[90vh]
+                      pb-[env(safe-area-inset-bottom,0px)] sm:pb-0
+                      animate-sheetUp sm:animate-riseIn">
         
         {/* Header */}
         <div className="bg-wine text-cream px-6 py-4 flex items-center justify-between border-b border-gold/30">

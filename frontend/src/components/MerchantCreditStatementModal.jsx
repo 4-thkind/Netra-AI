@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Printer, ShieldCheck, CreditCard, TrendingUp, Calendar, CheckCircle2, Download, Award } from 'lucide-react';
 import { api } from '../services/api';
+import { useDismissable } from '../hooks/useDismissable';
 
 export default function MerchantCreditStatementModal({ isOpen, onClose, lang = 'en' }) {
   const [statement, setStatement] = useState(null);
@@ -23,6 +24,9 @@ export default function MerchantCreditStatementModal({ isOpen, onClose, lang = '
       setLoading(false);
     }
   };
+
+  useDismissable(isOpen, onClose);
+
 
   if (!isOpen) return null;
 

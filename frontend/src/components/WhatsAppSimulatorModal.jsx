@@ -54,7 +54,9 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         text: res.response || "क्षमा करें, संदेश संसाधित करने में समस्या आई।",
         isBlocked: isBlocked,
-        reason: res.reason
+        reason: res.reason,
+        engine: res.engine,
+        isLiveLlm: res.is_live_llm
       };
 
       setMessages(prev => [...prev, botMsg]);
@@ -99,8 +101,17 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-4">
-      <div className="bg-[#EFEAE2] rounded-3xl max-w-md w-full shadow-2xl overflow-hidden flex flex-col h-[650px] border-4 border-slate-700 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center
+                    bg-charcoal/70 backdrop-blur-sm sm:p-4">
+      {/* Phone: true full-screen chat, like the real WhatsApp - no floating
+          card, no wasted gutters, safe-area aware.
+          Desktop: framed device mock so it reads as a channel demo. */}
+      <div className="bg-[#EFEAE2] w-full flex flex-col overflow-hidden
+                      h-full sm:h-[650px] sm:max-h-[90vh] sm:max-w-md
+                      sm:rounded-3xl sm:border-4 sm:border-slate-700 sm:shadow-2xl
+                      pt-[env(safe-area-inset-top,0px)] sm:pt-0
+                      pb-[env(safe-area-inset-bottom,0px)] sm:pb-0
+                      animate-sheetUp sm:animate-riseIn">
         
         {/* WhatsApp Top Bar */}
         <div className="bg-[#075E54] text-white px-4 py-3 flex items-center justify-between">
@@ -155,6 +166,13 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
                 
                 <div className="whitespace-pre-line leading-relaxed">{m.text}</div>
                 
+                {m.isLiveLlm && (
+                  <div className="mt-1.5 text-[9px] text-emerald-800 bg-emerald-50 border border-emerald-200
+                                  rounded-full px-2 py-0.5 inline-flex items-center gap-1 font-semibold">
+                    <Bot className="w-2.5 h-2.5" />
+                    <span>Live AI · {String(m.engine).split('/').pop().replace(':free','')}</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-end space-x-1 mt-1 text-[9px] text-slate-500">
                   <span>{m.time}</span>
                   {m.sender === 'ramesh' && <CheckCheck className="w-3 h-3 text-sky-500" />}
@@ -188,7 +206,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
         </div>
 
         {/* Quick Test Prompt Pills for Judges */}
-        <div className="bg-[#EFEAE2] px-3 py-1.5 border-t border-slate-300 overflow-x-auto">
+        <div className="bg-[#EFEAE2] px-3 py-2 border-t border-slate-300 overflow-x-auto scrollbar-none">
           <div className="flex items-center space-x-1.5 whitespace-nowrap">
             <span className="text-[10px] font-bold text-slate-600 uppercase">Test Prompts:</span>
             {samplePrompts.map((p, pidx) => (
@@ -196,7 +214,8 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
                 key={pidx}
                 onClick={() => sendMessageToCopilot(p.query)}
                 disabled={loading}
-                className={`text-[10px] px-2 py-0.5 rounded-full border transition-all ${
+                className={`text-[11px] px-2.5 py-1.5 rounded-full border shrink-0 whitespace-nowrap
+                            transition-colors disabled:opacity-50 ${
                   p.label.includes('competitor')
                     ? 'bg-red-100 text-red-800 border-red-300 hover:bg-red-200'
                     : 'bg-white text-emerald-900 border-slate-300 hover:bg-slate-100'
@@ -212,17 +231,21 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
         <div className="bg-[#F0F0F0] px-3 py-2 flex items-center space-x-2 border-t border-slate-300">
           <input
             type="text"
-            placeholder="Type your message to Netrā AI Copilot..."
+            placeholder="Ask Netrā anything…"
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessageToCopilot()}
             disabled={loading}
-            className="flex-1 px-3 py-1.5 text-xs rounded-full bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-600 disabled:opacity-50"
+            /* 16px on mobile stops iOS Safari zooming the page on focus. */
+            className="flex-1 px-3.5 h-10 text-base sm:text-xs rounded-full bg-white border border-slate-300
+                       focus:outline-none focus:ring-2 focus:ring-emerald-600 disabled:opacity-50"
           />
           <button
             onClick={() => sendMessageToCopilot()}
             disabled={loading || !replyText.trim()}
-            className="w-8 h-8 rounded-full bg-[#075E54] hover:bg-[#128C7E] disabled:opacity-40 text-white flex items-center justify-center shrink-0 transition-colors"
+            aria-label="Send message"
+            className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-[#075E54] hover:bg-[#128C7E]
+                       disabled:opacity-40 text-white flex items-center justify-center shrink-0 transition-colors"
           >
             <Send className="w-4 h-4" />
           </button>

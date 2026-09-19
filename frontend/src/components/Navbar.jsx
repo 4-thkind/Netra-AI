@@ -1,162 +1,217 @@
-import React, { useState } from 'react';
-import { Eye, ShieldCheck, Activity, Terminal, Workflow, Radio, MessageSquare, Map, Globe, ChevronDown } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Eye, ShieldCheck, Activity, Terminal, Workflow,
+  Radio, MessageSquare, Map, Globe, ChevronDown, Check,
+} from 'lucide-react';
 import { languages, translations } from '../i18n/translations';
 
-export default function Navbar({
-  activeTab,
-  setActiveTab,
-  merchant,
-  lang,
-  setLang,
-  onOpenSoundbox,
-  onOpenWhatsApp,
-  onOpenClusterMap
-}) {
-  const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const t = translations[lang]?.nav || translations.en.nav;
+export const TABS = [
+  { id: 'dashboard', key: 'copilot', Icon: Eye },
+  { id: 'n8n', key: 'n8n', Icon: Workflow },
+  { id: 'privacy', key: 'privacy', Icon: ShieldCheck },
+  { id: 'security', key: 'sentinel', Icon: Activity },
+  { id: 'simulator', key: 'simulator', Icon: Terminal },
+];
 
-  const currentLangObj = languages.find(l => l.code === lang) || languages[0];
+/** Short labels for the bottom tab bar, where full names never fit. */
+const SHORT = {
+  dashboard: 'Copilot',
+  n8n: 'n8n',
+  privacy: 'Privacy',
+  security: 'Audit',
+  simulator: 'Attack',
+};
+
+function LanguageMenu({ lang, setLang, compact = false }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const current = languages.find((l) => l.code === lang) || languages[0];
+
+  // Close on outside click / Escape - a dropdown that traps the page is the
+  // fastest way to make a demo feel broken.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 bg-wine text-cream shadow-md border-b border-wine-light">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
-        {/* Brand */}
-        <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
-          <div className="w-9 h-9 rounded-full bg-cream flex items-center justify-center shadow-inner border border-gold shrink-0">
-            <Eye className="w-5 h-5 text-wine" />
-          </div>
-          <div>
-            <div className="flex items-center space-x-1.5">
-              <span className="font-heading font-bold text-lg sm:text-xl tracking-wider text-cream">NETRĀ</span>
-              <span className="text-[9px] uppercase tracking-widest font-semibold px-1.5 py-0.2 rounded bg-gold text-charcoal">
-                Paytm
-              </span>
-            </div>
-            <p className="text-[10px] text-gold-light tracking-tight font-medium hidden sm:block">
-              {t.tagline}
-            </p>
-          </div>
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Change language"
+        aria-expanded={open}
+        className="h-10 px-3 rounded-xl bg-wine-dark/70 text-gold text-[13px] font-bold border border-gold/40
+                   hover:border-gold hover:bg-wine-dark flex items-center gap-1.5 transition-colors"
+      >
+        <Globe className="w-3.5 h-3.5 text-gold-light shrink-0" />
+        <span className={compact ? 'hidden' : 'hidden xl:inline'}>{current.label}</span>
+        <span className={compact ? '' : 'xl:hidden'}>{current.code.toUpperCase()}</span>
+        <ChevronDown className={`w-3 h-3 opacity-70 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-44 bg-cream text-charcoal rounded-2xl shadow-lift
+                        border border-gold/40 py-1.5 z-50 animate-riseIn overflow-hidden">
+          <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-charcoal-light">
+            Soundbox Language
+          </p>
+          {languages.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => { setLang(l.code); setOpen(false); }}
+              className={`w-full text-left px-3 py-2 text-xs font-semibold flex items-center justify-between
+                          transition-colors ${lang === l.code ? 'bg-wine text-cream' : 'hover:bg-sand'}`}
+            >
+              <span>{l.label}</span>
+              {lang === l.code
+                ? <Check className="w-3.5 h-3.5 text-gold" />
+                : <span className="text-[10px] opacity-50">{l.code.toUpperCase()}</span>}
+            </button>
+          ))}
         </div>
+      )}
+    </div>
+  );
+}
 
-        {/* Center Nav Tabs */}
-        <nav className="hidden lg:flex items-center space-x-1">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === 'dashboard' 
-                ? 'bg-cream text-wine shadow-sm' 
-                : 'text-cream hover:bg-wine-light'
-            }`}
-          >
-            {t.copilot}
-          </button>
+export default function Navbar({
+  activeTab, setActiveTab, merchant, lang, setLang,
+  onOpenSoundbox, onOpenWhatsApp, onOpenClusterMap,
+}) {
+  const t = translations[lang]?.nav || translations.en.nav;
 
-          <button
-            onClick={() => setActiveTab('privacy')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-all ${
-              activeTab === 'privacy' 
-                ? 'bg-cream text-wine shadow-sm' 
-                : 'text-cream hover:bg-wine-light'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-            <span>{t.privacy}</span>
-          </button>
+  const deviceButtons = [
+    { onClick: onOpenSoundbox, label: 'Paytm Soundbox', Icon: Radio, tint: 'text-gold' },
+    { onClick: onOpenWhatsApp, label: 'WhatsApp Copilot', Icon: MessageSquare, tint: 'text-emerald-400' },
+    { onClick: onOpenClusterMap, label: 'Cluster Map', Icon: Map, tint: 'text-sky-400' },
+  ];
 
-          <button
-            onClick={() => setActiveTab('security')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-all ${
-              activeTab === 'security' 
-                ? 'bg-cream text-wine shadow-sm' 
-                : 'text-cream hover:bg-wine-light'
-            }`}
-          >
-            <Activity className="w-3.5 h-3.5 text-gold" />
-            <span>{t.sentinel}</span>
-          </button>
+  return (
+    <header className="sticky top-0 z-40 bg-wine text-cream shadow-[0_1px_0_rgba(201,169,110,.35)]">
+      <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 h-16 lg:h-[72px] flex items-center gap-3 lg:gap-5">
 
-          <button
-            onClick={() => setActiveTab('simulator')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1 transition-all border ${
-              activeTab === 'simulator'
-                ? 'bg-gold text-charcoal border-cream shadow-sm'
-                : 'bg-wine-dark text-gold border-gold/40 hover:border-gold'
-            }`}
-          >
-            <Terminal className="w-3.5 h-3.5" />
-            <span>{t.simulator}</span>
-          </button>
+        {/* Brand */}
+        <button
+          onClick={() => setActiveTab('dashboard')}
+          className="flex items-center gap-2.5 min-w-0 shrink-0 text-left"
+        >
+          <span className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-cream flex items-center justify-center
+                           border border-gold shrink-0 shadow-inner">
+            <Eye className="w-5 h-5 lg:w-6 lg:h-6 text-wine" />
+          </span>
+          <span className="min-w-0">
+            <span className="flex items-center gap-1.5">
+              <span className="font-heading font-bold text-xl lg:text-2xl tracking-wide text-cream">NETRĀ</span>
+              <span className="text-[9px] uppercase tracking-widest font-bold px-1.5 py-px rounded
+                               bg-gold text-charcoal shrink-0">Paytm</span>
+            </span>
+            <span className="hidden lg:block text-[11px] text-gold-light font-medium truncate">
+              {t.tagline}
+            </span>
+          </span>
+        </button>
+
+        {/* Desktop nav - full labels, generous targets */}
+        <nav className="hidden lg:flex items-center gap-1 mx-auto">
+          {TABS.map(({ id, key, Icon }) => {
+            const active = activeTab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                aria-current={active ? 'page' : undefined}
+                className={`h-10 px-4 rounded-xl text-[13px] font-semibold flex items-center gap-2
+                            transition-colors ${active
+                              ? 'bg-cream text-wine shadow-sm'
+                              : 'text-cream/90 hover:bg-wine-light hover:text-cream'}`}
+              >
+                <Icon className={`w-4 h-4 ${active ? 'text-wine' : 'text-gold'}`} />
+                <span>{t[key]}</span>
+              </button>
+            );
+          })}
         </nav>
 
-        {/* Right Action Icons & Hardware Triggers */}
-        <div className="flex items-center space-x-1.5 sm:space-x-2">
-
-          {/* Soundbox Hardware Trigger */}
-          <button
-            onClick={onOpenSoundbox}
-            title="Open Paytm Soundbox 4.0 Physical Device Mock"
-            className="p-2 rounded-lg bg-wine-light hover:bg-cream hover:text-wine text-cream text-xs font-semibold transition-all border border-wine/40"
-          >
-            <Radio className="w-4 h-4 text-gold" />
-          </button>
-
-          {/* WhatsApp Kirana Trigger */}
-          <button
-            onClick={onOpenWhatsApp}
-            title="Open WhatsApp Merchant Simulator"
-            className="p-2 rounded-lg bg-wine-light hover:bg-cream hover:text-wine text-cream text-xs font-semibold transition-all border border-wine/40"
-          >
-            <MessageSquare className="w-4 h-4 text-emerald-400" />
-          </button>
-
-          {/* Cluster Map Visualizer Trigger */}
-          <button
-            onClick={onOpenClusterMap}
-            title="Open Hyperlocal Cluster Map"
-            className="p-2 rounded-lg bg-wine-light hover:bg-cream hover:text-wine text-cream text-xs font-semibold transition-all border border-wine/40"
-          >
-            <Map className="w-4 h-4 text-sky-400" />
-          </button>
-
-          {/* Regional Language Dropdown Menu */}
-          <div className="relative">
+        {/* Right cluster */}
+        <div className="flex items-center gap-1.5 ml-auto lg:ml-0 shrink-0">
+          {/* Channel simulators: icon-only everywhere, labelled by title/aria */}
+          {deviceButtons.map(({ onClick, label, Icon, tint }) => (
             <button
-              onClick={() => setLangMenuOpen(!langMenuOpen)}
-              className="px-2.5 py-1.5 rounded-lg bg-wine-dark text-gold text-xs font-bold border border-gold/40 hover:border-gold flex items-center space-x-1.5"
+              key={label}
+              onClick={onClick}
+              title={label}
+              aria-label={label}
+              className="w-10 h-10 rounded-xl bg-wine-light/70 hover:bg-cream hover:text-wine
+                         border border-gold/30 flex items-center justify-center transition-colors"
             >
-              <Globe className="w-3.5 h-3.5 text-gold-light" />
-              <span>{currentLangObj.label}</span>
-              <ChevronDown className="w-3 h-3 opacity-70" />
+              <Icon className={`w-[18px] h-[18px] ${tint}`} />
             </button>
-
-            {langMenuOpen && (
-              <div className="absolute right-0 mt-2 w-36 bg-cream text-charcoal rounded-xl shadow-xl border border-gold/40 py-1 z-50 animate-fadeIn">
-                <div className="px-3 py-1 text-[9px] font-bold uppercase text-charcoal-muted border-b border-gold/20">
-                  Select Language
-                </div>
-                {languages.map((l) => (
-                  <button
-                    key={l.code}
-                    onClick={() => {
-                      setLang(l.code);
-                      setLangMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-1.5 text-xs font-semibold flex items-center justify-between transition-colors ${
-                      lang === l.code ? 'bg-wine text-cream font-bold' : 'hover:bg-sand text-charcoal'
-                    }`}
-                  >
-                    <span>{l.label}</span>
-                    <span className="text-[10px] opacity-70">{l.code.toUpperCase()}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
+          ))}
+          <LanguageMenu lang={lang} setLang={setLang} />
         </div>
-
       </div>
+
+      {/* Merchant strip - desktop only; on mobile this lives in the dashboard header */}
+      {merchant && (
+        <div className="hidden lg:block bg-wine-dark/40 border-t border-gold/20">
+          <div className="max-w-[1600px] mx-auto px-8 py-1.5 flex items-center gap-2.5 text-xs text-cream/80">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span className="font-semibold text-cream">{merchant.name}</span>
+            <span className="text-gold/60">•</span>
+            <span>{merchant.cluster_id?.replace(/_/g, ' ')}</span>
+            <span className="text-gold/60">•</span>
+            <span>Soundbox {merchant.soundbox_id || 'SBX-DL-4019-V4'}</span>
+          </div>
+        </div>
+      )}
     </header>
+  );
+}
+
+/**
+ * Fixed bottom tab bar - the mobile navigation pattern users already know from
+ * every app on their phone. Replaces the horizontally-scrolling strip, which
+ * hid tabs off-screen and had no notion of "where am I".
+ */
+export function MobileTabBar({ activeTab, setActiveTab, lang }) {
+  const t = translations[lang]?.nav || translations.en.nav;
+
+  return (
+    <nav
+      className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-cream/95 backdrop-blur border-t border-gold/40
+                 shadow-tabbar pb-[env(safe-area-inset-bottom,0px)]"
+      aria-label="Main navigation"
+    >
+      <ul className="grid grid-cols-5">
+        {TABS.map(({ id, key, Icon }) => {
+          const active = activeTab === id;
+          return (
+            <li key={id}>
+              <button
+                onClick={() => setActiveTab(id)}
+                aria-current={active ? 'page' : undefined}
+                className="w-full h-16 flex flex-col items-center justify-center gap-1 relative"
+              >
+                {/* Active indicator sits at the top edge, like iOS/Android tabs */}
+                <span className={`absolute top-0 h-0.5 w-8 rounded-full transition-colors
+                                  ${active ? 'bg-wine' : 'bg-transparent'}`} />
+                <Icon className={`w-5 h-5 transition-colors ${active ? 'text-wine' : 'text-charcoal-light'}`} />
+                <span className={`text-[10px] leading-none font-semibold transition-colors
+                                  ${active ? 'text-wine' : 'text-charcoal-light'}`}>
+                  {SHORT[id] || t[key]}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }

@@ -1,115 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, ShieldAlert, Sparkles, HelpCircle } from 'lucide-react';
+import { Tag, ShieldAlert } from 'lucide-react';
+import { Card, CardHeader, CardBody, CardFooter, Skeleton } from './ui/Card';
 import { api } from '../services/api';
 import { translations } from '../i18n/translations';
+
+const CATEGORIES = ['snacks', 'beverages', 'staples'];
+
+const LABELS = {
+  snacks:    { en: 'Snacks', hi: 'स्नैक्स', ta: 'தின்பண்டம்', te: 'స్నాక్స్', kn: 'ತಿಂಡಿ', mr: 'स्नॅक्स', bn: 'স্ন্যাক্স' },
+  beverages: { en: 'Drinks', hi: 'पेय', ta: 'பானம்', te: 'పానీయాలు', kn: 'ಪಾನೀಯ', mr: 'पेये', bn: 'পানীয়' },
+  staples:   { en: 'Staples', hi: 'किराना', ta: 'மளிகை', te: 'ధాన్యాలు', kn: 'ದಿನಸಿ', mr: 'किराणा', bn: 'নিত্যপণ্য' },
+};
 
 export default function PricePulseCard({ lang = 'hi' }) {
   const [category, setCategory] = useState('snacks');
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const t = translations[lang]?.dashboard || translations.en.dashboard;
 
   useEffect(() => {
-    loadCategoryPrice(category);
+    let alive = true;
+    setLoading(true);
+    api.getPricePulse(category)
+      .then((res) => { if (alive) setData(res); })
+      .catch((err) => console.error('Price pulse failed:', err))
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };   // ignore a stale response after a fast tab switch
   }, [category]);
 
-  const loadCategoryPrice = async (cat) => {
-    setLoading(true);
-    try {
-      const res = await api.getPricePulse(cat);
-      setData(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // The marker used to sit at a hardcoded left:72% no matter what the API
+  // returned. Place it on the real P25..P75 scale instead, clamped so an
+  // out-of-range ticket still renders inside the track.
+  const markerPct = (() => {
+    if (!data) return 50;
+    const { category_benchmark_p25: lo, category_benchmark_p75: hi, merchant_median_atv: me } = data;
+    if (![lo, hi, me].every((n) => typeof n === 'number') || hi <= lo) return 50;
+    return Math.min(94, Math.max(6, 25 + ((me - lo) / (hi - lo)) * 50));
+  })();
 
-  const categoryLabels = {
-    snacks: { en: 'Snacks', hi: 'स्नैक्स', ta: 'தின்பண்டங்கள்', te: 'స్నాక్స్', kn: 'ತಿಂಡಿಗಳು', mr: 'स्नॅक्स', bn: 'স্ন্যাক্স' },
-    beverages: { en: 'Beverages', hi: 'पेय पदार्थ', ta: 'பானங்கள்', te: 'పానీయాలు', kn: 'ಪಾನೀಯಗಳು', mr: 'पेये', bn: 'পানীয়' },
-    staples: { en: 'Staples', hi: 'अनाज/किराना', ta: 'மளிகை', te: 'ధాన్యాలు', kn: 'ದವಸ-ಧಾನ್ಯ', mr: 'धान्य/किराणा', bn: 'নিত্যপণ্য' }
-  };
+  const above = data && data.merchant_median_atv > data.category_benchmark_p75;
 
   return (
-    <div className="bg-cream rounded-2xl border border-gold/30 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div>
-        <div className="flex items-center justify-between pb-3 border-b border-gold/20">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-wine/10 text-wine flex items-center justify-center">
-              <Tag className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-heading font-bold text-base text-charcoal">{t.pricePulseTitle}</h3>
-              <p className="text-[11px] text-charcoal-muted">{t.pricePulseSub}</p>
-            </div>
-          </div>
-
-          {/* Category Tabs */}
-          <div className="flex space-x-1 bg-sand p-1 rounded-lg">
-            {['snacks', 'beverages', 'staples'].map((cat) => (
+    <Card>
+      <CardHeader
+        Icon={Tag}
+        title={t.pricePulseTitle}
+        subtitle={t.pricePulseSub}
+        badge={
+          <div className="flex gap-0.5 p-0.5 bg-sand rounded-lg">
+            {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`text-[11px] font-semibold px-2 py-0.5 rounded capitalize transition-all ${
-                  category === cat ? 'bg-wine text-cream shadow-xs' : 'text-charcoal-muted hover:text-charcoal'
-                }`}
+                className={`text-[10px] font-bold px-2 py-1 rounded-md transition-colors
+                            ${category === cat ? 'bg-wine text-cream shadow-sm' : 'text-charcoal-muted hover:text-charcoal'}`}
               >
-                {categoryLabels[cat]?.[lang] || cat}
+                {LABELS[cat]?.[lang] || cat}
               </button>
             ))}
           </div>
-        </div>
+        }
+      />
 
+      <CardBody className="space-y-3">
+        {loading && !data && (<><Skeleton className="h-24" /><Skeleton className="h-14" /></>)}
 
-        {data && (
-          <div className="mt-4 space-y-3">
-            {/* Benchmark distribution bar */}
-            <div className="bg-sand/70 rounded-xl p-3 border border-gold/20">
-              <div className="flex justify-between text-xs text-charcoal font-medium">
-                <span>Category P25: ₹{Math.round(data.category_benchmark_p25)}</span>
-                <span className="font-bold text-wine">Market Median: ₹{Math.round(data.category_benchmark_median)}</span>
-                <span>Category P75: ₹{Math.round(data.category_benchmark_p75)}</span>
+        {data?.suppressed && (
+          <div className="rounded-xl bg-amber-50 border border-amber-200 p-3">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-amber-800">
+              Insight suppressed
+            </p>
+            <p className="text-xs text-amber-900 mt-1 leading-snug">{data.message}</p>
+          </div>
+        )}
+
+        {data && !data.suppressed && (
+          <>
+            <div className="rounded-xl bg-sand/70 border border-gold/20 p-3">
+              <div className="flex justify-between text-[11px] font-semibold text-charcoal tabular-nums">
+                <span>P25 ₹{Math.round(data.category_benchmark_p25)}</span>
+                <span className="text-wine font-bold">Median ₹{Math.round(data.category_benchmark_median)}</span>
+                <span>P75 ₹{Math.round(data.category_benchmark_p75)}</span>
               </div>
 
-              {/* Graphical distribution visual */}
-              <div className="relative w-full h-3 bg-cream rounded-full mt-2 overflow-hidden border border-gold/30">
-                <div 
-                  className="absolute top-0 bottom-0 bg-gold/40"
-                  style={{ left: '25%', width: '50%' }}
-                  title="Interquartile Range"
-                />
-                <div 
-                  className="absolute top-0 bottom-0 w-1 bg-wine"
-                  style={{ left: '50%' }}
-                  title="Cluster Median"
-                />
-                <div 
-                  className="absolute top-0 bottom-0 w-2.5 h-2.5 rounded-full bg-wine border-2 border-cream top-0.25 shadow"
-                  style={{ left: '72%' }}
-                  title="Your Store Average Ticket"
+              {/* Interquartile band with the merchant's own position marked */}
+              <div className="relative w-full h-3.5 bg-cream rounded-full mt-2.5 border border-gold/30">
+                <div className="absolute inset-y-0 bg-gold/35 rounded-full" style={{ left: '25%', width: '50%' }} />
+                <div className="absolute inset-y-0 w-0.5 bg-wine/70" style={{ left: '50%' }} />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full
+                             bg-wine border-2 border-cream shadow transition-[left] duration-500"
+                  style={{ left: `${markerPct}%` }}
                 />
               </div>
-              <p className="text-[10px] text-charcoal-muted text-center mt-1.5">
-                ● Your Store Ticket (₹{Math.round(data.merchant_median_atv)}) vs Broader Category Distribution
+
+              <p className="text-[10px] text-charcoal-muted text-center mt-2">
+                Your ticket <strong className="text-wine">₹{Math.round(data.merchant_median_atv)}</strong>
+                {above ? ' — above the local range' : ' — within the local range'}
               </p>
             </div>
 
-            {/* Recommended Action */}
-            <div className="bg-sand/50 rounded-xl p-3 border border-gold/20">
-              <h4 className="text-[11px] uppercase font-bold text-wine tracking-wider">Strategy Guidance</h4>
-              <p className="text-xs font-semibold text-charcoal mt-0.5">{data.recommended_action}</p>
+            <div className="rounded-xl bg-sand/50 border border-gold/20 p-3">
+              <h4 className="text-[10px] uppercase font-bold text-wine tracking-wider">Strategy guidance</h4>
+              <p className="text-xs font-semibold text-charcoal mt-0.5 leading-snug">
+                {data.recommended_action}
+              </p>
             </div>
-          </div>
+          </>
         )}
-      </div>
+      </CardBody>
 
-      {/* Strict competition safety banner */}
-      <div className="mt-4 pt-3 border-t border-gold/20 flex items-center space-x-1.5 text-[10px] text-charcoal-muted">
-        <ShieldAlert className="w-3.5 h-3.5 text-wine shrink-0" />
-        <span>{data?.competition_safety_note || "Aggregated over 42 stores. Individual store prices strictly shielded."}</span>
-      </div>
-    </div>
+      <CardFooter
+        note={
+          <span className="flex items-center gap-1.5">
+            <ShieldAlert className="w-3.5 h-3.5 text-wine shrink-0" />
+            <span className="truncate">
+              {data?.competition_safety_note || 'Individual store prices strictly shielded.'}
+            </span>
+          </span>
+        }
+      />
+    </Card>
   );
 }

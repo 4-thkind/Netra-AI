@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { X, Volume2, Wifi, BatteryCharging, Radio, Sparkles } from 'lucide-react';
 import { translations, languages } from '../i18n/translations';
+import { useDismissable } from '../hooks/useDismissable';
 
 export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
   const [chimePlaying, setChimePlaying] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [displayText, setDisplayText] = useState("₹ 40.00");
+
+  useDismissable(isOpen, onClose);
+
 
   if (!isOpen) return null;
 
@@ -79,7 +83,10 @@ export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-4"
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
+    >
       <div className="bg-cream rounded-3xl max-w-md w-full border border-gold/40 shadow-2xl overflow-hidden animate-fadeIn">
         
         {/* Header */}

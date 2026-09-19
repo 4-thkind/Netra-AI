@@ -1,69 +1,116 @@
-import React from 'react';
-import { Calendar, AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Card, CardHeader, CardBody, CardFooter, Pill, LinkButton, Skeleton } from './ui/Card';
 import { translations } from '../i18n/translations';
 
-export default function CashflowCard({ cashflow, lang = 'hi' }) {
-  if (!cashflow) return null;
+const inr = (n) => `₹${Math.round(n).toLocaleString('en-IN')}`;
 
+export default function CashflowCard({ cashflow, lang = 'hi', onOpenDetail }) {
   const t = translations[lang]?.dashboard || translations.en.dashboard;
+  const [picked, setPicked] = useState(null);
+
+  if (!cashflow) {
+    return (
+      <Card>
+        <CardHeader Icon={Calendar} title={t.cashflowTitle} subtitle={t.cashflowSub} />
+        <CardBody className="space-y-3">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-28" />
+        </CardBody>
+      </Card>
+    );
+  }
+
+  const days = cashflow.days || [];
+  const peak = Math.max(...days.map((d) => d.projected_inflow), 1);
+  const active = picked !== null ? days[picked] : null;
 
   return (
-    <div className="bg-cream rounded-2xl border border-gold/30 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div>
-        <div className="flex items-center justify-between pb-3 border-b border-gold/20">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-wine/10 text-wine flex items-center justify-center">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-heading font-bold text-base text-charcoal">{t.cashflowTitle}</h3>
-              <p className="text-[11px] text-charcoal-muted">{t.cashflowSub}</p>
-            </div>
-          </div>
-
+    <Card>
+      <CardHeader
+        Icon={Calendar}
+        title={t.cashflowTitle}
+        subtitle={t.cashflowSub}
+        badge={
           <div className="text-right">
-            <span className="text-[10px] uppercase font-semibold text-charcoal-muted">7-Day Projected</span>
-            <p className="font-heading font-bold text-base text-wine">₹{Math.round(cashflow.total_projected_7d).toLocaleString('en-IN')}</p>
+            <span className="block text-[10px] uppercase font-semibold text-charcoal-light">7-day</span>
+            <span className="font-heading font-bold text-base text-wine">
+              {inr(cashflow.total_projected_7d)}
+            </span>
           </div>
+        }
+      />
+
+      <CardBody>
+        {/* Bars are buttons so a phone user can tap to read an exact value -
+            a `title` tooltip never appears on touch. */}
+        <div className="grid grid-cols-7 gap-1 sm:gap-1.5 items-end h-28">
+          {days.map((d, i) => {
+            const h = Math.max(18, (d.projected_inflow / peak) * 100);
+            const warn = d.risk_level === 'warning';
+            const on = picked === i;
+            return (
+              <button
+                key={i}
+                onClick={() => setPicked(on ? null : i)}
+                aria-label={`${d.day_name}: ${inr(d.projected_inflow)}`}
+                className="h-full flex flex-col items-center justify-end gap-1 group"
+              >
+                <span className={`text-[9px] font-bold tabular-nums transition-colors
+                                  ${on ? 'text-wine' : 'text-charcoal-light'}`}>
+                  {Math.round(d.projected_inflow / 1000)}k
+                </span>
+                <span
+                  style={{ height: `${h}%` }}
+                  className={`w-full rounded-t-md transition-all
+                              ${warn ? 'bg-amber-400' : on ? 'bg-wine' : 'bg-wine/75'}
+                              ${on ? 'ring-2 ring-gold ring-offset-1 ring-offset-cream' : ''}
+                              group-hover:bg-wine`}
+                />
+                <span className={`text-[10px] font-semibold ${on ? 'text-wine' : 'text-charcoal-muted'}`}>
+                  {d.day_name.slice(0, 3)}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* 7-Day Bar Chart representation */}
-        <div className="mt-4">
-          <div className="grid grid-cols-7 gap-1.5 items-end h-24 pt-2">
-            {cashflow.days.map((d, i) => {
-              const heightPercent = Math.min(100, Math.max(25, (d.projected_inflow / 14000) * 100));
-              const isWarning = d.risk_level === 'warning';
-              return (
-                <div key={i} className="flex flex-col items-center justify-end h-full">
-                  <span className="text-[9px] font-semibold text-charcoal-muted mb-1">
-                    ₹{Math.round(d.projected_inflow / 1000)}k
-                  </span>
-                  <div
-                    style={{ height: `${heightPercent}%` }}
-                    className={`w-full rounded-t-md transition-all ${
-                      isWarning ? 'bg-amber-400' : 'bg-wine'
-                    }`}
-                    title={`${d.day_name}: ₹${d.projected_inflow}`}
-                  />
-                  <span className="text-[10px] font-medium text-charcoal mt-1">{d.day_name.slice(0, 3)}</span>
-                </div>
-              );
-            })}
+        {active ? (
+          <div className="mt-3 p-3 rounded-xl bg-wine text-cream border border-gold/30 animate-riseIn">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold">{active.day_name}</span>
+              <Pill tone={active.risk_level === 'warning' ? 'amber' : 'gold'}>
+                {active.risk_level}
+              </Pill>
+            </div>
+            <p className="font-heading font-bold text-lg mt-0.5">{inr(active.projected_inflow)}</p>
+            <p className="text-[11px] text-sand mt-0.5">
+              Confidence band {inr(active.confidence_low)} – {inr(active.confidence_high)}
+            </p>
           </div>
-
-          <div className="mt-3 p-2.5 rounded-xl bg-sand/70 border border-gold/20 flex items-start space-x-2">
-            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-            <p className="text-xs text-charcoal font-medium leading-snug">
+        ) : (
+          <div className="mt-3 p-3 rounded-xl bg-sand/70 border border-gold/20 flex items-start gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-px" />
+            <p className="text-[11px] sm:text-xs text-charcoal font-medium leading-snug">
               {cashflow.recommended_action}
             </p>
           </div>
-        </div>
-      </div>
+        )}
+      </CardBody>
 
-      <div className="mt-4 pt-3 border-t border-gold/20 flex items-center justify-between text-[11px] text-charcoal-muted">
-        <span>Based solely on your historical UPI sales</span>
-        <span className="text-wine font-semibold cursor-pointer hover:underline">Distributor Schedule</span>
-      </div>
-    </div>
+      <CardFooter
+        note={
+          // Surface the model card: a money forecast should say how it was made.
+          cashflow.model?.is_fitted
+            ? `Fitted on ${cashflow.model.fitted_on_days}d · R²=${cashflow.model.r_squared} · peak ${cashflow.model.peak_day}`
+            : 'From your own UPI history only'
+        }
+        action={
+          <LinkButton onClick={onOpenDetail} Icon={TrendingUp}>
+            Full forecast
+          </LinkButton>
+        }
+      />
+    </Card>
   );
 }
