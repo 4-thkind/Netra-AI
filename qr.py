@@ -316,11 +316,26 @@ if __name__ == "__main__":
         except Exception:
             return None
 
-    default_url = "http://localhost:3000"
-    target_url = sys.argv[1] if len(sys.argv) > 1 else default_url
+    import re
+    from pathlib import Path
+
+    target_url = sys.argv[1] if len(sys.argv) > 1 else None
+
+    if not target_url:
+        log_file = Path(__file__).resolve().parent / "tunnel.log"
+        if log_file.exists():
+            try:
+                m = re.search(r"https://[-a-z0-9]+\.trycloudflare\.com", log_file.read_text(encoding="utf-8", errors="replace"))
+                if m:
+                    target_url = m.group()
+            except Exception:
+                pass
+
+    if not target_url:
+        target_url = "http://localhost:3000"
 
     print(f"\n========================================================")
-    print(f"  NETRĀ Local Host QR Code")
+    print(f"  NETRĀ Phone Access QR Code")
     print(f"  Target URL: {target_url}")
     print(f"========================================================\n")
     print(render(target_url))

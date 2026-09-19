@@ -353,11 +353,10 @@ def lan_ip() -> str | None:
 # --- main ------------------------------------------------------------------
 def main() -> None:
     ap = argparse.ArgumentParser(add_help=True)
-    ap.add_argument("--tunnel", action="store_true", help="open ad-hoc cloudflared tunnel instead of deployed URL")
-    ap.add_argument("--no-tunnel", action="store_true", help="local only")
+    ap.add_argument("--no-tunnel", action="store_true", help="local only, skip public tunnel")
     ap.add_argument("--reseed", action="store_true", help="rebuild netra.db")
     ap.add_argument("--url", metavar="URL",
-                    help="show the QR for this URL (defaults to local network address)")
+                    help="show the QR for this custom URL instead of public tunnel")
     args = ap.parse_args()
 
     load_dotenv()
@@ -374,30 +373,31 @@ def main() -> None:
     start_backend()
     start_frontend()
 
-    ip = lan_ip()
-    local_host_url = f"http://localhost:{FRONTEND_PORT}"
-
     if args.url:
-        url, reachable = args.url.rstrip("/"), True
+        url, reachable = args.url.rstrip("/"), http_ok(args.url, timeout=8)
         step(f"[5/5] Using custom URL: {url}")
-    elif args.tunnel:
-        url, reachable = start_tunnel()
+    elif args.no_tunnel:
+        url, reachable = (None, False)
     else:
-        url, reachable = local_host_url, True
-        step(f"[5/5] Using localhost: {url}")
+        url, reachable = start_tunnel()
 
     print()
     ok("=" * 56)
-    ok("  NETRA IS LIVE (LOCAL HOST)")
+    ok("  NETRA IS LIVE")
     ok("=" * 56)
-    print(f"  Localhost   : http://localhost:{FRONTEND_PORT}")
+    print(f"  This laptop : http://localhost:{FRONTEND_PORT}")
+    ip = lan_ip()
     if ip:
-        print(f"  LAN IP      : http://{ip}:{FRONTEND_PORT}")
+        print(f"  Same wifi   : http://{ip}:{FRONTEND_PORT}")
     print(f"  API docs    : http://localhost:{BACKEND_PORT}/docs")
 
     if url:
         print()
-        print(_c("1;33", f"  QR CODE LINK: {url}"))
+        print(_c("1;33", f"  PHONE URL: {url}"))
+        print("  Works on ANY network - mobile data, hotspot, different wifi.")
+        if not reachable:
+            warn("  NOTE: this laptop's DNS cannot resolve the link, but the")
+            warn("        tunnel IS live. Scan it from your phone instead.")
         print()
         show_qr(url)
 
