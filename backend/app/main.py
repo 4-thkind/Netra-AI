@@ -32,8 +32,12 @@ async def hydrate_knowledge_graph() -> None:
     print(f"Cognee knowledge graph: {stats['node_count']} nodes, "
           f"{stats['edge_count']} edges across {len(rows)} merchant records.")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
+_db_initialized = False
+
+async def init_db():
+    global _db_initialized
+    if _db_initialized:
+        return
     # Initialize DB tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -42,11 +46,13 @@ async def lifespan(app: FastAPI):
     if settings.DEMO_MODE:
         await seed_synthetic_data()
 
-    # Hydrate the Cognee knowledge graph from the merchant table so cohorts
-    # have real peers to traverse. Without this the graph knows one merchant
-    # and "stores like yours" has nobody in it.
+    # Hydrate the Cognee knowledge graph from the merchant table
     await hydrate_knowledge_graph()
+    _db_initialized = True
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
     yield
 
 app = FastAPI(
@@ -64,6 +70,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serverless auto-initialization middleware (handles environments where ASGI lifespan is skipped)
+@app.middleware("http")
+async def ensure_db_ready(request: Request, call_next):
+    if not _db_initialized:
+        try:
+            await init_db()
+        except Exception as err:
+            print(f"Serverless init note: {err}")
+    return await call_next(request)
 
 # Security Headers Middleware
 @app.middleware("http")
