@@ -304,14 +304,24 @@ def render(text: str, quiet: int = 2) -> str:
 
 if __name__ == "__main__":
     import sys
+    import socket
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-    default_url = "https://netra-ai-live.pages.dev/"
+    def get_lan_ip() -> str | None:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.connect(("8.8.8.8", 80))
+                return s.getsockname()[0]
+        except Exception:
+            return None
+
+    ip = get_lan_ip()
+    default_url = f"http://{ip}:3000" if ip else "http://localhost:3000"
     target_url = sys.argv[1] if len(sys.argv) > 1 else default_url
 
     print(f"\n========================================================")
-    print(f"  NETRĀ Live Mobile PWA QR Code")
+    print(f"  NETRĀ Local Host QR Code")
     print(f"  Target URL: {target_url}")
     print(f"========================================================\n")
     print(render(target_url))

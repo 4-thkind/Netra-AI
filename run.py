@@ -357,7 +357,7 @@ def main() -> None:
     ap.add_argument("--no-tunnel", action="store_true", help="local only")
     ap.add_argument("--reseed", action="store_true", help="rebuild netra.db")
     ap.add_argument("--url", metavar="URL",
-                    help="show the QR for this URL (defaults to https://netra-ai-live.pages.dev)")
+                    help="show the QR for this URL (defaults to local network address)")
     args = ap.parse_args()
 
     load_dotenv()
@@ -374,33 +374,31 @@ def main() -> None:
     start_backend()
     start_frontend()
 
-    target_site = args.url or os.environ.get("DEPLOYED_URL") or "https://netra-ai-live.pages.dev"
+    ip = lan_ip()
+    local_phone_url = f"http://{ip}:{FRONTEND_PORT}" if ip else f"http://localhost:{FRONTEND_PORT}"
 
-    if not args.tunnel and not args.no_tunnel:
-        url, reachable = target_site.rstrip("/"), True
-        step(f"[5/5] Using deployed site: {url}")
+    if args.url:
+        url, reachable = args.url.rstrip("/"), True
+        step(f"[5/5] Using custom URL: {url}")
     elif args.tunnel:
         url, reachable = start_tunnel()
     else:
-        url, reachable = (None, False)
+        url, reachable = local_phone_url, True
+        step(f"[5/5] Using local network host: {url}")
 
     print()
     ok("=" * 56)
-    ok("  NETRA IS LIVE")
+    ok("  NETRA IS LIVE (LOCAL HOST)")
     ok("=" * 56)
     print(f"  This laptop : http://localhost:{FRONTEND_PORT}")
-    ip = lan_ip()
     if ip:
-        print(f"  Same wifi   : http://{ip}:{FRONTEND_PORT}")
+        print(f"  Phone/Wi-Fi : http://{ip}:{FRONTEND_PORT}")
     print(f"  API docs    : http://localhost:{BACKEND_PORT}/docs")
 
     if url:
         print()
-        print(_c("1;33", f"  PHONE URL: {url}"))
-        print("  Works on ANY network - mobile data, hotspot, different wifi.")
-        if not reachable:
-            warn("  NOTE: this laptop's DNS cannot resolve the link, but the")
-            warn("        tunnel IS live. Scan it from your phone instead.")
+        print(_c("1;33", f"  SCAN QR FOR LOCAL ACCESS: {url}"))
+        print("  Connect your phone to the same Wi-Fi network and scan:")
         print()
         show_qr(url)
 
