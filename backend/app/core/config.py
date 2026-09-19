@@ -1,5 +1,11 @@
+import os
 from pydantic_settings import BaseSettings
 from typing import Optional
+
+def get_default_database_url() -> str:
+    if os.environ.get("VERCEL"):
+        return "sqlite+aiosqlite:////tmp/netra.db"
+    return "sqlite+aiosqlite:///./netra.db"
 
 class Settings(BaseSettings):
     APP_NAME: str = "Netra"
@@ -22,7 +28,7 @@ class Settings(BaseSettings):
     PRIVACY_NOISE_EPSILON: float = 0.05
 
     # Database
-    DATABASE_URL: str = "sqlite+aiosqlite:///./netra.db"
+    DATABASE_URL: str = get_default_database_url()
 
     # Redis (optional fallback to in-memory)
     REDIS_URL: Optional[str] = None
