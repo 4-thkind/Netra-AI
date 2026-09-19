@@ -76,7 +76,7 @@ export default function SecuritySentinel({ lang = 'en' }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-fadeIn">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6 animate-fadeIn">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gold/30 pb-5">
@@ -85,7 +85,7 @@ export default function SecuritySentinel({ lang = 'en' }) {
             <Activity className="w-5 h-5 text-gold animate-pulse" />
             <span>{t.badge}</span>
           </div>
-          <h1 className="font-heading font-bold text-3xl text-wine mt-1">
+          <h1 className="font-heading font-bold text-[22px] sm:text-3xl text-wine mt-1 leading-tight">
             {t.title}
           </h1>
           <p className="text-sm text-charcoal font-medium mt-0.5">
@@ -107,26 +107,26 @@ export default function SecuritySentinel({ lang = 'en' }) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiSuppression}</span>
-          <p className="font-heading font-bold text-2xl text-wine mt-1">
+          <p className="font-heading font-bold text-xl sm:text-2xl text-wine mt-1">
             {totalSuppressed > 0 ? `${totalSuppressed} Shielded` : 'Active'}
           </p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiSuppressionSub}</span>
         </div>
         <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiBlocked}</span>
-          <p className="font-heading font-bold text-2xl text-red-700 mt-1">
+          <p className="font-heading font-bold text-xl sm:text-2xl text-red-700 mt-1">
             {totalBlocked > 0 ? `${totalBlocked} Neutralised` : 'Active'}
           </p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiBlockedSub}</span>
         </div>
         <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiBudget}</span>
-          <p className="font-heading font-bold text-2xl text-wine mt-1">100%</p>
+          <p className="font-heading font-bold text-xl sm:text-2xl text-wine mt-1">100%</p>
           <span className="text-[10px] text-charcoal-muted font-medium">{t.kpiBudgetSub}</span>
         </div>
         <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiHealth}</span>
-          <p className="font-heading font-bold text-2xl text-emerald-700 mt-1">Pass</p>
+          <p className="font-heading font-bold text-xl sm:text-2xl text-emerald-700 mt-1">Pass</p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiHealthSub}</span>
         </div>
       </div>

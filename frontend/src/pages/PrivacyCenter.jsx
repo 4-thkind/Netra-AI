@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Lock, EyeOff, Layers, CheckCircle, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Lock, EyeOff, Layers, CheckCircle, AlertCircle, Map } from 'lucide-react';
 import { api } from '../services/api';
 import { translations } from '../i18n/translations';
 
-export default function PrivacyCenter({ lang = 'en' }) {
+export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
   const [policy, setPolicy] = useState(null);
   const [budget, setBudget] = useState(null);
 
@@ -15,7 +15,7 @@ export default function PrivacyCenter({ lang = 'en' }) {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fadeIn">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-8 animate-fadeIn">
       
       {/* Header */}
       <div className="border-b border-gold/30 pb-5">
@@ -23,7 +23,7 @@ export default function PrivacyCenter({ lang = 'en' }) {
           <ShieldCheck className="w-5 h-5 text-gold" />
           <span>{t.badge}</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl text-wine mt-1">
+        <h1 className="font-heading font-bold text-[22px] sm:text-3xl text-wine mt-1 leading-tight">
           {t.title}
         </h1>
         <p className="text-sm text-charcoal font-medium mt-1">
@@ -100,6 +100,28 @@ export default function PrivacyCenter({ lang = 'en' }) {
         </div>
 
       </div>
+
+      {/* Interactive demonstrator: resolves the 4-merchant dilemma visually */}
+      {onOpenClusterMap && (
+        <button
+          onClick={onOpenClusterMap}
+          className="w-full rounded-2xl border border-gold/40 bg-wine text-cream p-4 sm:p-5
+                     flex items-center gap-3 text-left hover:bg-wine-dark transition-colors shadow-card"
+        >
+          <span className="w-10 h-10 rounded-xl bg-cream/15 flex items-center justify-center shrink-0">
+            <Map className="w-5 h-5 text-sky-300" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-heading font-bold text-sm sm:text-base">
+              See the 4-merchant dilemma resolved
+            </span>
+            <span className="block text-[11px] sm:text-xs text-sand mt-0.5">
+              Watch the cohort gate expand 1km to 3km to 5km, and suppress when it still cannot reach N &ge; 10.
+            </span>
+          </span>
+          <ShieldCheck className="w-4 h-4 text-gold shrink-0" />
+        </button>
+      )}
 
       {/* Live Operational Metrics & Invariant Checks */}
       <div className="bg-sand rounded-2xl p-6 border border-gold/40">

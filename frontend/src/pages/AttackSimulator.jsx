@@ -58,7 +58,7 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-fadeIn">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6 animate-fadeIn">
       
       {/* Header */}
       <div className="border-b border-gold/30 pb-5">
@@ -66,7 +66,7 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
           <Terminal className="w-5 h-5 text-gold" />
           <span>{t.badge}</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl text-wine mt-1">
+        <h1 className="font-heading font-bold text-[22px] sm:text-3xl text-wine mt-1 leading-tight">
           {t.title}
         </h1>
         <p className="text-sm text-charcoal font-medium mt-1">

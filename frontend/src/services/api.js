@@ -1,4 +1,8 @@
-const API_BASE = "http://127.0.0.1:8000/api/v1";
+// Same-origin by default: works on localhost, on a phone over LAN, and through
+// a public tunnel (cloudflared) without rebuilding. Vite proxies /api to the
+// backend in dev; nginx/uvicorn serve both on one port in the demo launcher.
+// Override only if you deliberately split hosts: VITE_API_BASE=http://host:8000
+const API_BASE = `${import.meta.env.VITE_API_BASE ?? ""}/api/v1`;
 
 export async function fetchWithAuth(endpoint, options = {}) {
   const token = localStorage.getItem("netra_token");
@@ -55,6 +59,17 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ query, lang })
     }),
+
+  // Merchant WhatsApp connection (delivery via n8n)
+  updateContact: (phone) =>
+    fetchWithAuth("/merchant/contact", { method: "PATCH", body: JSON.stringify({ phone }) }),
+  sendWhatsApp: (kind = "insight", message = null, lang = null) =>
+    fetchWithAuth("/merchant/whatsapp/send", {
+      method: "POST",
+      body: JSON.stringify({ kind, message, lang }),
+    }),
+  getKnowledgeGraph: () => fetchWithAuth("/merchant/knowledge-graph"),
+  getDeliveries: () => fetchWithAuth("/n8n/deliveries"),
 
   // n8n Workflows
   getN8nInfo: () => fetchWithAuth("/n8n/info"),

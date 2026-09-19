@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Workflow, Play, CheckCircle2, Download, ExternalLink, Sparkles, AlertTriangle, Layers, Clock } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function N8nHub() {
+export default function N8nHub({ lang = 'en' }) {
   const [n8nInfo, setN8nInfo] = useState(null);
   const [activeExecution, setActiveExecution] = useState(null);
   const [runningWf, setRunningWf] = useState(null);
@@ -28,16 +28,24 @@ export default function N8nHub() {
     }
   };
 
-  const downloadJson = (fileName) => {
-    // Direct link to download the JSON workflow
-    const dummy = document.createElement('a');
-    dummy.href = `/${fileName}`;
-    dummy.setAttribute('download', fileName);
-    alert(`Downloading n8n workflow export: n8n/workflows/${fileName}\n\nYou can import this directly into n8n Cloud.`);
+  const [copied, setCopied] = useState(null);
+
+  // The old handler built an <a> it never clicked and then fired an alert(),
+  // so nothing was ever exported. The workflow JSON is not served by Vite, so
+  // copy the import path instead of pretending to download a file.
+  const copyPath = async (fileName) => {
+    const path = `n8n/workflows/${fileName}`;
+    try {
+      await navigator.clipboard.writeText(path);
+    } catch {
+      /* clipboard blocked (insecure origin / denied) - still show the path */
+    }
+    setCopied(fileName);
+    setTimeout(() => setCopied((c) => (c === fileName ? null : c)), 2200);
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fadeIn">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-8 animate-fadeIn">
       
       {/* Official Voucher Banner */}
       <div className="bg-gradient-to-r from-wine to-wine-dark text-cream p-6 rounded-2xl border border-gold shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -46,7 +54,7 @@ export default function N8nHub() {
             <Sparkles className="w-4 h-4" />
             <span>OFFICIAL HACKATHON SPONSOR TRACK</span>
           </div>
-          <h2 className="font-heading font-bold text-2xl text-cream mt-1">
+          <h2 className="font-heading font-bold text-lg sm:text-2xl text-cream mt-1 leading-snug">
             Best Use of n8n in Your Project • 1 Year Cloud Pro Prize
           </h2>
           <p className="text-sand text-xs mt-1 max-w-2xl leading-relaxed">
@@ -79,7 +87,7 @@ export default function N8nHub() {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {n8nInfo?.workflows.map((wf) => (
+          {(n8nInfo?.workflows || []).map((wf) => (
             <div key={wf.id} className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-gold/20">
@@ -112,18 +120,25 @@ export default function N8nHub() {
                 <button
                   onClick={() => handleRunWorkflow(wf.id)}
                   disabled={runningWf === wf.id}
-                  className="w-full py-2 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs font-semibold shadow-xs flex items-center justify-center space-x-2 transition-all"
+                  className="w-full h-10 rounded-xl bg-wine hover:bg-wine-dark disabled:opacity-60
+                             disabled:cursor-default text-cream text-xs font-bold flex items-center
+                             justify-center gap-2 shadow-sm transition-colors"
                 >
                   <Play className={`w-3.5 h-3.5 text-gold ${runningWf === wf.id ? 'animate-spin' : ''}`} />
                   <span>{runningWf === wf.id ? 'Executing n8n Pipeline...' : 'Test Run Live Workflow'}</span>
                 </button>
 
                 <button
-                  onClick={() => downloadJson(wf.file)}
-                  className="w-full py-1.5 rounded-xl bg-sand hover:bg-gold/20 text-charcoal text-[11px] font-medium border border-gold/30 flex items-center justify-center space-x-1.5 transition-all"
+                  onClick={() => copyPath(wf.file)}
+                  className="w-full h-9 rounded-xl bg-sand hover:bg-gold/20 text-charcoal text-[11px]
+                             font-semibold border border-gold/30 flex items-center justify-center
+                             gap-1.5 transition-colors"
                 >
-                  <Download className="w-3.5 h-3.5 text-wine" />
-                  <span>Export Workflow JSON</span>
+                  {copied === wf.file ? (
+                    <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>Path copied</span></>
+                  ) : (
+                    <><Download className="w-3.5 h-3.5 text-wine" /><span>Copy import path</span></>
+                  )}
                 </button>
               </div>
             </div>
