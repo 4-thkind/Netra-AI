@@ -87,15 +87,15 @@ export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-4"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
     >
-      <div className="bg-cream rounded-3xl max-w-md w-full border border-gold/40 shadow-2xl overflow-hidden animate-fadeIn">
+      <div className="bg-cream rounded-2xl max-w-md w-full border border-gold/40 shadow-lift overflow-hidden animate-riseIn">
         
         {/* Header */}
-        <div className="bg-wine text-cream px-5 py-3 flex items-center justify-between border-b border-gold/30">
+        <div className="bg-wine text-cream px-5 py-3.5 flex items-center justify-between border-b border-gold/30">
           <div className="flex items-center space-x-2">
             <Radio className="w-4 h-4 text-gold" />
-            <h3 className="font-heading font-bold text-sm text-cream">Paytm Soundbox 4.0 Interactive Mock</h3>
+            <h3 className="font-heading font-semibold text-sm text-cream">Paytm Soundbox 4.0 Interactive Mock</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-wine-light text-cream">
+          <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-wine-light text-cream transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -103,7 +103,7 @@ export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
         {/* Physical Soundbox Visual Replica */}
         <div className="p-6 flex flex-col items-center">
           
-          <div className="w-64 bg-slate-900 rounded-3xl p-5 shadow-2xl border-4 border-slate-700 flex flex-col items-center relative">
+          <div className="w-64 bg-slate-900 rounded-3xl p-5 shadow-elevated border-4 border-slate-700 flex flex-col items-center relative">
             
             {/* Paytm Logo Bar */}
             <div className="w-full flex items-center justify-between px-2 text-slate-400 text-[10px] font-semibold">
@@ -151,18 +151,18 @@ export default function SoundboxDeviceModal({ isOpen, onClose, lang = 'hi' }) {
             <button
               onClick={playPaymentChime}
               disabled={chimePlaying}
-              className="py-2.5 px-3 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs font-semibold shadow-sm flex items-center justify-center space-x-1.5 transition-all"
+              className="h-11 px-4 rounded-xl bg-wine hover:bg-wine-dark text-cream text-sm font-semibold shadow-subtle flex items-center justify-center gap-2 transition-colors"
             >
-              <Volume2 className="w-3.5 h-3.5 text-gold" />
+              <Volume2 className="w-4 h-4 text-gold" />
               <span>Chime ({currentLangObj.label})</span>
             </button>
 
             <button
               onClick={playMorningBriefing}
               disabled={voicePlaying}
-              className="py-2.5 px-3 rounded-xl bg-gold hover:bg-gold-light text-charcoal text-xs font-semibold shadow-sm flex items-center justify-center space-x-1.5 transition-all"
+              className="h-11 px-4 rounded-xl bg-gold hover:bg-gold-light text-charcoal text-sm font-semibold shadow-subtle flex items-center justify-center gap-2 transition-colors"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-4 h-4" />
               <span>Briefing ({currentLangObj.label})</span>
             </button>
           </div>

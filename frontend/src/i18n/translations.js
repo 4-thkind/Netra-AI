@@ -24,8 +24,8 @@ export const translations = {
       shieldStatus: "Privacy Threshold: 42 Stores (Shield Active)"
     },
     dashboard: {
-      greeting: "Good morning, Ramesh.",
-      storeSubtitle: "Ramesh Kirana Store • Lajpat Nagar Central Market • Delhi",
+      greeting: "Good morning, Sanjeev.",
+      storeSubtitle: "Sanjeev Kirana Store • Lajpat Nagar Central Market • Delhi",
       todaySignalTag: "TODAY'S HIGHEST VALUE SIGNAL",
       heroHeadline: "Beverage demand is rising +18% in your broader local market.",
       heroBody: "South Delhi aggregates show strong afternoon momentum. Your beverage activity has not increased at the same pace. Review afternoon cold drink inventory before Friday.",
@@ -34,7 +34,7 @@ export const translations = {
       playBriefing: "Play Soundbox Briefing",
       replayBriefing: "Replay Voice Signal",
       playingBriefing: "Playing on Soundbox...",
-      soundboxSnippet: '"Hello Ramesh. Cold beverage demand is surging +18% across South Delhi this afternoon..."',
+      soundboxSnippet: '"Hello Sanjeev. Cold beverage demand is surging +18% across South Delhi this afternoon..."',
       tradeRadarTitle: "Trade Radar",
       tradeRadarSub: "Hyperlocal Demand Velocity",
       pricePulseTitle: "Price Pulse",
@@ -143,7 +143,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "WhatsApp Kirana Copilot Simulator",
-      subtitle: "Simulating live automated WhatsApp alerts sent to Ramesh Kumar via n8n",
+      subtitle: "Simulating live automated WhatsApp alerts sent to Sanjeev Kumar via n8n",
       distributorPO: "Generate 1-Tap Distributor PO",
       poSuccess: "Purchase Order sent to Sharmaji Wholesalers via WhatsApp!"
     },
@@ -155,13 +155,13 @@ export const translations = {
       shieldSuppressed: "Signal Suppressed: Insufficient Density (N < 10)"
     },
     voiceTranscript: {
-      en: "Hello Ramesh. Cold beverage demand is surging +18% across South Delhi this afternoon. Please review your stock.",
-      hi: "नमस्ते रमेश जी। दोपहर के लिए ठंडे पेय पदार्थों की मांग आपके क्षेत्र में 18% बढ़ रही है। स्टॉक की जांच करें।",
-      ta: "வணக்கம் ரமேஷ். உங்கள் பகுதியில் மதிய நேரத்தில் குளிர்பானங்களுக்கான தேவை 18% அதிகரித்து வருகிறது. இருப்பை சரிபார்க்கவும்.",
-      te: "నమస్కారం రమేష్ గారు. మీ ప్రాంతంలో మధ్యాహ్నం శీతల పానీయాల డిమాండ్ 18% పెరుగుతోంది. స్టాక్‌ను తనిఖీ చేయండి.",
-      kn: "ನಮಸ್ಕಾರ ರಮೇಶ್. ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಮಧ್ಯಾಹ್ನ ತಂಪು ಪಾನೀಯಗಳ ಬೇಡಿಕೆ 18% ಹೆಚ್ಚುತ್ತಿದೆ. ದಾಸ್ತಾನು ಪರಿಶೀಲಿಸಿ.",
-      mr: "नमस्कार रमेश जी. आपल्या भागात दुपारच्या वेळी थंड पेयांची मागणी १८% वाढत आहे. साठा तपासा.",
-      bn: "নমস্কার রমেশ বাবু। আপনার এলাকায় দুপুরে ঠান্ডা পানীয়ের চাহিদা ১৮% বাড়ছে। স্টক পরীক্ষা করুন।"
+      en: "Hello Sanjeev. Cold beverage demand is surging +18% across South Delhi this afternoon. Please review your stock.",
+      hi: "नमस्ते संजीव जी। दोपहर के लिए ठंडे पेय पदार्थों की मांग आपके क्षेत्र में 18% बढ़ रही है। स्टॉक की जांच करें।",
+      ta: "வணக்கம் சஞ்சீவ். உங்கள் பகுதியில் மதிய நேரத்தில் குளிர்பானங்களுக்கான தேவை 18% அதிகரித்து வருகிறது. இருப்பை சரிபார்க்கவும்.",
+      te: "నమస్కారం సంజీవ్ గారు. మీ ప్రాంతంలో మధ్యాహ్నం శీతల పానీయాల డిమాండ్ 18% పెరుగుతోంది. స్టాక్‌ను తనిಖీ చేయండి.",
+      kn: "ನಮಸ್ಕಾರ ಸಂಜೀವ್. ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಮಧ್ಯಾಹ್ನ ತಂಪು ಪಾನೀಯಗಳ ಬೇಡಿಕೆ 18% ಹೆಚ್ಚುತ್ತಿದೆ. ದಾಸ್ತಾನು ಪರಿಶೀಲಿಸಿ.",
+      mr: "नमस्कार संजीव जी. आपल्या भागात दुपारच्या वेळी थंड पेयांची मागणी १८% वाढत आहे. साठा तपासा.",
+      bn: "নমস্কার সঞ্জীব বাবু। আপনার এলাকায় দুপুরে ঠান্ডা পানীয়ের চাহিদা ১৮% বাড়ছে। স্টক পরীক্ষা করুন।"
     },
     langCodeMap: {
       en: "en-IN",
@@ -189,8 +189,8 @@ export const translations = {
       shieldStatus: "गोपनीयता सीमा: 42 दुकानें (सुरक्षा शील्ड सक्रिय)"
     },
     dashboard: {
-      greeting: "नमस्ते, रमेश जी।",
-      storeSubtitle: "रमेश किराना स्टोर • लाजपत नगर सेंट्रल मार्केट • दिल्ली",
+      greeting: "नमस्ते, संजीव जी।",
+      storeSubtitle: "संजीव किराना स्टोर • लाजपत नगर सेंट्रल मार्केट • दिल्ली",
       todaySignalTag: "आज का सर्वोच्च व्यापार संकेत",
       heroHeadline: "आपके स्थानीय बाजार में ठंडे पेय पदार्थों की मांग +18% बढ़ रही है।",
       heroBody: "दक्षिण दिल्ली क्लस्टर में दोपहर के समय पेय पदार्थों की मांग में भारी उछाल है। शुक्रवार से पहले कोल्ड ड्रिंक्स और जूस का स्टॉक अवश्य जांचें।",
@@ -199,7 +199,7 @@ export const translations = {
       playBriefing: "साउंडबॉक्स ब्रीफिंग सुनें",
       replayBriefing: "संदेश पुनः सुनें",
       playingBriefing: "साउंडबॉक्स पर चल रहा है...",
-      soundboxSnippet: '"नमस्ते रमेश जी। दोपहर के लिए ठंडे पेय पदार्थों की मांग 18% बढ़ रही है..."',
+      soundboxSnippet: '"नमस्ते संजीव जी। दोपहर के लिए ठंडे पेय पदार्थों की मांग 18% बढ़ रही है..."',
       tradeRadarTitle: "व्यापार रडार",
       tradeRadarSub: "अति-स्थानीय मांग गति",
       pricePulseTitle: "मूल्य पल्स",
@@ -308,7 +308,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "व्हाट्सएप किराना कोपायलट सिम्युलेटर",
-      subtitle: "n8n के माध्यम से रमेश कुमार को भेजे जाने वाले स्वचालित संदेशों का लाइव सिमुलेशन",
+      subtitle: "n8n के माध्यम से संजीव कुमार को भेजे जाने वाले स्वचालित संदेशों का लाइव सिमुलेशन",
       distributorPO: "1-टैप में थोक विक्रेता ऑर्डर बनाएं",
       poSuccess: "शर्माजी होलसेलर्स को व्हाट्सएप पर खरीद आदेश (PO) भेजा गया!"
     },
@@ -336,8 +336,8 @@ export const translations = {
       shieldStatus: "தனியுரிமை வரம்பு: 42 கடைகள் (பாதுகாப்பு கவசம் செயலில் உள்ளது)"
     },
     dashboard: {
-      greeting: "வணக்கம், ரமேஷ்.",
-      storeSubtitle: "ரமேஷ் மளிகைக் கடை • லாஜ்பத் நகர் • டெல்லி",
+      greeting: "வணக்கம், சஞ்சீவ்.",
+      storeSubtitle: "சஞ்சீவ் மளிகைக் கடை • லாஜ்பத் நகர் • டெல்லி",
       todaySignalTag: "இன்றைய மிக முக்கியமான வாய்ப்பு",
       heroHeadline: "உங்கள் பகுதியில் குளிர்பானங்களுக்கான தேவை +18% உயர்ந்துள்ளது.",
       heroBody: "தெற்கு டெல்லி பகுதியில் மதிய நேர குளிர்பான விற்பனை வேகமாக அதிகரித்து வருகிறது. வெள்ளிக்கிழமைக்கு முன் இருப்பை சரிபார்க்கவும்.",
@@ -346,7 +346,7 @@ export const translations = {
       playBriefing: "குரல் அறிவிப்பைக் கேளுங்கள்",
       replayBriefing: "மீண்டும் கேளுங்கள்",
       playingBriefing: "சவுண்ட்பாக்ஸில் ஒலிக்கிறது...",
-      soundboxSnippet: '"வணக்கம் ரமேஷ். மதிய நேரத்தில் குளிர்பான தேவை 18% உயர்ந்துள்ளது..."',
+      soundboxSnippet: '"வணக்கம் சஞ்சீவ். மதிய நேரத்தில் குளிர்பான தேவை 18% உயர்ந்துள்ளது..."',
       tradeRadarTitle: "வர்த்தக ரேடார்",
       tradeRadarSub: "உள்ளூர் தேவை வேகம்",
       pricePulseTitle: "விலை பல்ஸ்",
@@ -455,7 +455,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "வாட்ஸ்அப் வணிகர் உதவியாளர் சிமுலேட்டர்",
-      subtitle: "n8n வழியே ரமேஷிற்கு அனுப்பப்படும் தானியங்கி அறிவிப்புகள்",
+      subtitle: "n8n வழியே சஞ்சீவிற்கு அனுப்பப்படும் தானியங்கி அறிவிப்புகள்",
       distributorPO: "ஒரே தட்டலில் மொத்த விற்பனை ஆர்டர் உருவாக்கவும்",
       poSuccess: "சர்மாஜி மொத்த விற்பனையாளருக்கு வாட்ஸ்அப் வழியாக ஆர்டர் அனுப்பப்பட்டது!"
     },
@@ -483,8 +483,8 @@ export const translations = {
       shieldStatus: "గోప్యతా పరిమితి: 42 దుకాణాలు (రక్షణ కవచం యాక్టివ్‌గా ఉంది)"
     },
     dashboard: {
-      greeting: "నమస్కారం, రమేష్ గారు.",
-      storeSubtitle: "రమేష్ కిరాణా స్టోర్ • లజపత్ నగర్ సెంట్రల్ మార్కెట్ • ఢిల్లీ",
+      greeting: "నమస్కారం, సంజీవ్ గారు.",
+      storeSubtitle: "సంజీవ్ కిరాణా స్టోర్ • లజపత్ నగర్ సెంట్రల్ మార్కెట్ • ఢిల్లీ",
       todaySignalTag: "నేటి అత్యంత విలువైన వ్యాపార సంకేతం",
       heroHeadline: "మీ స్థానిక మార్కెట్లో శీతల పానీయాల డిమాండ్ +18% పెరుగుతోంది.",
       heroBody: "దక్షిణ ఢిల్లీ క్లస్టర్‌లో మధ్యాహ్న సమయాల్లో పానీయాల అమ్మకాలు వేగంగా పెరుగుతున్నాయి. శుక్రవారానికి ముందే శీతల పానీయాల స్టాక్‌ను తనిఖీ చేయండి.",
@@ -493,7 +493,7 @@ export const translations = {
       playBriefing: "సౌండ్‌బాక్స్ బ్రీఫింగ్ వినండి",
       replayBriefing: "తిరిగి వినండి",
       playingBriefing: "సౌండ్‌బాక్స్‌లో ప్లే అవుతోంది...",
-      soundboxSnippet: '"నమస్కారం రమేష్ గారు. మధ్యాహ్నం శీతల పానీయాల డిమాండ్ 18% పెరుగుతోంది..."',
+      soundboxSnippet: '"నమస్కారం సంజీవ్ గారు. మధ్యాహ్నం శీతల పానీయాల డిమాండ్ 18% పెరుగుతోంది..."',
       tradeRadarTitle: "ట్రేడ్ రాడార్",
       tradeRadarSub: "హైపర్‌లోకల్ డిమాండ్ వేగం",
       pricePulseTitle: "ప్రైస్ పల్స్",
@@ -602,7 +602,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "వాట్సాప్ కిరాణా కోపైలట్ సిమ్యులేటర్",
-      subtitle: "n8n ద్వారా రమేష్ కు పంపబడే ఆటోమేటెడ్ హెచ్చరికలు",
+      subtitle: "n8n ద్వారా సంజీవ్ కు పంపబడే ఆటోమేటెడ్ హెచ్చరికలు",
       distributorPO: "1-ట్యాప్‌తో హోల్‌సేలర్ ఆర్డర్ రూపొందించండి",
       poSuccess: "శర్మాజీ హోల్‌సేలర్స్‌కు వాట్సాప్ ద్వారా పర్చేస్ ఆర్డర్ పంపబడింది!"
     },
@@ -630,8 +630,8 @@ export const translations = {
       shieldStatus: "ಗೌಪ್ಯತಾ ಮಿತಿ: 42 ಅಂಗಡಿಗಳು (ರಕ್ಷಣಾ ಕವಚ ಸಕ್ರಿಯವಾಗಿದೆ)"
     },
     dashboard: {
-      greeting: "ನಮಸ್ಕಾರ, ರಮೇಶ್.",
-      storeSubtitle: "ರಮೇಶ್ ಕಿರಾಣಿ ಅಂಗಡಿ • ಲಜಪತ್ ನಗರ ಮಾರುಕಟ್ಟೆ • ದೆಹಲಿ",
+      greeting: "ನಮಸ್ಕಾರ, ಸಂಜೀವ್.",
+      storeSubtitle: "ಸಂಜೀವ್ ಕಿರಾಣಿ ಅಂಗಡಿ • ಲಜಪತ್ ನಗರ ಮಾರುಕಟ್ಟೆ • ದೆಹಲಿ",
       todaySignalTag: "ಇಂದಿನ ಪ್ರಮುಖ ವ್ಯಾಪಾರ ಸಂಕೇತ",
       heroHeadline: "ನಿಮ್ಮ ಸ್ಥಳೀಯ ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ತಂಪು ಪಾನೀಯಗಳ ಬೇಡಿಕೆ +18% ಹೆಚ್ಚುತ್ತಿದೆ.",
       heroBody: "ದಕ್ಷಿಣ ದೆಹಲಿಯಲ್ಲಿ ಮಧ್ಯಾಹ್ನದ ವೇಳೆಗೆ ಪಾನೀಯಗಳ ಮಾರಾಟ ಹೆಚ್ಚುತ್ತಿದೆ. ಶುಕ್ರವಾರಕ್ಕೂ ಮುನ್ನ ನಿಮ್ಮ ದಾಸ್ತಾನನ್ನು ಪರಿಶೀಲಿಸಿ.",
@@ -640,7 +640,7 @@ export const translations = {
       playBriefing: "ಧ್ವನಿ ಸಂದೇಶ ಆಲಿಸಿ",
       replayBriefing: "ಮತ್ತೊಮ್ಮೆ ಆಲಿಸಿ",
       playingBriefing: "ಸೌಂಡ್‌ಬಾಕ್ಸ್‌ನಲ್ಲಿ ಪ್ಲೇ ಆಗುತ್ತಿದೆ...",
-      soundboxSnippet: '"ನಮಸ್ಕಾರ ರಮೇಶ್. ಮಧ್ಯಾಹ್ನ ತಂಪು ಪಾನೀಯಗಳ ಬೇಡಿಕೆ 18% ಹೆಚ್ಚುತ್ತಿದೆ..."',
+      soundboxSnippet: '"ನಮಸ್ಕಾರ ಸಂಜೀವ್. ಮಧ್ಯಾಹ್ನ ತಂಪು ಪಾನೀಯಗಳ ಬೇಡಿಕೆ 18% ಹೆಚ್ಚುತ್ತಿದೆ..."',
       tradeRadarTitle: "ವ್ಯಾಪಾರ ರೇಡಾರ್",
       tradeRadarSub: "ಸ್ಥಳೀಯ ಬೇಡಿಕೆ ವೇಗ",
       pricePulseTitle: "ಬೆಲೆ ಸ್ಪಂದನ",
@@ -749,7 +749,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "ವಾಟ್ಸಾಪ್ ಕಿರಾಣಿ ಸಹಾಯಕ ಸಿಮ್ಯುಲೇಟರ್",
-      subtitle: "n8n ಮೂಲಕ ರಮೇಶ್‌ಗೆ ಕಳುಹಿಸಲಾದ ಸ್ವಯಂಚಾಲಿತ ಸಂದೇಶಗಳು",
+      subtitle: "n8n ಮೂಲಕ ಸಂಜೀವ್‌ಗೆ ಕಳುಹಿಸಲಾದ ಸ್ವಯಂಚಾಲಿತ ಸಂದೇಶಗಳು",
       distributorPO: "ಒಂದೇ ಕ್ಲಿಕ್‌ನಲ್ಲಿ ಸಗಟು ವ್ಯಾಪಾರಿ ಆರ್ಡರ್ ರಚಿಸಿ",
       poSuccess: "ಶರ್ಮಾಜಿ ಹೋಲ್‌ಸೇಲರ್ಸ್‌ಗೆ ವಾಟ್ಸಾಪ್ ಮೂಲಕ ಖರೀದಿ ಆದೇಶ ಕಳುಹಿಸಲಾಗಿದೆ!"
     },
@@ -777,8 +777,8 @@ export const translations = {
       shieldStatus: "गोपनीयता मर्यादा: 42 दुकाने (सुरक्षा कवच सक्रिय)"
     },
     dashboard: {
-      greeting: "नमस्कार, रमेश जी.",
-      storeSubtitle: "रमेश किराणा स्टोअर • लजपत नगर सेंट्रल मार्केट • दिल्ली",
+      greeting: "नमस्कार, संजीव जी.",
+      storeSubtitle: "संजीव किराणा स्टोअर • लजपत नगर सेंट्रल मार्केट • दिल्ली",
       todaySignalTag: "आजचा सर्वोच्च व्यवसाय संकेत",
       heroHeadline: "तुमच्या स्थानिक बाजारात थंड पेयांची मागणी +18% वाढत आहे.",
       heroBody: "दक्षिण दिल्ली भागात दुपारच्या वेळी थंड पेयांची मागणी वेगाने वाढत आहे. शुक्रवारपूर्वी आपला साठा तपासून घ्या.",
@@ -787,7 +787,7 @@ export const translations = {
       playBriefing: "साऊंडबॉक्स संदेश ऐका",
       replayBriefing: "पुन्हा ऐका",
       playingBriefing: "साऊंडबॉक्सवर वाजत आहे...",
-      soundboxSnippet: '"नमस्कार रमेश जी. दुपारच्या वेळी थंड पेयांची मागणी १८% वाढत आहे..."',
+      soundboxSnippet: '"नमस्कार संजीव जी. दुपारच्या वेळी थंड पेयांची मागणी १८% वाढत आहे..."',
       tradeRadarTitle: "व्यापार रडार",
       tradeRadarSub: "स्थानिक मागणी गती",
       pricePulseTitle: "किंमत पल्स",
@@ -896,7 +896,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "व्हॉट्सअॅप किराणा कोपायलट सिम्युलेटर",
-      subtitle: "n8n द्वारे रमेश यांना पाठवलेल्या स्वयंचलित सूचनांचे थेट अनुकरण",
+      subtitle: "n8n द्वारे संजीव यांना पाठवलेल्या स्वयंचलित सूचनांचे थेट अनुकरण",
       distributorPO: "एका टॅपमध्ये घाऊक विक्रेता ऑर्डर तयार करा",
       poSuccess: "शर्माजी होलसेलर्सना व्हॉट्सअॅपवर खरेदी ऑर्डर (PO) पाठवली गेली!"
     },
@@ -924,8 +924,8 @@ export const translations = {
       shieldStatus: "গোপনীয়তা সীমা: 42টি দোকান (সুরক্ষা শিল্ড সক্রিয়)"
     },
     dashboard: {
-      greeting: "নমস্কার, রমেশ বাবু।",
-      storeSubtitle: "রমেশ মুদি দোকান • লাজপত নগর সেন্ট্রাল মার্কেট • দিল্লি",
+      greeting: "নমস্কার, সঞ্জীব বাবু।",
+      storeSubtitle: "সঞ্জীব মুদি দোকান • লাজপত নগর সেন্ট্রাল মার্কেট • দিল্লি",
       todaySignalTag: "আজকের সেরা ব্যবসার সুযোগ",
       heroHeadline: "আপনার এলাকায় ঠান্ডা পানীয়ের চাহিদা +18% বৃদ্ধি পাচ্ছে।",
       heroBody: "দক্ষিণ দিল্লিতে দুপুরের দিকে ঠান্ডা পানীয়ের চাহিদা দ্রুত বাড়ছে। শুক্রবারের আগেই কোল্ড ড্রিংকসের স্টক দেখে নিন।",
@@ -934,7 +934,7 @@ export const translations = {
       playBriefing: "সাউন্ডবক্স বার্তা শুনুন",
       replayBriefing: "পুনরায় শুনুন",
       playingBriefing: "সাউন্ডবক্সে বাজছে...",
-      soundboxSnippet: '"নমস্কার রমেশ বাবু। দুপুরে ঠান্ডা পানীয়ের চাহিদা ১৮% বাড়ছে..."',
+      soundboxSnippet: '"নমস্কার সঞ্জীব বাবু। দুপুরে ঠান্ডা পানীয়ের চাহিদা ১৮% বাড়ছে..."',
       tradeRadarTitle: "বাণিজ্য রাডার",
       tradeRadarSub: "স্থানীয় চাহিদার গতি",
       pricePulseTitle: "মূল্য পালস",
@@ -1043,7 +1043,7 @@ export const translations = {
     },
     whatsAppModal: {
       title: "হোয়াটসঅ্যাপ মুদি সহকারী সিমুলেটর",
-      subtitle: "n8n-এর মাধ্যমে রমেশকে পাঠানো স্বয়ংক্রিয় সতর্কতার লাইভ সিমুলেশন",
+      subtitle: "n8n-এর মাধ্যমে সঞ্জীবকে পাঠানো স্বয়ংক্রিয় সতর্কতার লাইভ সিমুলেশন",
       distributorPO: "এক ক্লিকে পাইকারি অর্ডারের রসিদ তৈরি করুন",
       poSuccess: "শর্মাজি হোলসেলার্সকে হোয়াটসঅ্যাপে পারচেজ অর্ডার পাঠানো হয়েছে!"
     },

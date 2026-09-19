@@ -96,35 +96,35 @@ export default function SecuritySentinel({ lang = 'en' }) {
         <button
           onClick={() => loadEvents(false)}
           disabled={loading}
-          className="px-4 py-2 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs font-semibold flex items-center space-x-2 shrink-0 self-start sm:self-auto shadow-sm transition-all"
+          className="h-11 px-4 sm:px-5 rounded-xl bg-wine hover:bg-wine-dark text-cream text-sm font-semibold flex items-center gap-2 shrink-0 self-start sm:self-auto shadow-subtle transition-colors"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           <span>{loading ? 'Refreshing...' : t.refreshBtn}</span>
         </button>
       </div>
 
       {/* KPI stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
+        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-subtle hover:border-gold transition-colors">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiSuppression}</span>
           <p className="font-heading font-bold text-xl sm:text-2xl text-wine mt-1">
             {totalSuppressed > 0 ? `${totalSuppressed} Shielded` : 'Active'}
           </p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiSuppressionSub}</span>
         </div>
-        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
+        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-subtle hover:border-gold transition-colors">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiBlocked}</span>
           <p className="font-heading font-bold text-xl sm:text-2xl text-red-700 mt-1">
             {totalBlocked > 0 ? `${totalBlocked} Neutralised` : 'Active'}
           </p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiBlockedSub}</span>
         </div>
-        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
+        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-subtle hover:border-gold transition-colors">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiBudget}</span>
           <p className="font-heading font-bold text-xl sm:text-2xl text-wine mt-1">100%</p>
           <span className="text-[10px] text-charcoal-muted font-medium">{t.kpiBudgetSub}</span>
         </div>
-        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-xs hover:border-gold transition-all">
+        <div className="bg-cream p-4 rounded-xl border border-gold/30 shadow-subtle hover:border-gold transition-colors">
           <span className="text-[11px] font-semibold text-charcoal-muted uppercase">{t.kpiHealth}</span>
           <p className="font-heading font-bold text-xl sm:text-2xl text-emerald-700 mt-1">Pass</p>
           <span className="text-[10px] text-emerald-700 font-medium">{t.kpiHealthSub}</span>
@@ -132,46 +132,46 @@ export default function SecuritySentinel({ lang = 'en' }) {
       </div>
 
       {/* Audit Stream Table & Controls */}
-      <div className="bg-cream rounded-2xl border border-gold/30 shadow-sm overflow-hidden">
+      <div className="bg-cream rounded-2xl border border-gold/30 shadow-subtle overflow-hidden">
         
         {/* Stream Controls Header */}
         <div className="bg-sand/80 px-6 py-4 border-b border-gold/30 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
-            <h3 className="font-heading font-bold text-sm text-charcoal">{t.streamTitle}</h3>
+            <h3 className="font-heading font-semibold text-sm text-charcoal">{t.streamTitle}</h3>
             <p className="text-[11px] text-charcoal-muted">{t.streamSub}</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             {/* Filter Pills */}
-            <div className="flex items-center bg-sand p-1 rounded-lg border border-gold/30 text-xs">
+            <div className="flex items-center bg-sand p-1 rounded-xl border border-gold/30 text-xs">
               <button
                 onClick={() => setActiveFilter('ALL')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  activeFilter === 'ALL' ? 'bg-wine text-cream shadow-xs' : 'text-charcoal-muted hover:text-charcoal'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  activeFilter === 'ALL' ? 'bg-wine text-cream shadow-subtle' : 'text-charcoal-muted hover:text-charcoal'
                 }`}
               >
                 All ({events.length})
               </button>
               <button
                 onClick={() => setActiveFilter('BLOCKED')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  activeFilter === 'BLOCKED' ? 'bg-red-700 text-white shadow-xs' : 'text-charcoal-muted hover:text-charcoal'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  activeFilter === 'BLOCKED' ? 'bg-red-700 text-white shadow-subtle' : 'text-charcoal-muted hover:text-charcoal'
                 }`}
               >
                 Blocked ({totalBlocked})
               </button>
               <button
                 onClick={() => setActiveFilter('SUPPRESSED')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  activeFilter === 'SUPPRESSED' ? 'bg-amber-700 text-white shadow-xs' : 'text-charcoal-muted hover:text-charcoal'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  activeFilter === 'SUPPRESSED' ? 'bg-amber-700 text-white shadow-subtle' : 'text-charcoal-muted hover:text-charcoal'
                 }`}
               >
                 Suppressed ({totalSuppressed})
               </button>
               <button
                 onClick={() => setActiveFilter('SAFE')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  activeFilter === 'SAFE' ? 'bg-emerald-700 text-white shadow-xs' : 'text-charcoal-muted hover:text-charcoal'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  activeFilter === 'SAFE' ? 'bg-emerald-700 text-white shadow-subtle' : 'text-charcoal-muted hover:text-charcoal'
                 }`}
               >
                 Normal ({totalSafe})
@@ -180,13 +180,13 @@ export default function SecuritySentinel({ lang = 'en' }) {
 
             {/* Quick Search */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 text-charcoal-muted absolute left-2.5 top-2.5 pointer-events-none" />
+              <Search className="w-4 h-4 text-charcoal-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search audit logs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1 text-xs rounded-lg bg-cream border border-gold/40 text-charcoal focus:outline-none focus:ring-1 focus:ring-wine w-44"
+                className="pl-9 pr-3.5 h-10 text-xs rounded-3xl bg-cream border border-gold/40 text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/30 focus:border-wine w-48 sm:w-56 transition-colors"
               />
             </div>
           </div>
@@ -206,7 +206,7 @@ export default function SecuritySentinel({ lang = 'en' }) {
               return (
                 <div key={e.id || idx} className="p-4 hover:bg-sand/30 transition-colors flex items-start justify-between gap-4">
                   <div className="flex items-start space-x-3 flex-1 min-w-0">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
                       isBlocked
                         ? 'bg-red-100 text-red-800'
                         : isSuppressed

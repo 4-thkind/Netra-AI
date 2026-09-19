@@ -104,31 +104,31 @@ export default function Dashboard({
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => setCreditOpen(true)}
-            className="flex-1 sm:flex-none h-11 px-4 rounded-xl bg-wine hover:bg-wine-dark
-                       text-cream text-[13px] font-bold flex items-center justify-center gap-1.5
-                       border border-gold/30 shadow-sm transition-colors"
+            className="flex-1 sm:flex-none h-11 px-4 sm:px-5 rounded-xl bg-wine hover:bg-wine-dark
+                       text-cream text-sm font-semibold flex items-center justify-center gap-2
+                       border border-gold/30 shadow-subtle transition-colors"
           >
-            <FileText className="w-3.5 h-3.5 text-gold" />
+            <FileText className="w-4 h-4 text-gold" />
             <span>Credit &amp; P&amp;L</span>
           </button>
-          <Pill tone="gold" className="hidden sm:inline-flex h-10 px-3">
-            <Database className="w-3 h-3" />
+          <Pill tone="gold" className="hidden sm:inline-flex">
+            <Database className="w-3.5 h-3.5" />
             Kaggle empirical
           </Pill>
         </div>
       </header>
 
       {/* Mobile-only channel launcher row */}
-      <div className="grid grid-cols-3 gap-2 lg:hidden">
+      <div className="grid grid-cols-3 gap-2.5 lg:hidden">
         {channels.map(({ label, Icon, onClick, tone }) => (
           <button
             key={label}
             onClick={onClick}
-            className={`h-16 rounded-2xl ${tone} flex flex-col items-center justify-center gap-1
-                        shadow-card active:scale-[.97] transition-transform`}
+            className={`h-14 rounded-xl ${tone} flex flex-col items-center justify-center gap-1
+                        shadow-card active:scale-[.98] transition-transform`}
           >
             <Icon className="w-4 h-4" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{label}</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wide">{label}</span>
           </button>
         ))}
       </div>
@@ -139,7 +139,7 @@ export default function Dashboard({
       <section className="bg-wine text-cream rounded-2xl p-5 sm:p-6 lg:p-8 border border-gold/30
                           shadow-card relative overflow-hidden isolate">
         <div className="relative z-10 max-w-3xl">
-          <div className="flex items-center gap-2 text-gold text-[10px] sm:text-xs font-bold
+          <div className="flex items-center gap-2 text-gold text-xs font-semibold
                           uppercase tracking-widest">
             <Sparkles className="w-4 h-4 shrink-0" />
             <span>{t.todaySignalTag}</span>
@@ -153,13 +153,13 @@ export default function Dashboard({
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => onSelectInsight({ id: 'hero_insight', is_custom: false })}
-              className="h-11 sm:h-10 px-5 rounded-xl bg-gold hover:bg-gold-light text-charcoal
-                         font-bold text-xs flex items-center justify-center gap-2 shadow transition-colors"
+              className="h-11 px-5 rounded-xl bg-gold hover:bg-gold-light text-charcoal
+                         font-semibold text-sm flex items-center justify-center gap-2 shadow-subtle transition-colors"
             >
               <span>{t.viewInsightBtn}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-4 h-4" />
             </button>
-            <span className="text-[11px] text-gold-light font-medium text-center sm:text-left">
+            <span className="text-xs text-gold-light font-medium text-center sm:text-left">
               Confidence 88% • Network invariant safe
             </span>
           </div>
@@ -169,7 +169,7 @@ export default function Dashboard({
 
       {/* Module grid. Single column on phones (each card is information-dense
           enough to deserve full width), 2 up on tablet, 3 up on desktop. */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
         <TradeRadarCard
           signals={tradeSignals}
           lang={lang}

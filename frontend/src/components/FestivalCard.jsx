@@ -53,7 +53,7 @@ export default function FestivalCard({ festival, lang = 'hi' }) {
       <CardBody className="space-y-3">
         <div className="rounded-xl bg-sand/70 border border-gold/20 p-3">
           <div className="flex items-start justify-between gap-2">
-            <span className="font-heading font-bold text-sm text-wine">{festival.festival_name}</span>
+            <span className="font-heading font-semibold text-sm text-wine">{festival.festival_name}</span>
             <Pill tone="emerald" className="shrink-0">{festival.impact_level}</Pill>
           </div>
 
@@ -69,15 +69,15 @@ export default function FestivalCard({ festival, lang = 'hi' }) {
         </div>
 
         <div className="rounded-xl bg-sand/50 border border-gold/20 p-3">
-          <h4 className="text-[10px] uppercase font-bold text-wine tracking-wider">Suggested kit offer</h4>
+          <h4 className="text-[10px] uppercase font-semibold text-wine tracking-wider">Suggested kit offer</h4>
           <p className="text-xs font-semibold text-charcoal mt-0.5">{festival.suggested_offer}</p>
         </div>
 
         <button
           onClick={raisePO}
           disabled={state !== 'idle'}
-          className={`w-full h-10 rounded-xl text-xs font-bold flex items-center justify-center gap-2
-                      border transition-colors disabled:cursor-default
+          className={`w-full h-11 rounded-xl text-sm font-semibold flex items-center justify-center gap-2
+                      border transition-colors shadow-subtle disabled:cursor-default
                       ${state === 'sent'
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                         : 'bg-wine text-cream border-gold/30 hover:bg-wine-dark'}`}

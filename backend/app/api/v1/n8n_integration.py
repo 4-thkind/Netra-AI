@@ -145,7 +145,7 @@ async def trigger_festival_workflow(merchant_id: str = "merchant_ramesh"):
     
     whatsapp_payload = {
         "to": "+919876543210",
-        "merchant": "Ramesh Kirana Store",
+        "merchant": "Sanjeev Kirana Store",
         "template": "festival_tender_rfq",
         "festival": fest["festival_name"],
         "days_left": fest["days_remaining"],
@@ -164,7 +164,7 @@ async def trigger_festival_workflow(merchant_id: str = "merchant_ramesh"):
             {"node": "Generate WhatsApp Tender Message", "output": whatsapp_payload},
             {"node": "Dispatch to Merchant WhatsApp & Soundbox", "output": {"dispatched_via": "whatsapp_business_api", "status": "DELIVERED"}}
         ],
-        "summary": f"n8n pipeline executed in 62ms: Upcoming {fest['festival_name']} (T-9) detected. Automated distributor tender RFQ prepared and dispatched to Ramesh's WhatsApp."
+        "summary": f"n8n pipeline executed in 62ms: Upcoming {fest['festival_name']} (T-9) detected. Automated distributor tender RFQ prepared and dispatched to Sanjeev's WhatsApp."
     }
 
 @router.post("/trigger/privacy-sentinel")

@@ -42,10 +42,10 @@ export default function ClusterMapModal({ isOpen, onClose, lang = 'en' }) {
         {/* Header */}
         <div className="bg-wine text-cream px-6 py-4 flex items-center justify-between border-b border-gold/30">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-gold">Interactive Privacy & Geospatial Visualizer</span>
-            <h3 className="font-heading font-bold text-lg text-cream">{t.title}</h3>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-gold">Interactive Privacy & Geospatial Visualizer</span>
+            <h3 className="font-heading font-semibold text-lg text-cream">{t.title}</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-wine-light text-cream transition-colors">
+          <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-wine-light text-cream transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -53,16 +53,16 @@ export default function ClusterMapModal({ isOpen, onClose, lang = 'en' }) {
         <div className="p-6 space-y-4">
           
           {/* 3 Quick Scenario Buttons */}
-          <div className="grid grid-cols-3 gap-2 text-xs">
+          <div className="grid grid-cols-3 gap-2.5 text-xs">
             <button
               onClick={() => handleScenario(4)}
-              className={`p-2 rounded-xl border text-center font-bold transition-all ${
+              className={`p-2.5 rounded-xl border text-center font-semibold transition-all ${
                 storeCount === 4
-                  ? 'bg-red-700 text-white border-red-800 shadow-sm'
+                  ? 'bg-red-700 text-white border-red-800 shadow-subtle'
                   : 'bg-sand hover:bg-gold/20 text-charcoal border-gold/30'
               }`}
             >
-              <span className="block text-[10px] uppercase font-bold">Scenario 1</span>
+              <span className="block text-[10px] uppercase font-semibold">Scenario 1</span>
               <span>4 Stores (1 km)</span>
               <span className="block text-[9px] opacity-80">Suppressed (N&lt;10)</span>
             </button>
@@ -150,11 +150,11 @@ export default function ClusterMapModal({ isOpen, onClose, lang = 'en' }) {
               </span>
             </div>
 
-            {/* Central Store Pin (Ramesh) */}
+            {/* Central Store Pin (Sanjeev) */}
             <div className="absolute flex flex-col items-center z-10 cursor-pointer">
               <MapPin className="w-7 h-7 text-gold animate-bounce drop-shadow" />
               <span className="text-[10px] font-bold text-cream bg-wine px-2 py-0.5 rounded shadow mt-0.5 border border-gold/40">
-                Ramesh Kirana (You)
+                Sanjeev Kirana (You)
               </span>
             </div>
 

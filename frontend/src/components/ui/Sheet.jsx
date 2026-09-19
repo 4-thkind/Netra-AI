@@ -62,10 +62,10 @@ export default function Sheet({
         </div>
 
         {!bare && (
-          <div className="flex items-start justify-between gap-3 px-5 py-3 border-b border-gold/25 shrink-0">
+          <div className="flex items-start justify-between gap-3 px-5 sm:px-6 py-4 border-b border-gold/25 shrink-0">
             <div className="min-w-0">
               {badge && <div className="mb-1">{badge}</div>}
-              <h3 className="font-heading font-bold text-base sm:text-lg text-wine leading-tight">
+              <h3 className="font-heading font-semibold text-base sm:text-lg text-wine leading-tight">
                 {title}
               </h3>
               {subtitle && <p className="text-[11px] text-charcoal-muted mt-0.5">{subtitle}</p>}
@@ -73,7 +73,7 @@ export default function Sheet({
             <button
               onClick={onClose}
               aria-label="Close"
-              className="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center
+              className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center
                          text-charcoal-muted hover:bg-sand hover:text-wine transition-colors"
             >
               <X className="w-4 h-4" />
@@ -84,7 +84,7 @@ export default function Sheet({
         <div className="overflow-y-auto overscroll-contain flex-1">{children}</div>
 
         {footer && (
-          <div className="px-5 py-3 border-t border-gold/25 bg-sand/50 shrink-0
+          <div className="px-5 sm:px-6 py-4 border-t border-gold/25 bg-sand/50 shrink-0
                           rounded-b-none sm:rounded-b-3xl">
             {footer}
           </div>

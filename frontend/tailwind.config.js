@@ -34,8 +34,19 @@ export default {
         }
       },
       fontFamily: {
-        heading: ['Poppins', 'sans-serif'],
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+        heading: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+      },
+      borderRadius: {
+        none: '0px',
+        sm: '4px',
+        DEFAULT: '6px',
+        md: '8px',
+        lg: '10px',
+        xl: '12px',
+        '2xl': '16px',
+        '3xl': '20px',
+        full: '9999px',
       },
       spacing: {
         // Bottom tab bar height + the phone's home-indicator inset, so scroll
@@ -43,9 +54,11 @@ export default {
         'tabbar': 'calc(4.25rem + env(safe-area-inset-bottom, 0px))',
       },
       boxShadow: {
-        card: '0 1px 2px rgba(45,45,45,.04), 0 4px 16px -4px rgba(114,47,55,.08)',
-        lift: '0 2px 4px rgba(45,45,45,.05), 0 12px 28px -8px rgba(114,47,55,.16)',
-        tabbar: '0 -1px 0 rgba(201,169,110,.35), 0 -8px 24px -12px rgba(45,45,45,.18)',
+        subtle: '0 1px 2px rgba(45, 45, 45, 0.05), 0 1px 3px rgba(45, 45, 45, 0.04)',
+        card: '0 1px 2px rgba(45, 45, 45, 0.05), 0 1px 3px rgba(45, 45, 45, 0.04)',
+        lift: '0 4px 6px -1px rgba(45, 45, 45, 0.05), 0 2px 4px -2px rgba(45, 45, 45, 0.05)',
+        elevated: '0 4px 6px -1px rgba(45, 45, 45, 0.05), 0 2px 4px -2px rgba(45, 45, 45, 0.05)',
+        tabbar: '0 -1px 0 rgba(201, 169, 110, 0.35), 0 -4px 12px -2px rgba(45, 45, 45, 0.06)',
       },
       keyframes: {
         riseIn: {

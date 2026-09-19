@@ -11,7 +11,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
     {
       sender: 'netra',
       time: '10:01 PM',
-      text: "🌙 *नमस्ते रमेश जी (Netrā Live Copilot)*\n\n📊 *आज की डिजिटल बिक्री:* ₹14,280 (38 UPI भुगतानों में)\n💰 *अगले 7 दिनों का अनुमानित कैश:* ₹78,400\n\n⚠️ *रणनीतिक सलाह:* शनिवार को अधिक ग्राहक आएंगे। थोक सप्लायर का ₹15,000 का भुगतान शनिवार दोपहर को करें।"
+      text: "🌙 *नमस्ते संजीव जी (Netrā Live Copilot)*\n\n📊 *आज की डिजिटल बिक्री:* ₹14,280 (38 UPI भुगतानों में)\n💰 *अगले 7 दिनों का अनुमानित कैश:* ₹78,400\n\n⚠️ *रणनीतिक सलाह:* शनिवार को अधिक ग्राहक आएंगे। थोक सप्लायर का ₹15,000 का भुगतान शनिवार दोपहर को करें।"
     },
     {
       sender: 'netra',
@@ -36,7 +36,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
     if (!query.trim() || loading) return;
 
     const userMsg = {
-      sender: 'ramesh',
+      sender: 'sanjeev',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       text: query
     };
@@ -79,7 +79,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
     const poMsg = "📋 *Purchase Order to Sharmaji Wholesalers:*\n• 2 Crates Amul Taaza Milk (₹1,200)\n• 1 Box Frooti 200ml (₹480)\n• 25kg Kuttu Atta (₹1,500)\n*Total: ₹3,180 (Pay on Delivery)*";
     setMessages(prev => [
       ...prev,
-      { sender: 'ramesh', time: 'Just now', text: poMsg }
+      { sender: 'sanjeev', time: 'Just now', text: poMsg }
     ]);
     setTimeout(() => {
       setMessages(prev => [
@@ -108,7 +108,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
           Desktop: framed device mock so it reads as a channel demo. */}
       <div className="bg-[#EFEAE2] w-full flex flex-col overflow-hidden
                       h-full sm:h-[650px] sm:max-h-[90vh] sm:max-w-md
-                      sm:rounded-3xl sm:border-4 sm:border-slate-700 sm:shadow-2xl
+                      sm:rounded-3xl sm:border-4 sm:border-slate-700 sm:shadow-lift
                       pt-[env(safe-area-inset-top,0px)] sm:pt-0
                       pb-[env(safe-area-inset-bottom,0px)] sm:pb-0
                       animate-sheetUp sm:animate-riseIn">
@@ -149,9 +149,9 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
         {/* Chat Area */}
         <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#E5DDD5]">
           {messages.map((m, idx) => (
-            <div key={idx} className={`flex flex-col ${m.sender === 'ramesh' ? 'items-end' : 'items-start'}`}>
+            <div key={idx} className={`flex flex-col ${m.sender === 'sanjeev' ? 'items-end' : 'items-start'}`}>
               <div className={`max-w-[88%] p-3 rounded-2xl text-xs shadow-xs ${
-                m.sender === 'ramesh' 
+                m.sender === 'sanjeev' 
                   ? 'bg-[#DCF8C6] text-charcoal rounded-tr-none' 
                   : m.isBlocked
                   ? 'bg-red-50 text-charcoal border border-red-300 rounded-tl-none'
@@ -175,7 +175,7 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
                 )}
                 <div className="flex items-center justify-end space-x-1 mt-1 text-[9px] text-slate-500">
                   <span>{m.time}</span>
-                  {m.sender === 'ramesh' && <CheckCheck className="w-3 h-3 text-sky-500" />}
+                  {m.sender === 'sanjeev' && <CheckCheck className="w-3 h-3 text-sky-500" />}
                 </div>
               </div>
 
@@ -237,14 +237,14 @@ export default function WhatsAppSimulatorModal({ isOpen, onClose, lang = 'hi' })
             onKeyDown={(e) => e.key === 'Enter' && sendMessageToCopilot()}
             disabled={loading}
             /* 16px on mobile stops iOS Safari zooming the page on focus. */
-            className="flex-1 px-3.5 h-10 text-base sm:text-xs rounded-full bg-white border border-slate-300
+            className="flex-1 px-4 h-11 text-base sm:text-xs rounded-full bg-white border border-slate-300
                        focus:outline-none focus:ring-2 focus:ring-emerald-600 disabled:opacity-50"
           />
           <button
             onClick={() => sendMessageToCopilot()}
             disabled={loading || !replyText.trim()}
             aria-label="Send message"
-            className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-[#075E54] hover:bg-[#128C7E]
+            className="w-11 h-11 rounded-full bg-[#075E54] hover:bg-[#128C7E]
                        disabled:opacity-40 text-white flex items-center justify-center shrink-0 transition-colors"
           >
             <Send className="w-4 h-4" />

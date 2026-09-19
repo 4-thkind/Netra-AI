@@ -36,7 +36,7 @@ export function CardHeader({ Icon, title, subtitle, badge, tone = 'wine' }) {
           </span>
         )}
         <span className="min-w-0">
-          <h3 className="font-heading font-bold text-[15px] sm:text-base text-charcoal truncate">
+          <h3 className="font-heading font-semibold text-[15px] sm:text-base text-charcoal truncate">
             {title}
           </h3>
           {subtitle && (
@@ -76,10 +76,20 @@ export function Pill({ tone = 'neutral', children, className = '' }) {
     sky: 'bg-sky-100 text-sky-800 border-sky-200',
   };
   return (
-    <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide
-                      px-2 py-0.5 rounded-full border ${tones[tone]} ${className}`}>
+    <span className={`inline-flex items-center gap-1.5 text-xs font-semibold
+                      h-6 sm:h-6.5 px-2.5 rounded-full border ${tones[tone]} ${className}`}>
       {children}
     </span>
+  );
+}
+
+/** Standard rounded-rectangle button matching the 8-12px radius and 40-48px height system */
+export function Button({ variant = 'primary', className = '', children, ...rest }) {
+  const base = variant === 'secondary' ? 'btn-secondary' : variant === 'gold' ? 'btn-gold' : 'btn-primary';
+  return (
+    <button className={`${base} ${className}`} {...rest}>
+      {children}
+    </button>
   );
 }
 
