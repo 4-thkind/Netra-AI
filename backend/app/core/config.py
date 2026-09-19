@@ -34,10 +34,27 @@ class Settings(BaseSettings):
     N8N_WEBHOOK_URL: str = "http://localhost:5678/webhook/netra"
     PAYTM_MERCHANT_KEY: str = "mock-paytm-key"
 
-    # Meta-Llama LLM Providers (OpenRouter free tier or NVIDIA NIM)
+    # LLM Providers (OpenRouter free tier or NVIDIA NIM)
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
-    OPENROUTER_MODEL: str = "meta-llama/llama-3.3-70b-instruct:free"
+
+    # Model order is set by MEASURED reliability on the free tier, not by model
+    # size. Benchmarked 3 identical Hindi-JSON calls per model:
+    #
+    #   nemotron-3-super-120b   3/3 JSON, 3/3 Hindi, ~4.4s median
+    #   deepseek-v4-flash       3/3 JSON, 3/3 Hindi, ~4.3s median
+    #   qwen3.8-27b             1/3 answered (2x HTTP 429), 0/3 Hindi, up to 27s
+    #   gemma-4-31b             2/6 availability probes
+    #
+    # Qwen is the better model on paper and stays in the chain, but its shared
+    # free pool rate-limits too hard to lead with during a live demo.
+    OPENROUTER_MODEL: str = "nvidia/nemotron-3-super-120b-a12b:free"
+
+    OPENROUTER_FALLBACK_MODELS: str = (
+        "deepseek/deepseek-v4-flash-0731:free,"
+        "qwen/qwen3.8-27b:free,"
+        "google/gemma-4-31b-it:free"
+    )
 
     NVIDIA_API_KEY: Optional[str] = None
     NVIDIA_BASE_URL: str = "https://integrate.api.nvidia.com/v1"

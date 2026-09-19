@@ -7,6 +7,29 @@ from backend.app.core.config import settings
 from backend.app.core.database import Base, engine
 from backend.app.api.v1 import api_v1_router
 from backend.app.data.synthetic_generator import seed_synthetic_data
+from backend.app.integrations.cognee_adapter import cognee_adapter
+
+
+async def hydrate_knowledge_graph() -> None:
+    """Load every merchant into the Cognee graph so cohorts have peers."""
+    from sqlalchemy import select
+    from backend.app.core.database import AsyncSessionLocal
+    from backend.app.models.merchants import Merchant
+
+    async with AsyncSessionLocal() as db:
+        rows = (await db.execute(
+            select(Merchant.id, Merchant.name, Merchant.cluster_id,
+                   Merchant.category, Merchant.role)
+        )).all()
+
+    for mid, name, cluster, category, role in rows:
+        if role != "MERCHANT":
+            continue  # admins and auditors are not part of any cohort
+        cognee_adapter.register_merchant(mid, name, cluster, category)
+
+    stats = cognee_adapter.graph.stats()
+    print(f"Cognee knowledge graph: {stats['node_count']} nodes, "
+          f"{stats['edge_count']} edges across {len(rows)} merchant records.")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,7 +40,12 @@ async def lifespan(app: FastAPI):
     # Auto-seed synthetic data in demo mode
     if settings.DEMO_MODE:
         await seed_synthetic_data()
-    
+
+    # Hydrate the Cognee knowledge graph from the merchant table so cohorts
+    # have real peers to traverse. Without this the graph knows one merchant
+    # and "stores like yours" has nobody in it.
+    await hydrate_knowledge_graph()
+
     yield
 
 app = FastAPI(
