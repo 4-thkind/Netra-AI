@@ -1,0 +1,114 @@
+{
+  "name": "Netra — WhatsApp Merchant Delivery",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "netra-whatsapp",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "wh-in",
+      "name": "Netra Message Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [220, 300],
+      "webhookId": "netra-whatsapp"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Netra posts a channel-agnostic envelope; shape it for whichever\n// WhatsApp provider this n8n instance is wired to.\nconst e = $json.body || $json;\n\nif (!e.to) {\n  throw new Error('Netra envelope missing destination number');\n}\n\nconst buttons = (e.quick_actions || []).slice(0, 3).map((title, i) => ({\n  type: 'reply',\n  reply: { id: `netra_qa_${i}`, title: String(title).slice(0, 20) }\n}));\n\nreturn [{\n  json: {\n    to: e.to,\n    merchant_name: e.merchant_name,\n    lang: e.lang || 'hi',\n    template: e.template,\n    body: e.body,\n    buttons,\n    // WhatsApp Cloud API interactive-message shape.\n    cloud_api_payload: {\n      messaging_product: 'whatsapp',\n      recipient_type: 'individual',\n      to: String(e.to).replace('+', ''),\n      type: buttons.length ? 'interactive' : 'text',\n      ...(buttons.length\n        ? { interactive: { type: 'button', body: { text: e.body }, action: { buttons } } }\n        : { text: { preview_url: false, body: e.body } })\n    }\n  }\n}];"
+      },
+      "id": "fmt",
+      "name": "Format WhatsApp Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $env.WHATSAPP_TOKEN || '' }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "has-token",
+      "name": "WhatsApp Credentials Present?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WHATSAPP_PHONE_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WHATSAPP_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.cloud_api_payload) }}",
+        "options": {}
+      },
+      "id": "send-cloud",
+      "name": "Send via WhatsApp Cloud API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [960, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// No provider credentials on this instance: acknowledge without sending so\n// the pipeline is still demonstrable end to end.\nreturn [{ json: { status: 'ACKNOWLEDGED', delivered: false,\n  reason: 'Set WHATSAPP_TOKEN and WHATSAPP_PHONE_ID in n8n to dispatch for real',\n  to: $json.to, preview: $json.body } }];"
+      },
+      "id": "dry-run",
+      "name": "Acknowledge (No Credentials)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/n8n/delivery-callback",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ to: $json.to, status: $json.status || 'SENT', workflow: 'wf_whatsapp_delivery' }) }}",
+        "options": {}
+      },
+      "id": "callback",
+      "name": "Report Delivery to Netra",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1220, 300]
+    }
+  ],
+  "connections": {
+    "Netra Message Webhook": {
+      "main": [[{ "node": "Format WhatsApp Payload", "type": "main", "index": 0 }]]
+    },
+    "Format WhatsApp Payload": {
+      "main": [[{ "node": "WhatsApp Credentials Present?", "type": "main", "index": 0 }]]
+    },
+    "WhatsApp Credentials Present?": {
+      "main": [
+        [{ "node": "Send via WhatsApp Cloud API", "type": "main", "index": 0 }],
+        [{ "node": "Acknowledge (No Credentials)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send via WhatsApp Cloud API": {
+      "main": [[{ "node": "Report Delivery to Netra", "type": "main", "index": 0 }]]
+    },
+    "Acknowledge (No Credentials)": {
+      "main": [[{ "node": "Report Delivery to Netra", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {}
+}

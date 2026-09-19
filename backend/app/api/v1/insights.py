@@ -30,10 +30,12 @@ async def get_price_pulse(
 
 @router.get("/cashflow")
 async def get_cashflow_forecast(
-    merchant: Merchant = Depends(get_current_merchant)
+    merchant: Merchant = Depends(get_current_merchant),
+    db: AsyncSession = Depends(get_db),
 ):
-    forecast = cashflow_engine.generate_7day_projection(merchant.id)
-    return forecast
+    # Fitted on this merchant's own transaction history. No privacy gate is
+    # needed: the model only ever sees the caller's own data.
+    return await cashflow_engine.forecast_from_history(db, merchant.id)
 
 @router.get("/festival")
 async def get_festivals():

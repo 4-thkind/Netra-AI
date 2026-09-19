@@ -5,6 +5,7 @@ from backend.app.analytics.cashflow import cashflow_engine
 from backend.app.analytics.festival import festival_engine
 from backend.app.integrations.sarvam_adapter import sarvam_adapter
 from backend.app.privacy.suppression import suppression_service
+from backend.app.core.config import settings
 
 router = APIRouter()
 
@@ -56,6 +57,52 @@ WORKFLOWS_REGISTRY = [
         "description": "Monitors every incoming market aggregation query. If cohort density falls below N=10 merchants, n8n orchestrates automated suppression logging and stops competitor disclosure."
     }
 ]
+
+WORKFLOWS_REGISTRY.append({
+    "id": "wf_whatsapp_delivery",
+    "name": "WhatsApp Merchant Delivery (Live Dispatch)",
+    "trigger": "Webhook (POST from Netrā whenever a merchant message is raised)",
+    "file": "4_whatsapp_merchant_delivery.json",
+    "category": "Merchant Messaging",
+    "nodes": [
+        {"name": "Netra Message Webhook", "type": "webhook", "status": "active"},
+        {"name": "Format WhatsApp Payload", "type": "code", "status": "active"},
+        {"name": "WhatsApp Credentials Present?", "type": "if_condition", "status": "active"},
+        {"name": "Send via WhatsApp Cloud API", "type": "http_request", "status": "active"},
+        {"name": "Report Delivery to Netra", "type": "http_request", "status": "active"},
+    ],
+    "description": (
+        "Netrā never calls WhatsApp directly. It POSTs a channel-agnostic message "
+        "envelope to this n8n webhook, which formats it for the WhatsApp Cloud API "
+        "and dispatches to the merchant's own number. Swapping provider is an n8n "
+        "change, not a code change."
+    ),
+})
+
+# Latest delivery attempts, newest first, for the n8n Hub UI.
+DELIVERY_LOG: list = []
+
+
+@router.post("/delivery-callback")
+async def n8n_delivery_callback(payload: Dict[str, Any]):
+    """n8n reports back here once it has attempted delivery."""
+    entry = {**payload, "received_at": datetime.now(timezone.utc).isoformat()}
+    DELIVERY_LOG.insert(0, entry)
+    del DELIVERY_LOG[25:]
+    return {"ack": True, "logged": len(DELIVERY_LOG)}
+
+
+@router.get("/deliveries")
+async def list_deliveries():
+    """Recent WhatsApp dispatches, including simulated ones."""
+    from backend.app.integrations.whatsapp_delivery import whatsapp_delivery
+    return {
+        "mode": "live" if whatsapp_delivery.is_live else "simulated",
+        "webhook_url": whatsapp_delivery.webhook_url or settings.N8N_WEBHOOK_URL,
+        "last_envelope": whatsapp_delivery.last_envelope,
+        "callbacks": DELIVERY_LOG,
+    }
+
 
 @router.get("/info")
 async def get_n8n_info():

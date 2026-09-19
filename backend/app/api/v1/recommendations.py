@@ -9,10 +9,23 @@ from backend.app.schemas.recommendations import RecommendationActionRequest
 from backend.app.security.audit import audit_logger
 
 from backend.app.integrations.llm_provider import llm_provider
+from backend.app.integrations.cognee_adapter import cognee_adapter
 from backend.app.analytics.trade_radar import trade_radar_engine
 from backend.app.analytics.price_pulse import price_pulse_engine
 
 router = APIRouter()
+
+# Seeded recommendation ids carry their category, e.g. rec_price_pulse_snacks.
+_KNOWN_CATEGORIES = ("beverages", "snacks", "staples", "dairy", "personal_care")
+
+
+def _category_from_rec_id(rec_id: str) -> str:
+    """Best-effort category for the knowledge-graph edge."""
+    lowered = (rec_id or "").lower()
+    for cat in _KNOWN_CATEGORIES:
+        if cat in lowered:
+            return cat
+    return "general"
 
 @router.get("")
 async def list_recommendations(
@@ -75,7 +88,28 @@ async def record_recommendation_action(
         status="SUCCESS",
         details={"recommendation_id": rec_id, "action": body.action}
     )
-    return {"status": "success", "action": body.action, "recommendation_id": rec_id}
+
+    # Close the reinforcement loop from slide 7: the outcome becomes an edge in
+    # the Cognee graph, so this merchant's next recommendation - and their
+    # cohort peers' - are computed from what actually worked.
+    cognee_adapter.register_merchant(
+        merchant.id, merchant.name, merchant.cluster_id, merchant.category
+    )
+    memory = cognee_adapter.record_decision(
+        merchant_id=merchant.id,
+        action=rec_id.replace("rec_", ""),
+        category=_category_from_rec_id(rec_id),
+        result=body.action,
+        recommendation_id=rec_id,
+        notes=body.notes or "",
+    )
+
+    return {
+        "status": "success",
+        "action": body.action,
+        "recommendation_id": rec_id,
+        "memory": memory,
+    }
 
 
 from pydantic import BaseModel
@@ -153,24 +187,64 @@ async def chat_with_copilot(
     elif any(w in q_lower for w in ["festival", "navratri", "holi", "diwali", "tyohar", "fasting", "puja"]):
         fests = festival_engine.get_upcoming_festivals()
         fest = fests[0] if fests else None
-        fest_name = fest["name"] if fest else "नवरात्रि"
-        days_left = fest["days_until"] if fest else 9
+        fest_name = fest.get("festival_name", "नवरात्रि") if fest else "नवरात्रि"
+        days_left = fest.get("days_remaining", 9) if fest else 9
         if lang == "hi":
             reply = f"🪔 *आगामी पर्व अलर्ट ({fest_name} - T-{days_left} दिन शेष):*\n\nसाउथ दिल्ली क्लस्टर में कुट्टू आटा, शुद्ध घी, साबूदाना और पूजा सामग्री की मांग 35% बढ़ रही है।\n\n📦 *सुझाव:* थोक वितरक से ₹3,500 का अग्रिम फास्टिंग बंडल मंगवाएं। 1-टैप Purchase Order तैयार है।"
         else:
             reply = f"🪔 *Upcoming Festival Demand ({fest_name} - T-{days_left} days):*\n\nDemand for fasting items (Kuttu Atta, Desi Ghee, Sabudana) is surging +35% across your South Delhi cluster.\n\n📦 *Recommendation:* Stock a ₹3,500 wholesale festive bundle early. Use 1-tap PO to lock distributor rates."
 
-    # General / Top Selling / Category Trends
+    # General / open-ended question -> live LLM, grounded in privacy-safe data.
     else:
         signals = await trade_radar_engine.get_signals(db, merchant.id, merchant.cluster_id)
         top_signal = signals[0] if signals else None
-        cat = top_signal["category"] if top_signal else "beverages"
-        vel = top_signal["velocity_pct"] if top_signal else "+18%"
-        
-        if lang == "hi":
-            reply = f"📊 *लाजपत नगर क्लस्टर रुझान:*\n\nआज आपके इलाके में *{cat.capitalize()}* श्रेणी में {vel} की तेज़ मांग देखी जा रही है।\n\n💡 *रणनीति:* छूट देने के बजाय 2 नग का कॉम्बो (जैसे ₹45 Tea-Time बंडल) बनाएं। मार्जिन सुरक्षित रहेगा और बिक्री बढ़ेगी!"
-        else:
-            reply = f"📊 *Lajpat Nagar Cluster Intelligence:*\n\nHyperlocal demand for *{cat.capitalize()}* has surged by {vel} today across 43 cluster stores.\n\n💡 *Strategy:* Avoid single-unit discounting. Create a ₹45 bundle (Beverage + Snack). This preserves gross margins while boosting basket size."
+        cat = top_signal.get("category", "beverages") if top_signal else "beverages"
+        # trade_radar emits market_velocity as a fraction (0.18); render it as "+18%"
+        vel = f"+{round(top_signal.get('market_velocity', 0.18) * 100)}%" if top_signal else "+18%"
+
+        # Only aggregates cross into the prompt. The model never sees a raw
+        # transaction or any individual merchant's figures, so it cannot leak
+        # what it was never given.
+        safe_context = {
+            "cluster": merchant.cluster_id,
+            "top_category": cat,
+            "category_momentum": vel,
+            "signals": [
+                {
+                    "category": s.get("category"),
+                    "momentum_pct": round(s.get("market_velocity", 0) * 100),
+                    "your_activity": s.get("merchant_activity_level"),
+                }
+                for s in signals[:4]
+            ],
+        }
+
+        llm_reply = await llm_provider.answer_merchant_question(
+            question=user_query, context=safe_context, lang=lang
+        )
+
+        # Outbound screening: a model will suggest cutting prices to the market
+        # median if allowed to. If it does, drop the generated text and serve
+        # the deterministic bundling answer instead.
+        if llm_reply:
+            out_safe, out_reason = llm_safety_guard.validate_content(llm_reply)
+            if out_safe:
+                reply = llm_reply
+            else:
+                await audit_logger.log_event(
+                    db=db,
+                    event_type="LLM_OUTPUT_REJECTED",
+                    merchant_id=merchant.id,
+                    status="BLOCKED",
+                    details={"violation": out_reason, "channel": "whatsapp_copilot"},
+                )
+                llm_reply = None
+
+        if not llm_reply:
+            if lang == "hi":
+                reply = f"📊 *लाजपत नगर क्लस्टर रुझान:*\n\nआज आपके इलाके में *{cat.capitalize()}* श्रेणी में {vel} की तेज़ मांग देखी जा रही है।\n\n💡 *रणनीति:* छूट देने के बजाय 2 नग का कॉम्बो (जैसे ₹45 Tea-Time बंडल) बनाएं। मार्जिन सुरक्षित रहेगा और बिक्री बढ़ेगी!"
+            else:
+                reply = f"📊 *Lajpat Nagar Cluster Intelligence:*\n\nHyperlocal demand for *{cat.capitalize()}* has surged by {vel} today across 43 cluster stores.\n\n💡 *Strategy:* Avoid single-unit discounting. Create a ₹45 bundle (Beverage + Snack). This preserves gross margins while boosting basket size."
 
     # Audit Log Safe Query
     await audit_logger.log_event(
@@ -184,6 +258,10 @@ async def chat_with_copilot(
     return {
         "status": "allowed",
         "safety_verdict": "SAFE",
-        "response": reply
+        "response": reply,
+        # Attribution so the UI can show whether a live model answered or the
+        # deterministic fallback did - never imply AI that did not run.
+        "engine": llm_provider.last_model_used or "netra_rules_engine",
+        "is_live_llm": bool(llm_provider.last_model_used),
     }
 
