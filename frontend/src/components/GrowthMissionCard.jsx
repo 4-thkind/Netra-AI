@@ -49,7 +49,7 @@ export default function GrowthMissionCard({ missions = [], lang = 'hi' }) {
         )}
 
         <div className="rounded-xl bg-sand/70 border border-gold/20 p-3">
-          <h4 className="font-heading font-bold text-sm text-wine">{mission.title}</h4>
+          <h4 className="font-heading font-semibold text-sm text-wine">{mission.title}</h4>
           <p className="text-[11px] text-charcoal-muted mt-1 leading-snug">{mission.cohort_insight}</p>
 
           <div className="mt-3">
@@ -85,7 +85,7 @@ export default function GrowthMissionCard({ missions = [], lang = 'hi' }) {
           <button
             onClick={() => setOpenGoal((v) => !v)}
             aria-expanded={openGoal}
-            className="w-full px-3 h-9 flex items-center justify-between text-[11px] font-bold
+            className="w-full px-3.5 h-10 flex items-center justify-between text-xs font-semibold
                        text-wine bg-cream hover:bg-sand/70 transition-colors"
           >
             <span>This week's action</span>

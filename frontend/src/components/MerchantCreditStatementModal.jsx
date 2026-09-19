@@ -36,20 +36,20 @@ export default function MerchantCreditStatementModal({ isOpen, onClose, lang = '
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/70 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto print:p-0 print:bg-white">
-      <div className="bg-cream rounded-3xl max-w-3xl w-full border border-gold/40 shadow-2xl overflow-hidden flex flex-col my-auto max-h-[90vh] print:max-h-none print:border-none print:shadow-none animate-fadeIn">
+      <div className="bg-cream rounded-2xl max-w-3xl w-full border border-gold/40 shadow-lift overflow-hidden flex flex-col my-auto max-h-[90vh] print:max-h-none print:border-none print:shadow-none animate-riseIn">
         
         {/* Header */}
         <div className="bg-wine text-cream px-6 py-4 flex items-center justify-between border-b border-gold/30 print:bg-wine print:text-cream">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-cream text-wine flex items-center justify-center font-bold text-lg shadow">
+            <div className="w-10 h-10 rounded-full bg-cream text-wine flex items-center justify-center font-bold text-lg shadow-subtle">
               ₹
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gold">Official Paytm Merchant Lending</span>
-                <span className="text-[9px] bg-gold text-charcoal px-1.5 py-0.2 rounded font-bold">Verified</span>
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-gold">Official Paytm Merchant Lending</span>
+                <span className="text-[9px] bg-gold text-charcoal px-2 py-0.5 rounded-full font-semibold">Verified</span>
               </div>
-              <h3 className="font-heading font-bold text-xl text-cream">
+              <h3 className="font-heading font-semibold text-lg sm:text-xl text-cream">
                 Merchant Credit & Working Capital Health Statement
               </h3>
             </div>
@@ -58,12 +58,12 @@ export default function MerchantCreditStatementModal({ isOpen, onClose, lang = '
           <div className="flex items-center space-x-2 print:hidden">
             <button
               onClick={handlePrint}
-              className="px-3 py-1.5 bg-gold hover:bg-gold/90 text-charcoal rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-sm transition-all"
+              className="h-10 px-4 bg-gold hover:bg-gold-light text-charcoal rounded-xl text-sm font-semibold flex items-center gap-1.5 shadow-subtle transition-colors"
             >
-              <Printer className="w-3.5 h-3.5" />
+              <Printer className="w-4 h-4" />
               <span>Print / Save PDF</span>
             </button>
-            <button onClick={onClose} className="p-1 rounded-lg hover:bg-wine-light text-cream transition-colors">
+            <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-wine-light text-cream transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>

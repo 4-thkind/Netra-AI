@@ -33,31 +33,31 @@ export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
 
       {/* Live Policy Guarantees */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-wine/10 text-wine flex items-center justify-center mb-3">
+        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-subtle">
+          <div className="w-10 h-10 rounded-xl bg-wine/10 text-wine flex items-center justify-center mb-3">
             <Lock className="w-5 h-5" />
           </div>
-          <h3 className="font-heading font-bold text-base text-charcoal">{t.smallCohortTitle}</h3>
+          <h3 className="font-heading font-semibold text-base text-charcoal">{t.smallCohortTitle}</h3>
           <p className="text-xs text-charcoal-muted mt-1 leading-relaxed">
             {t.smallCohortDesc}
           </p>
         </div>
 
-        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-wine/10 text-wine flex items-center justify-center mb-3">
+        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-subtle">
+          <div className="w-10 h-10 rounded-xl bg-wine/10 text-wine flex items-center justify-center mb-3">
             <EyeOff className="w-5 h-5" />
           </div>
-          <h3 className="font-heading font-bold text-base text-charcoal">{t.zeroPiiTitle}</h3>
+          <h3 className="font-heading font-semibold text-base text-charcoal">{t.zeroPiiTitle}</h3>
           <p className="text-xs text-charcoal-muted mt-1 leading-relaxed">
             {t.zeroPiiDesc}
           </p>
         </div>
 
-        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-wine/10 text-wine flex items-center justify-center mb-3">
+        <div className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-subtle">
+          <div className="w-10 h-10 rounded-xl bg-wine/10 text-wine flex items-center justify-center mb-3">
             <Layers className="w-5 h-5" />
           </div>
-          <h3 className="font-heading font-bold text-base text-charcoal">{t.sentinelTitle}</h3>
+          <h3 className="font-heading font-semibold text-base text-charcoal">{t.sentinelTitle}</h3>
           <p className="text-xs text-charcoal-muted mt-1 leading-relaxed">
             {t.sentinelDesc}
           </p>
@@ -68,8 +68,8 @@ export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Left: What Netra Uses */}
-        <div className="bg-cream rounded-2xl p-6 border border-emerald-300 shadow-sm">
-          <h3 className="font-heading font-bold text-lg text-emerald-900 flex items-center space-x-2">
+        <div className="bg-cream rounded-2xl p-6 border border-emerald-300 shadow-subtle">
+          <h3 className="font-heading font-semibold text-lg text-emerald-900 flex items-center space-x-2">
             <CheckCircle className="w-5 h-5 text-emerald-600" />
             <span>{t.usesTitle}</span>
           </h3>
@@ -84,8 +84,8 @@ export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
         </div>
 
         {/* Right: What Netra NEVER Shares */}
-        <div className="bg-cream rounded-2xl p-6 border border-red-300 shadow-sm">
-          <h3 className="font-heading font-bold text-lg text-red-950 flex items-center space-x-2">
+        <div className="bg-cream rounded-2xl p-6 border border-red-300 shadow-subtle">
+          <h3 className="font-heading font-semibold text-lg text-red-950 flex items-center space-x-2">
             <AlertCircle className="w-5 h-5 text-red-600" />
             <span>{t.neverSharesTitle}</span>
           </h3>
@@ -106,13 +106,13 @@ export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
         <button
           onClick={onOpenClusterMap}
           className="w-full rounded-2xl border border-gold/40 bg-wine text-cream p-4 sm:p-5
-                     flex items-center gap-3 text-left hover:bg-wine-dark transition-colors shadow-card"
+                     flex items-center gap-3 text-left hover:bg-wine-dark transition-colors shadow-subtle"
         >
           <span className="w-10 h-10 rounded-xl bg-cream/15 flex items-center justify-center shrink-0">
             <Map className="w-5 h-5 text-sky-300" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block font-heading font-bold text-sm sm:text-base">
+            <span className="block font-heading font-semibold text-sm sm:text-base">
               See the 4-merchant dilemma resolved
             </span>
             <span className="block text-[11px] sm:text-xs text-sand mt-0.5">
@@ -124,8 +124,8 @@ export default function PrivacyCenter({ lang = 'en', onOpenClusterMap }) {
       )}
 
       {/* Live Operational Metrics & Invariant Checks */}
-      <div className="bg-sand rounded-2xl p-6 border border-gold/40">
-        <h3 className="font-heading font-bold text-base text-wine mb-4">
+      <div className="bg-sand/70 rounded-2xl p-6 border border-gold/40">
+        <h3 className="font-heading font-semibold text-base text-wine mb-4">
           Live Privacy Invariant Telemetry (Lajpat Nagar Central Market)
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

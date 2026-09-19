@@ -39,7 +39,7 @@ async def seed_synthetic_data():
         ramesh = Merchant(
             id="merchant_ramesh",
             external_id_hash="hash_ramesh_paytm_01",
-            name="Ramesh Kumar (Ramesh Kirana Store)",
+            name="Sanjeev Kumar (Sanjeev Kirana Store)",
             phone="9876543210",
             role="MERCHANT",
             category="kirana",

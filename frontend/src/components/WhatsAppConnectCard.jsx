@@ -85,22 +85,21 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
                 onChange={(e) => setPhone(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && save()}
                 placeholder="+91 98765 43210"
-                /* 16px on mobile stops iOS Safari zooming on focus */
-                className="flex-1 min-w-0 h-10 px-3 rounded-xl bg-cream border border-gold/40
-                           text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-wine/40"
+                className="flex-1 min-w-0 h-11 px-3.5 rounded-xl bg-cream border border-gold/40
+                           text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/30"
               />
               <button
                 onClick={save}
                 disabled={state === 'saving'}
-                className="h-10 px-4 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs
-                           font-bold shrink-0 disabled:opacity-60 transition-colors"
+                className="h-11 px-4 rounded-xl bg-wine hover:bg-wine-dark text-cream text-sm
+                           font-semibold shrink-0 disabled:opacity-60 shadow-subtle transition-colors"
               >
                 {state === 'saving' ? '…' : 'Save'}
               </button>
             </div>
           ) : (
             <div className="mt-1.5 flex items-center justify-between gap-2">
-              <span className="font-heading font-bold text-base text-charcoal tabular-nums truncate">
+              <span className="font-heading font-semibold text-base text-charcoal tabular-nums truncate">
                 {phone || 'Not set'}
               </span>
               <button
@@ -129,8 +128,8 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
         <button
           onClick={send}
           disabled={state === 'sending' || !phone}
-          className={`w-full h-11 rounded-xl text-xs font-bold flex items-center justify-center
-                      gap-2 border transition-colors disabled:opacity-60 ${
+          className={`w-full h-11 rounded-xl text-sm font-semibold flex items-center justify-center
+                      gap-2 border transition-colors shadow-subtle disabled:opacity-60 ${
             state === 'sent' && result?.status === 'SENT'
               ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
               : state === 'sent'
@@ -157,8 +156,8 @@ export default function WhatsAppConnectCard({ merchant, onRefreshMerchant }) {
             href={`https://wa.me/${String(result.to || '').replace(/\D/g, '')}?text=${encodeURIComponent(result.body || '')}`}
             target="_blank"
             rel="noreferrer"
-            className="w-full h-11 rounded-xl bg-wine hover:bg-wine-dark text-cream text-xs font-bold
-                       flex items-center justify-center gap-2 border border-gold/30 transition-colors"
+            className="w-full h-11 rounded-xl bg-wine hover:bg-wine-dark text-cream text-sm font-semibold
+                       flex items-center justify-center gap-2 border border-gold/30 shadow-subtle transition-colors"
           >
             <ExternalLink className="w-4 h-4 text-gold" />
             Open this message in WhatsApp

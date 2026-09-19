@@ -108,8 +108,8 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
         <div className="lg:col-span-7 bg-cream rounded-2xl border border-gold/40 shadow-md p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-gold/20">
-              <h3 className="font-heading font-bold text-base text-charcoal">Simulation Parameters</h3>
-              <span className="text-xs bg-gold/20 text-charcoal font-semibold px-2.5 py-0.5 rounded">
+              <h3 className="font-heading font-semibold text-base text-charcoal">Simulation Parameters</h3>
+              <span className="text-xs bg-gold/20 text-charcoal font-medium px-2.5 py-0.5 rounded-full border border-gold/30">
                 Live Server Evaluation
               </span>
             </div>
@@ -118,12 +118,12 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
             <div className="mt-4 space-y-3">
               {selectedAttack === 'competitor_price' && (
                 <div>
-                  <label className="text-xs font-bold text-charcoal">Target Competitor Store Name:</label>
+                  <label className="text-xs font-semibold text-charcoal">Target Competitor Store Name:</label>
                   <input
                     type="text"
                     value={competitorName}
                     onChange={(e) => setCompetitorName(e.target.value)}
-                    className="w-full mt-1 bg-white border border-gold/40 rounded-lg px-3 py-2 text-xs font-medium focus:ring-1 focus:ring-wine outline-hidden"
+                    className="w-full mt-1.5 h-11 px-3.5 bg-white border border-gold/40 rounded-xl text-sm font-normal text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/30 focus:border-wine transition-colors"
                   />
                   <span className="text-[10px] text-charcoal-muted mt-1 block">
                     Simulates competitor reconnaissance attempt.
@@ -133,12 +133,12 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
 
               {selectedAttack === 'prompt_injection' && (
                 <div>
-                  <label className="text-xs font-bold text-charcoal">Adversarial Prompt Payload:</label>
+                  <label className="text-xs font-semibold text-charcoal">Adversarial Prompt Payload:</label>
                   <textarea
                     rows={3}
                     value={promptText}
                     onChange={(e) => setPromptText(e.target.value)}
-                    className="w-full mt-1 bg-white border border-gold/40 rounded-lg px-3 py-2 text-xs font-medium focus:ring-1 focus:ring-wine outline-hidden"
+                    className="w-full mt-1.5 p-3 bg-white border border-gold/40 rounded-xl text-sm font-normal text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/30 focus:border-wine transition-colors"
                   />
                   <span className="text-[10px] text-charcoal-muted mt-1 block">
                     Simulates jailbreak prompt injecting price collusion across neighbor stores.
@@ -166,7 +166,7 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
             <button
               onClick={handleRunSimulation}
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-wine hover:bg-wine-dark text-cream font-bold text-sm flex items-center justify-center space-x-2 shadow-md transition-all disabled:opacity-50"
+              className="w-full h-11 rounded-xl bg-wine hover:bg-wine-dark text-cream font-semibold text-sm flex items-center justify-center gap-2 shadow-subtle transition-colors disabled:opacity-50"
             >
               <Play className={`w-4 h-4 fill-current ${loading ? 'animate-pulse' : ''}`} />
               <span>{loading ? t.runningBtn : t.runBtn}</span>
@@ -178,7 +178,7 @@ export default function AttackSimulator({ lang = 'en', onNavigateToSentinel }) {
 
       {/* Result Card */}
       {result && (
-        <div className="bg-cream rounded-2xl border-2 border-wine p-6 shadow-xl space-y-4 animate-slideDown">
+        <div className="bg-cream rounded-2xl border border-wine/40 p-6 shadow-lift space-y-4 animate-riseIn">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gold/30 pb-4">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center">

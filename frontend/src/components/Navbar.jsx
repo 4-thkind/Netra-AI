@@ -57,24 +57,26 @@ function LanguageMenu({ lang, setLang, compact = false }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-44 bg-cream text-charcoal rounded-2xl shadow-lift
-                        border border-gold/40 py-1.5 z-50 animate-riseIn overflow-hidden">
-          <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-charcoal-light">
+        <div className="absolute right-0 mt-2 w-48 bg-cream text-charcoal rounded-xl shadow-lift
+                        border border-gold/40 p-1.5 z-50 animate-riseIn overflow-hidden">
+          <p className="px-3 pt-1 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-charcoal-light">
             Soundbox Language
           </p>
-          {languages.map((l) => (
-            <button
-              key={l.code}
-              onClick={() => { setLang(l.code); setOpen(false); }}
-              className={`w-full text-left px-3 py-2 text-xs font-semibold flex items-center justify-between
-                          transition-colors ${lang === l.code ? 'bg-wine text-cream' : 'hover:bg-sand'}`}
-            >
-              <span>{l.label}</span>
-              {lang === l.code
-                ? <Check className="w-3.5 h-3.5 text-gold" />
-                : <span className="text-[10px] opacity-50">{l.code.toUpperCase()}</span>}
-            </button>
-          ))}
+          <div className="space-y-0.5">
+            {languages.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => { setLang(l.code); setOpen(false); }}
+                className={`w-full h-10 text-left px-3 rounded-md text-xs font-medium flex items-center justify-between
+                            transition-colors ${lang === l.code ? 'bg-wine text-cream font-semibold' : 'hover:bg-sand text-charcoal'}`}
+              >
+                <span>{l.label}</span>
+                {lang === l.code
+                  ? <Check className="w-3.5 h-3.5 text-gold" />
+                  : <span className="text-[10px] opacity-50">{l.code.toUpperCase()}</span>}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -81,33 +81,33 @@ export default function N8nHub({ lang = 'en' }) {
 
       {/* 3 Core Production Workflows */}
       <div className="space-y-4">
-        <h3 className="font-heading font-bold text-xl text-charcoal flex items-center space-x-2">
+        <h3 className="font-heading font-semibold text-xl text-charcoal flex items-center space-x-2">
           <Workflow className="w-5 h-5 text-wine" />
           <span>Autonomous n8n Production Workflows</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {(n8nInfo?.workflows || []).map((wf) => (
-            <div key={wf.id} className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div key={wf.id} className="bg-cream rounded-2xl p-5 border border-gold/30 shadow-subtle flex flex-col justify-between hover:border-gold transition-colors">
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-gold/20">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-wine bg-wine/10 px-2 py-0.5 rounded">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-wine bg-wine/10 px-2.5 py-0.5 rounded-full border border-wine/20">
                     {wf.category}
                   </span>
-                  <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-2 py-0.2 rounded">
+                  <span className="text-xs text-emerald-700 font-semibold bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-200">
                     Active
                   </span>
                 </div>
 
-                <h4 className="font-heading font-bold text-base text-charcoal mt-3">{wf.name}</h4>
+                <h4 className="font-heading font-semibold text-base text-charcoal mt-3">{wf.name}</h4>
                 <p className="text-xs text-charcoal-muted mt-1 leading-snug">{wf.description}</p>
 
                 {/* Node Sequence */}
                 <div className="mt-4 space-y-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-charcoal-muted">Execution Chain:</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-charcoal-muted">Execution Chain:</span>
                   <div className="space-y-1">
                     {wf.nodes.map((n, i) => (
-                      <div key={i} className="flex items-center space-x-2 text-[11px] text-charcoal bg-sand/60 px-2.5 py-1 rounded border border-gold/20 font-medium">
+                      <div key={i} className="flex items-center space-x-2 text-[11px] text-charcoal bg-sand/60 px-2.5 py-1.5 rounded-lg border border-gold/20 font-medium">
                         <span className="text-[9px] font-bold text-wine w-3">{i+1}.</span>
                         <span className="truncate">{n.name}</span>
                       </div>
@@ -120,9 +120,9 @@ export default function N8nHub({ lang = 'en' }) {
                 <button
                   onClick={() => handleRunWorkflow(wf.id)}
                   disabled={runningWf === wf.id}
-                  className="w-full h-10 rounded-xl bg-wine hover:bg-wine-dark disabled:opacity-60
-                             disabled:cursor-default text-cream text-xs font-bold flex items-center
-                             justify-center gap-2 shadow-sm transition-colors"
+                  className="w-full h-11 rounded-xl bg-wine hover:bg-wine-dark disabled:opacity-60
+                             disabled:cursor-default text-cream text-sm font-semibold flex items-center
+                             justify-center gap-2 shadow-subtle transition-colors"
                 >
                   <Play className={`w-3.5 h-3.5 text-gold ${runningWf === wf.id ? 'animate-spin' : ''}`} />
                   <span>{runningWf === wf.id ? 'Executing n8n Pipeline...' : 'Test Run Live Workflow'}</span>
@@ -130,7 +130,7 @@ export default function N8nHub({ lang = 'en' }) {
 
                 <button
                   onClick={() => copyPath(wf.file)}
-                  className="w-full h-9 rounded-xl bg-sand hover:bg-gold/20 text-charcoal text-[11px]
+                  className="w-full h-10 rounded-xl bg-sand hover:bg-gold/20 text-charcoal text-xs
                              font-semibold border border-gold/30 flex items-center justify-center
                              gap-1.5 transition-colors"
                 >
@@ -148,11 +148,11 @@ export default function N8nHub({ lang = 'en' }) {
 
       {/* Live Execution Trace Viewer */}
       {activeExecution && (
-        <div className="bg-cream rounded-2xl p-6 border border-gold/40 shadow-lg animate-fadeIn space-y-4">
+        <div className="bg-cream rounded-2xl p-6 border border-gold/40 shadow-lift animate-riseIn space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-gold/30">
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-              <h4 className="font-heading font-bold text-base text-charcoal">
+              <h4 className="font-heading font-semibold text-base text-charcoal">
                 n8n Live Execution Trace: <span className="text-wine font-mono text-xs">{activeExecution.execution_id}</span>
               </h4>
             </div>
