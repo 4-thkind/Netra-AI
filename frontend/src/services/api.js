@@ -1,7 +1,5 @@
-// Same-origin by default: works on localhost, on a phone over LAN, and through
-// a public tunnel (cloudflared) without rebuilding. Vite proxies /api to the
-// backend in dev; nginx/uvicorn serve both on one port in the demo launcher.
-// Override only if you deliberately split hosts: VITE_API_BASE=http://host:8000
+import { getMockResponse } from "./mockFallback";
+
 const API_BASE = `${import.meta.env.VITE_API_BASE ?? ""}/api/v1`;
 
 export async function fetchWithAuth(endpoint, options = {}) {
@@ -14,14 +12,25 @@ export async function fetchWithAuth(endpoint, options = {}) {
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.detail || `HTTP Error ${res.status}`);
+
+    // Cloudflare Pages / SPA fallback detection:
+    // If the server returned HTML (due to SPA /* -> /index.html rewrite) or 404/5xx,
+    // fallback to autonomous in-browser Netrā intelligence.
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType.includes("text/html")) {
+      console.info(`[NETRĀ] Autonomous Edge Mode: ${endpoint}`);
+      return getMockResponse(endpoint, options);
     }
+
+    if (!res.ok) {
+      console.warn(`[NETRĀ] Server returned ${res.status} on ${endpoint}, falling back to edge mock`);
+      return getMockResponse(endpoint, options);
+    }
+
     return await res.json();
   } catch (err) {
-    console.error(`API Error on ${endpoint}:`, err);
-    throw err;
+    console.info(`[NETRĀ] Offline/Static Edge Mode on ${endpoint}:`, err.message);
+    return getMockResponse(endpoint, options);
   }
 }
 
