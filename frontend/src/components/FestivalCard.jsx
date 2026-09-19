@@ -54,7 +54,9 @@ export default function FestivalCard({ festival, lang = 'hi' }) {
         <div className="rounded-xl bg-sand/70 border border-gold/20 p-3">
           <div className="flex items-start justify-between gap-2">
             <span className="font-heading font-semibold text-sm text-wine">{festival.festival_name}</span>
-            <Pill tone="emerald" className="shrink-0">{festival.impact_level}</Pill>
+            <Pill tone="emerald" className="max-w-[55%] whitespace-normal text-right leading-tight">
+              {festival.impact_level}
+            </Pill>
           </div>
 
           <p className="text-[11px] text-charcoal-muted mt-2">Recommended stock preparation</p>
