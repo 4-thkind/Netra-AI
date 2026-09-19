@@ -13,6 +13,8 @@ import InsightCardModal from '../components/InsightCardModal';
 import MerchantCreditStatementModal from '../components/MerchantCreditStatementModal';
 import WhatsAppConnectCard from '../components/WhatsAppConnectCard';
 import KnowledgeGraphCard from '../components/KnowledgeGraphCard';
+import InventoryIntelligenceCard from '../components/InventoryIntelligenceCard';
+import InventoryHubModal from '../components/InventoryHubModal';
 import { Card, CardHeader, CardBody, CardFooter, Pill } from '../components/ui/Card';
 import { api } from '../services/api';
 import { translations } from '../i18n/translations';
@@ -27,6 +29,7 @@ export default function Dashboard({
   const [missions, setMissions] = useState([]);
   const [toast, setToast] = useState(null);
   const [creditOpen, setCreditOpen] = useState(false);
+  const [inventoryOpen, setInventoryOpen] = useState(false);
 
   const t = translations[lang]?.dashboard || translations.en.dashboard;
 
@@ -170,6 +173,14 @@ export default function Dashboard({
       {/* Module grid. Single column on phones (each card is information-dense
           enough to deserve full width), 2 up on tablet, 3 up on desktop. */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+        {/* Paytm POS Billing & Autonomous Inventory Card */}
+        <div className="md:col-span-2">
+          <InventoryIntelligenceCard
+            onOpenHub={() => setInventoryOpen(true)}
+            lang={lang}
+          />
+        </div>
+
         <TradeRadarCard
           signals={tradeSignals}
           lang={lang}
@@ -202,6 +213,11 @@ export default function Dashboard({
       <MerchantCreditStatementModal
         isOpen={creditOpen}
         onClose={() => setCreditOpen(false)}
+        lang={lang}
+      />
+      <InventoryHubModal
+        isOpen={inventoryOpen}
+        onClose={() => setInventoryOpen(false)}
         lang={lang}
       />
     </div>

@@ -8,6 +8,7 @@ from backend.app.core.database import Base, engine
 from backend.app.api.v1 import api_v1_router
 from backend.app.data.synthetic_generator import seed_synthetic_data
 from backend.app.integrations.cognee_adapter import cognee_adapter
+from backend.app.models.inventory import InventoryItem
 
 
 async def hydrate_knowledge_graph() -> None:

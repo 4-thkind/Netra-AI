@@ -86,4 +86,21 @@ export const api = {
       method: "POST",
       body: JSON.stringify(payload)
     }),
+
+  // Inventory Intelligence & Paytm POS Billing
+  getInventoryOverview: () => fetchWithAuth("/inventory/overview"),
+  getInventoryItems: () => fetchWithAuth("/inventory/items"),
+  getDeadStock: () => fetchWithAuth("/inventory/dead-stock"),
+  getReorderAlerts: () => fetchWithAuth("/inventory/reorder-alerts"),
+  getClusterPool: () => fetchWithAuth("/inventory/cluster-pool"),
+  simulatePosSale: (barcode, quantity = 1) =>
+    fetchWithAuth("/inventory/simulate-pos-sale", {
+      method: "POST",
+      body: JSON.stringify({ barcode, quantity })
+    }),
+  dispatchInventoryPO: (itemId, crates = null) =>
+    fetchWithAuth("/inventory/dispatch-po", {
+      method: "POST",
+      body: JSON.stringify({ item_id: itemId, crates })
+    }),
 };
