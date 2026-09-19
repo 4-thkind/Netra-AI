@@ -153,7 +153,7 @@ async def import_kaggle_supermart(csv_path="data/supermart_raw.csv", max_rows=50
 def main():
     parser = argparse.ArgumentParser(description="Ingest Kaggle Supermart Grocery Dataset")
     parser.add_argument("--csv", type=str, default="data/supermart_raw.csv", help="Path to Kaggle CSV")
-    parser.add_argument("--limit", type=int, default=5000, help="Number of rows to import")
+    parser.add_argument("--limit", "--max-rows", dest="limit", type=int, default=5000, help="Number of rows to import")
     args = parser.parse_args()
 
     asyncio.run(import_kaggle_supermart(csv_path=args.csv, max_rows=args.limit))
