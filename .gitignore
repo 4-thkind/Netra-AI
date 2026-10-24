@@ -86,3 +86,7 @@ NETRA_ANTIGRAVITY_BUILD_SPEC.md
 PROJECT_OVERVIEW.md
 netra-ppt-blueprint.md
 docs/SUBMISSION_KIT.md
+
+# Markdown: only the README ships
+*.md
+!README.md

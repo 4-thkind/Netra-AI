@@ -14,7 +14,7 @@
 [![n8n](https://img.shields.io/badge/n8n-workflows-EA4B71?logo=n8n&logoColor=white)](https://n8n.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-[Live demo](https://netra-ai-live.pages.dev) · [Architecture](docs/ARCHITECTURE.md) · [Privacy model](docs/PRIVACY_MODEL.md) · [Threat model](docs/THREAT_MODEL.md) · [Pitch deck](docs/NETRA_PITCH_DECK.pdf)
+[Live demo](https://netra-ai-live.pages.dev) · [Pitch deck](docs/NETRA_PITCH_DECK.pdf)
 
 </div>
 
@@ -191,7 +191,7 @@ flowchart TD
 | Query budget | 15 sensitive queries per merchant per sliding 24 h window | `privacy/query_budget.py` |
 | Server-side identity | Merchant identity comes only from the JWT `sub` claim, never from the request body | `auth/dependencies.py` |
 
-See [docs/PRIVACY_MODEL.md](docs/PRIVACY_MODEL.md) for the formal treatment and [Implementation status](#implementation-status) for which layers are enforced on live endpoints today.
+See [Implementation status](#implementation-status) for which layers are enforced on live endpoints today.
 
 ---
 
@@ -681,7 +681,7 @@ Netra-AI/
 │       └── utils/            # Soundbox Web Audio engine
 ├── n8n/workflows/            # Importable n8n workflows
 ├── data/supermart_raw.csv    # Kaggle source dataset
-├── docs/                     # Architecture, privacy model, threat model, pitch deck
+├── docs/                     # Pitch deck
 ├── api/index.py              # Vercel entry point
 ├── run.py                    # One-command launcher (+ tunnel + QR)
 ├── qr.py                     # Dependency-free QR encoder
@@ -694,7 +694,7 @@ Netra-AI/
 
 ## Contributing and security
 
-Contributions must preserve the core invariant. No code path, API response or prompt may expose an individual merchant's data, bypass cohort suppression, or recommend price matching or coordination. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and PR conventions, and [SECURITY.md](SECURITY.md) and [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for the security model.
+Contributions must preserve the core invariant. No code path, API response or prompt may expose an individual merchant's data, bypass cohort suppression, or recommend price matching or coordination. Run the test suite and the frontend build before opening a pull request, and use conventional commit prefixes (`feat:`, `fix:`, `docs:`, `test:`).
 
 ---
 
